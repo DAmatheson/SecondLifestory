@@ -9,7 +9,7 @@
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
     android:showDividers="middle"
-    tools:context="ca.drewm.secondlifestory.EventListActivity">
+    tools:context="ca.drewm.secondlifestory.EventActivity">
 
     <!--
     This layout is a two-pane layout for the Events

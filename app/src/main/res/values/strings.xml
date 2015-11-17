@@ -9,4 +9,5 @@
     <string name="title_event_detail">Event Detail</string>
     <string name="eventsEmptyEntry">No Events</string>
     <string name="charactersEmptyEntry">No Characters</string>
+    <string name="title_activity_customize">Customize</string>
 </resources>

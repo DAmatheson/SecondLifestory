@@ -25,12 +25,16 @@
                 android:value=".CharacterActivity" />
         </activity>
         <activity
-            android:name=".EventListActivity"
+            android:name=".EventActivity"
             android:label="@string/title_event_list"
             android:parentActivityName=".CharacterActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ca.drewm.secondlifestory.CharacterActivity" />
+        </activity>
+        <activity
+            android:name=".Customize"
+            android:label="@string/title_activity_customize" >
         </activity>
     </application>
 

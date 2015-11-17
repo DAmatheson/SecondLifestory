@@ -1,16 +1,15 @@
 package ca.drewm.secondlifestory;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.MenuItem;
-
 
 /**
  * An activity representing a list of Events. This activity
  * has different presentations for handset and tablet-size devices. On
  * handsets, the activity presents a list of items, which when touched,
- * lead to a {@link EventDetailActivity} representing
+ * lead to a {@link EventDetailFragment} representing
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  * <p>
@@ -22,7 +21,7 @@ import android.view.MenuItem;
  * {@link EventListFragment.Callbacks} interface
  * to listen for item selections.
  */
-public class EventListActivity extends AppCompatActivity
+public class EventActivity extends AppCompatActivity
         implements EventListFragment.Callbacks {
 
     /**
@@ -31,32 +30,39 @@ public class EventListActivity extends AppCompatActivity
      */
     private boolean mTwoPane;
 
+    private EventListFragment listFragment;
+    private EventDetailFragment detailFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_layout);
 
-        if (findViewById(R.id.event_detail_container) != null) {
+        listFragment = (EventListFragment) getFragmentManager().findFragmentById(R.id.event_list);
+        detailFragment = (EventDetailFragment) getFragmentManager().findFragmentById(R.id.event_detail);
+
+        if (detailFragment != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-large and
             // res/values-sw600dp). If this view is present, then the
             // activity should be in two-pane mode.
             mTwoPane = true;
 
+
             // In two-pane mode, list items should be given the
             // 'activated' state when touched.
-            ((EventListFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.event_list))
-                    .setActivateOnItemClick(true);
+            listFragment.setActivateOnItemClick(true);
         }
+    }
 
-        // TODO: If exposing deep links into your app, handle intents here.
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
         // If the Home / Up button was pressed and an item is in the backstack, pop the backstack
         if (item.getItemId() == android.R.id.home &&
                 getFragmentManager().getBackStackEntryCount() > 0) {
@@ -64,7 +70,7 @@ public class EventListActivity extends AppCompatActivity
             getFragmentManager().popBackStack();
 
             if (mTwoPane) {
-               // detailFragment = null; // TODO: Add this back
+                detailFragment = null;
             }
 
             return true;
@@ -83,6 +89,7 @@ public class EventListActivity extends AppCompatActivity
             // In two-pane mode, show the detail view in this activity by
             // adding or replacing the detail fragment using a
             // fragment transaction.
+
             Bundle arguments = new Bundle();
             arguments.putString(EventDetailFragment.ARG_ITEM_ID, id);
             EventDetailFragment fragment = new EventDetailFragment();
@@ -91,11 +98,12 @@ public class EventListActivity extends AppCompatActivity
                     .replace(R.id.event_detail_container, fragment)
                     .commit();
 
+            detailFragment = fragment;
         } else {
             // In single-pane mode, simply start the detail activity
             // for the selected item ID.
 
-            EventDetailFragment detailFragment = new EventDetailFragment();
+            detailFragment = new EventDetailFragment();
 
             getFragmentManager().
                     beginTransaction().
@@ -149,7 +157,7 @@ public class EventListActivity extends AppCompatActivity
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
-            navigateUpTo(new Intent(this, EventListActivity.class));
+            navigateUpTo(new Intent(this, EventActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

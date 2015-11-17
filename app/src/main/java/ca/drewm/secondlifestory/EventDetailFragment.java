@@ -11,8 +11,8 @@ import ca.drewm.secondlifestory.dummy.DummyContent;
 
 /**
  * A fragment representing a single Event detail screen.
- * This fragment is either contained in a {@link EventListActivity}
- * in two-pane mode (on tablets) or a {@link EventDetailActivity}
+ * This fragment is either contained in a {@link EventActivity}
+ * in two-pane mode (on tablets) or a {@link EventDetailFragment}
  * on handsets.
  */
 public class EventDetailFragment extends Fragment {

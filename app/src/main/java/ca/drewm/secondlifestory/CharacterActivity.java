@@ -1,17 +1,15 @@
 package ca.drewm.secondlifestory;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-
 /**
  * An activity representing a list of Characters. This activity
  * has different presentations for handset and tablet-size devices. On
  * handsets, the activity presents a list of items, which when touched,
- * lead to a {@link CharacterDetailActivity} representing
+ * lead to a {@link CharacterDetailFragment} representing
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  * <p/>
@@ -32,12 +30,18 @@ public class CharacterActivity extends AppCompatActivity
      */
     private boolean mTwoPane;
 
+    private CharacterListFragment listFragment;
+    private CharacterDetailFragment detailFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.character_onepane);
+        setContentView(R.layout.character_layout);
 
-        if (findViewById(R.id.character_detail_container) != null) {
+        listFragment = (CharacterListFragment) getFragmentManager().findFragmentById(R.id.character_list);
+        detailFragment = (CharacterDetailFragment) getFragmentManager().findFragmentById(R.id.character_detail);
+
+        if (detailFragment != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-large and
             // res/values-sw600dp). If this view is present, then the
@@ -46,18 +50,14 @@ public class CharacterActivity extends AppCompatActivity
 
             // In two-pane mode, list items should be given the
             // 'activated' state when touched.
-            ((CharacterListFragment) getFragmentManager()
-                    .findFragmentById(R.id.character_list))
-                    .setActivateOnItemClick(true);
+            listFragment.setActivateOnItemClick(true);
         }
-
-        // TODO: If exposing deep links into your app, handle intents here.
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_character, menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
 

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- fragment_event_list.xml
+    Purpose: List fragment layout for EventListFragment
+
+    Drew Matheson, 2015.11.17: Created
+-->
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ListView
+        android:id="@android:id/list"
+        style="@style/listViewStyle" />
+
+    <TextView
+        style="@style/emptyListViewItem"
+        android:id="@android:id/empty"
+        android:text="@string/eventsEmptyEntry" />
+</LinearLayout>

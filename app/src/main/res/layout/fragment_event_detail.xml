@@ -1,0 +1,32 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@color/background_material_dark"
+    tools:context="ca.drewm.leaguetracker.PlayerStatsDetailFragment"
+    android:clickable="true"> <!-- Prevent any fragments behind this from being clicked -->
+
+<TextView
+    android:id="@+id/event_detail"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textStyle="bold"
+    android:textSize="16sp"
+    android:ems="16"
+    android:textColor="@color/primary_text_default_material_dark"
+    android:layout_alignParentLeft="true"
+    android:layout_marginLeft="28dp"
+    android:maxLines="2" />
+
+<ImageButton
+    android:id="@+id/editPlayerNameButton"
+    android:layout_width="24dp"
+    android:layout_height="0dp"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentTop="true"
+    android:paddingRight="6dp"
+    android:paddingLeft="6dp" />
+
+</RelativeLayout>

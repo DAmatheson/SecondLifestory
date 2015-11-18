@@ -4,7 +4,12 @@
 
 package ca.drewm.secondlifestory;
 
+import android.provider.Settings;
+
+import com.parse.LogInCallback;
 import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseUser;
 
 
 public class Application extends android.app.Application {

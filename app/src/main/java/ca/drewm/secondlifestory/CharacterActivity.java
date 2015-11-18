@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.parse.ParseObject;
+
 /**
  * An activity representing a list of Characters. This activity
  * has different presentations for handset and tablet-size devices. On
@@ -52,6 +54,10 @@ public class CharacterActivity extends AppCompatActivity
             // 'activated' state when touched.
             listFragment.setActivateOnItemClick(true);
         }
+
+        ParseObject testObject = new ParseObject("TestObject");
+        testObject.put("foo", "bar");
+        testObject.saveInBackground();
     }
 
     @Override

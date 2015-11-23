@@ -1,11 +1,16 @@
-package ca.drewm.secondlifestory;
+/* CustomizeActivity.java
+ * Purpose: Activity for customizing the character race/classes available
+ *
+ *  Created by Drew on 11/17/2015.
+ */
+
+package ca.secondlifestory;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 
-public class Customize extends AppCompatActivity {
+public class CustomizeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

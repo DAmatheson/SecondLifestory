@@ -1,4 +1,10 @@
-package ca.drewm.secondlifestory;
+/* CharacterDetailFragment.java
+ * Purpose: Fragment for the character detail screen
+ *
+ *  Created by Drew on 11/18/2015.
+ */
+
+package ca.secondlifestory;
 
 import android.os.Bundle;
 import android.app.Fragment;
@@ -7,13 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import ca.drewm.secondlifestory.dummy.DummyContent;
+import ca.secondlifestory.dummy.DummyContent;
 
 /**
  * A fragment representing a single Character detail screen.
- * This fragment is either contained in a {@link CharacterActivity}
- * in two-pane mode (on tablets) or a {@link CharacterDetailActivity}
- * on handsets.
+ * This fragment is contained in a {@link CharacterActivity}.
  */
 public class CharacterDetailFragment extends Fragment {
     /**

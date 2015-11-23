@@ -1,3 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- activity_customize.xml
+    Purpose: Layout for CustomizeActivity
+
+    Drew Matheson, 2015.11.17: Created
+-->
+
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,10 +15,10 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="ca.drewm.secondlifestory.Customize">
+    tools:context="ca.secondlifestory.CustomizeActivity">
 
     <TextView
-        android:text="@string/hello_world"
+        android:text="@string/title_activity_customize"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

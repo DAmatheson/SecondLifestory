@@ -1,5 +1,12 @@
-package ca.drewm.secondlifestory;
+/* CharacterActivity.java
+ * Purpose: Activity for the character portion of the app
+ *
+ *  Created by Drew on 11/18/2015.
+ */
 
+package ca.secondlifestory;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -74,8 +81,19 @@ public class CharacterActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+
+            startActivity(intent);
+
+            return true;
+        }
+
+        if (id == R.id.action_customize) {
+            Intent intent = new Intent(this, CustomizeActivity.class);
+
+            startActivity(intent);
+
             return true;
         }
 
@@ -97,7 +115,7 @@ public class CharacterActivity extends AppCompatActivity
             CharacterDetailFragment fragment = new CharacterDetailFragment();
             fragment.setArguments(arguments);
             getFragmentManager().beginTransaction()
-                    .replace(R.id.character_detail_container, fragment)
+                    .replace(R.id.character_detail, fragment)
                     .commit();
         } else {
             // In single-pane mode, simply start the detail activity

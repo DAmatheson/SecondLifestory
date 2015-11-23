@@ -1,8 +1,19 @@
-<FrameLayout
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- event_onepane.xml
+    Purpose: Two-pane layout for EventActivity
+
+    Drew Matheson, 2015.11.17: Created
+-->
+
+<fragment
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/event_detail_container"
+    android:id="@+id/event_list"
+    android:name="ca.secondlifestory.EventListFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ca.drewm.secondlifestory.EventDetailActivity"
-    tools:ignore="MergeRootFrame" />
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    tools:context=".EventActivity"
+    tools:layout="@android:layout/list_content" />

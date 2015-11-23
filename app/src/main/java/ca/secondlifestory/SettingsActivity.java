@@ -1,9 +1,13 @@
-package ca.drewm.secondlifestory;
+/* SettingsActivity.java
+ * Purpose: Activity for the settings screen of the app
+ *
+ *  Created by Drew on 11/17/2015.
+ */
+
+package ca.secondlifestory;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 public class SettingsActivity extends AppCompatActivity {
 

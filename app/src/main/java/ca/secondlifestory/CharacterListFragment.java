@@ -1,4 +1,10 @@
-package ca.drewm.secondlifestory;
+/* CharacterListFragment.java
+ * Purpose: Fragment for the character list
+ *
+ *  Created by Drew on 11/17/2015.
+ */
+
+package ca.secondlifestory;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -7,7 +13,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import ca.drewm.secondlifestory.dummy.DummyContent;
+import ca.secondlifestory.dummy.DummyContent;
 
 /**
  * A list fragment representing a list of Characters. This fragment
@@ -46,7 +52,7 @@ public class CharacterListFragment extends ListFragment {
         /**
          * Callback for when an item has been selected.
          */
-        public void onItemSelected(String id);
+        void onItemSelected(String id);
     }
 
     /**

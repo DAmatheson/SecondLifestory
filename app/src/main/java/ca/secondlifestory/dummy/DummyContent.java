@@ -1,4 +1,4 @@
-package ca.drewm.secondlifestory.dummy;
+package ca.secondlifestory.dummy;
 
 import java.util.ArrayList;
 import java.util.HashMap;

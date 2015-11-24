@@ -11,30 +11,94 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
+    android:padding="@dimen/standard_padding"
     android:background="@color/background_material_dark"
     tools:context="ca.drewm.leaguetracker.PlayerStatsDetailFragment"
     android:clickable="true"> <!-- Prevent any fragments behind this from being clicked -->
 
     <TextView
-        android:id="@+id/character_detail"
-        android:layout_width="wrap_content"
+        android:id="@+id/character_name"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:ems="16"
+        android:textSize="@dimen/header_text"
         android:textColor="@color/primary_text_default_material_dark"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="28dp"
-        android:maxLines="2" />
+        android:text="@string/character_name"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_alignParentTop="true" />
 
-    <ImageButton
-        android:id="@+id/editPlayerNameButton"
-        android:layout_width="24dp"
-        android:layout_height="0dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:paddingRight="6dp"
-        android:paddingLeft="6dp" />
+    <LinearLayout
+        android:id="@+id/character_details_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/character_name">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin">
+            <TextView
+                style="@style/detailTextViewLabel"
+                android:text="@string/race" />
+            <TextView
+                style="@style/detailTextViewLabel"
+                android:text="@string/character_class" />
+            <TextView
+                style="@style/detailTextViewLabel"
+                android:text="@string/total_xp" />
+            <TextView
+                style="@style/detailTextViewLabel"
+                android:text="@string/status" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/character_race"
+                style="@style/detailTextView" />
+            <TextView
+                android:id="@+id/character_class"
+                style="@style/detailTextView" />
+            <TextView
+                android:id="@+id/character_xp"
+                style="@style/detailTextView" />
+            <TextView
+                android:id="@+id/character_status"
+                style="@style/detailTextView" />
+        </LinearLayout>
+    </LinearLayout>
 
+    <TextView
+        android:id="@+id/character_description_label"
+        style="@style/detailTextViewLabel"
+        android:text="@string/description"
+        android:layout_below="@id/character_details_layout"/>
+
+    <TextView
+        android:id="@+id/character_description"
+        style="@style/detailTextView"
+        android:layout_below="@id/character_description_label" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+        <Button
+            android:id="@+id/delete_character_button"
+            android:text="@string/delete_character"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="@dimen/standard_padding" />
+        <Button
+            android:id="@+id/edit_character_button"
+            android:text="@string/edit_character"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="@dimen/standard_padding" />
+    </LinearLayout>
 </RelativeLayout>

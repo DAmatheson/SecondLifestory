@@ -12,4 +12,21 @@
 
     <string name="eventsEmptyEntry">No Events</string>
     <string name="charactersEmptyEntry">No Characters</string>
+
+    <string name="character_name">Character Name</string>
+
+    <string name="race">Race</string>
+    <string name="character_class">Class</string>
+    <string name="total_xp">Total XP</string>
+    <string name="status">Status</string>
+    <string name="delete_character">Delete Character</string>
+    <string name="edit_character">Edit Character</string>
+
+    <string name="event_title">Source</string>
+    <string name="date">Date</string>
+    <string name="xp_gained">XP Gained</string>
+    <string name="characters_present">Shared By</string>
+    <string name="description">Description</string>
+    <string name="delete_event">Delete Event</string>
+    <string name="edit_event">Edit Event</string>
 </resources>

@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme" >
 
         <activity
-            android:name=".LoginActivity"
+            android:name=".activities.LoginActivity"
             android:label="@string/app_name" >
 
             <intent-filter>
@@ -24,38 +24,38 @@
         </activity>
 
         <activity
-            android:name=".CharacterActivity"
+            android:name=".activities.character.CharacterActivity"
             android:label="@string/title_activity_character" >
         </activity>
 
         <activity
-            android:name=".EventActivity"
+            android:name=".activities.event.EventActivity"
             android:label="@string/title_activity_event"
-            android:parentActivityName=".CharacterActivity" >
+            android:parentActivityName=".activities.character.CharacterActivity" >
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="ca.secondlifestory.CharacterActivity" />
+                android:value=".activities.character.CharacterActivity" />
         </activity>
 
         <activity
-            android:name=".CustomizeActivity"
+            android:name=".activities.CustomizeActivity"
             android:label="@string/title_activity_customize"
-            android:parentActivityName=".CharacterActivity" >
+            android:parentActivityName=".activities.character.CharacterActivity" >
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="ca.secondlifestory.CharacterActivity" />
+                android:value=".activities.character.CharacterActivity" />
         </activity>
 
         <activity
-            android:name=".SettingsActivity"
+            android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".CharacterActivity" >
+            android:parentActivityName=".activities.character.CharacterActivity" >
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".CharacterActivity" />
+                android:value=".activities.character.CharacterActivity" />
         </activity>
     </application>
 

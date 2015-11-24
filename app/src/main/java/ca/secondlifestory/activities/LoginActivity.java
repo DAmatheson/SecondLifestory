@@ -6,7 +6,7 @@
  *  Note: This currently is all handled by the app and it essentially a loading screen
  */
 
-package ca.secondlifestory;
+package ca.secondlifestory.activities;
 
 import android.content.Intent;
 import android.provider.Settings;
@@ -17,6 +17,9 @@ import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
+
+import ca.secondlifestory.R;
+import ca.secondlifestory.activities.character.CharacterActivity;
 
 public class LoginActivity extends AppCompatActivity {
 

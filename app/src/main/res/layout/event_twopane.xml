@@ -17,7 +17,7 @@
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
     android:showDividers="middle"
-    tools:context="ca.secondlifestory.EventActivity">
+    tools:context="ca.secondlifestory.activities.event.EventActivity">
 
     <!--
     This layout is a two-pane layout for the Events
@@ -26,7 +26,7 @@
 
     <fragment
         android:id="@+id/event_list"
-        android:name="ca.secondlifestory.EventListFragment"
+        android:name="ca.secondlifestory.activities.event.EventListFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -34,7 +34,7 @@
 
     <fragment
         android:id="@+id/event_detail"
-        android:name="ca.secondlifestory.EventDetailFragment"
+        android:name="ca.secondlifestory.activities.event.EventDetailFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="3"

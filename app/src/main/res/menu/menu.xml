@@ -1,7 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- menu.xml
+    Purpose: Menu used by CharacterActivity and EventActivity
+
+    Drew Matheson, 2015.11.17: Created
+-->
+
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="ca.secondlifestory.SettingsActivity">
+    tools:context="ca.secondlifestory.activities.character.CharacterActivity">
 
     <item
         android:id="@+id/action_settings"

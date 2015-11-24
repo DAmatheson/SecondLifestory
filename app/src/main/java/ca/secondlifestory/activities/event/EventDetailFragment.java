@@ -4,7 +4,7 @@
  *  Created by Drew on 11/17/2015.
  */
 
-package ca.secondlifestory;
+package ca.secondlifestory.activities.event;
 
 import android.os.Bundle;
 import android.app.Fragment;
@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import ca.secondlifestory.R;
 import ca.secondlifestory.dummy.DummyContent;
 
 /**

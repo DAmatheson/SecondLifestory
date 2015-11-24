@@ -4,12 +4,14 @@
  *  Created by Drew on 11/17/2015.
  */
 
-package ca.secondlifestory;
+package ca.secondlifestory.activities.event;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import ca.secondlifestory.R;
 
 /**
  * An activity representing a list of Character Events. This activity
@@ -117,7 +119,7 @@ public class EventActivity extends AppCompatActivity
                     addToBackStack(null).
                     commit();
 
-            //detailIntent.putExtra(EventDetailFragment.ARG_ITEM_ID, id);
+            //detailIntent.putExtra(CharacterDetailFragment.ARG_ITEM_ID, id);
         }
     }
 }

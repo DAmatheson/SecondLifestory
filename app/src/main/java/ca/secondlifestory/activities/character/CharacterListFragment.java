@@ -4,11 +4,10 @@
  *  Created by Drew on 11/17/2015.
  */
 
-package ca.secondlifestory;
+package ca.secondlifestory.activities.character;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.app.ListFragment;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -24,7 +23,7 @@ import ca.secondlifestory.dummy.DummyContent;
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
-public class CharacterListFragment extends ListFragment {
+public class CharacterListFragment extends android.app.ListFragment {
 
     /**
      * The serialization (saved instance state) Bundle key representing the

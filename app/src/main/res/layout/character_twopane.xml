@@ -26,7 +26,7 @@
 
     <fragment
         android:id="@+id/character_list"
-        android:name="ca.secondlifestory.CharacterListFragment"
+        android:name="ca.secondlifestory.activities.character.CharacterListFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -34,7 +34,7 @@
 
     <fragment
         android:id="@+id/character_detail"
-        android:name="ca.secondlifestory.CharacterDetailFragment"
+        android:name="ca.secondlifestory.activities.character.CharacterDetailFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="3" />

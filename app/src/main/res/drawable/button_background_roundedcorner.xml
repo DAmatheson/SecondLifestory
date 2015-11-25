@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- button_background_roundedcorner.xml
+    Purpose: Background drawable for ImageButtons
+
+    Drew Matheson, 2015.11.25: Created
+-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:state_pressed="true"
+        android:state_enabled="true">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <solid android:color="@color/button_material_dark"/>
+            <corners android:radius="6dp"/>
+        </shape>
+    </item>
+
+    <item
+        android:state_enabled="true">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+            <solid android:color="@color/accent_material_light"/>
+            <corners android:radius="6dp"/>
+        </shape>
+    </item>
+</selector>
+

@@ -6,23 +6,25 @@
     Drew Matheson, 2015.11.17: Created
 -->
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/pageLayout"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ImageButton
-        android:layout_width="36dp"
+        android:layout_width="fill_parent"
         android:layout_height="36dp"
         android:layout_gravity="right"
-        android:background="@color/background_material_dark"
-        android:src="@drawable/ic_add_circle_outline_white_36dp" />
+        android:background="@drawable/button_background_roundedcorner"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/ic_add_circle_outline_white_36dp_states" />
 
     <ListView
         android:id="@android:id/list"
-        style="@style/listViewStyle" />
+        style="@style/listViewStyle"/>
 
     <TextView
         style="@style/emptyListViewItem"

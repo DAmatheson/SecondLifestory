@@ -6,14 +6,23 @@
     Drew Matheson, 2015.11.17: Created
 -->
 
-<fragment
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/character_list"
-    android:name="ca.secondlifestory.activities.character.CharacterListFragment"
+    style="@style/pageLayout"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    tools:context=".CharacterActivity"
-    tools:layout="@android:layout/list_content" />
+    android:layout_height="match_parent" >
+
+    <fragment
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/character_list"
+        android:name="ca.secondlifestory.activities.character.CharacterListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        tools:context=".CharacterActivity"
+        tools:layout="@layout/fragment_character_list" />
+</LinearLayout>

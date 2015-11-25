@@ -6,17 +6,23 @@
 
 package ca.secondlifestory.models;
 
+import com.parse.ParseClassName;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 /**
  * Model class for character races
  */
+@ParseClassName("Race")
 public class Race extends ParseObject {
 
     private static final String KEY_USER = "user";
     private static final String KEY_NAME = "name";
 
+    /**
+     * Instantiates a new instance of Race
+     */
     public Race() {
         // Required Empty Constructor
     }
@@ -51,5 +57,13 @@ public class Race extends ParseObject {
      */
     public void setName(String name) {
         put(KEY_NAME, name);
+    }
+
+    /**
+     * Gets a ParseQuery for Race objects
+     * @return The ParseQuery
+     */
+    public static ParseQuery<Race> getQuery() {
+        return ParseQuery.getQuery(Race.class);
     }
 }

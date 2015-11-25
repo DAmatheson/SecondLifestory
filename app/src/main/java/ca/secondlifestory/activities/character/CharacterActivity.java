@@ -12,12 +12,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.parse.ParseObject;
-
 import ca.secondlifestory.activities.CustomizeActivity;
 import ca.secondlifestory.R;
 import ca.secondlifestory.activities.SettingsActivity;
-import ca.secondlifestory.models.CharacterClass;
 
 /**
  * An activity representing a list of Characters. This activity

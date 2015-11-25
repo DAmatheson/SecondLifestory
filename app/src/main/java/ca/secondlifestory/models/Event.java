@@ -6,71 +6,50 @@
 
 package ca.secondlifestory.models;
 
+import com.parse.ParseClassName;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
 import java.util.Date;
-import java.util.List;
 
 /**
  * Model class for character events
  */
-public class Event {
-    private String _objectId;
+@ParseClassName("Event")
+public class Event extends ParseObject {
+    private static final String KEY_EVENT_TYPE = "eventType";
+    private static final String KEY_CHARACTER = "character";
+    private static final String KEY_CHARACTER_COUNT = "characterCount";
+    private static final String KEY_EXPERIENCE = "experience";
+    private static final String KEY_DESCRIPTION = "description";
+    private static final String KEY_DATE = "date";
 
-    private String _eventTypeObjectId;
-    private String _eventTypeName;
-
-    private int _characterCount;
-    private int _experience;
-    private String _description;
-    private Date _date;
-
-    private List<EventDetail> _eventDetails;
-
-    /**
-     * Gets the ObjectId for the Event
-     * @return ObjectId for the Event
-     */
-    public String getObjectId() {
-        return _objectId;
+    public Event() {
+        // Required empty constructor
     }
 
     /**
-     * Sets the ObjectId for the Event
-     * @param objectId for the Event
+     * Sets the ObjectId of the Character this  Event belongs to
+     * @param objectId of the Character this event belongs to
      */
-    public void setObjectId(String objectId) {
-        this._objectId = objectId;
+    public void setCharacterObjectId(String objectId) {
+        put(KEY_CHARACTER, objectId);
     }
 
     /**
-     * Gets the ObjectId for the Event's EventType
-     * @return ObjectId for the Event's EventType
+     * Gets the Event's EventType
+     * @return The Event's EventType
      */
-    public String getEventTypeObjectId() {
-        return _eventTypeObjectId;
+    public EventTypes getEventType() {
+        return EventTypes.valueOf(getString(KEY_EVENT_TYPE));
     }
 
     /**
-     * Sets the ObjectId for the Event's EventType
-     * @param eventTypeObjectId The ObjectId
+     * Sets the Event's EventType
+     * @param type of the Event
      */
-    public void setEventTypeObjectId(String eventTypeObjectId) {
-        this._eventTypeObjectId = eventTypeObjectId;
-    }
-
-    /**
-     * Gets the name for the Event's EventType
-     * @return The name for the Event's EventType
-     */
-    public String getEventTypeName() {
-        return _eventTypeName;
-    }
-
-    /**
-     * Sets the name for the Event's EventType
-     * @param eventTypeName The name for the Event's EventType
-     */
-    public void setEventTypeName(String eventTypeName) {
-        this._eventTypeName = eventTypeName;
+    public void setEventType(EventTypes type) {
+        put(KEY_EVENT_TYPE, type.toString());
     }
 
     /**
@@ -78,7 +57,7 @@ public class Event {
      * @return The character count for the Event
      */
     public int getCharacterCount() {
-        return _characterCount;
+        return getInt(KEY_CHARACTER_COUNT);
     }
 
     /**
@@ -86,7 +65,7 @@ public class Event {
      * @param characterCount The character count
      */
     public void setCharacterCount(int characterCount) {
-        this._characterCount = characterCount;
+        put(KEY_CHARACTER_COUNT, characterCount);
     }
 
     /**
@@ -94,7 +73,7 @@ public class Event {
      * @return The amount of the experience from the Event
      */
     public int getExperience() {
-        return _experience;
+        return getInt(KEY_EXPERIENCE);
     }
 
     /**
@@ -102,7 +81,7 @@ public class Event {
      * @param experience The amount of experience
      */
     public void setExperience(int experience) {
-        this._experience = experience;
+        put(KEY_EXPERIENCE, experience);
     }
 
     /**
@@ -110,7 +89,7 @@ public class Event {
      * @return The description of the Event
      */
     public String getDescription() {
-        return _description;
+        return getString(KEY_DESCRIPTION);
     }
 
     /**
@@ -118,7 +97,7 @@ public class Event {
      * @param description The description
      */
     public void setDescription(String description) {
-        this._description = description;
+        put(KEY_DESCRIPTION, description);
     }
 
     /**
@@ -126,7 +105,7 @@ public class Event {
      * @return The date of the Event
      */
     public Date getDate() {
-        return _date;
+        return getDate(KEY_DATE);
     }
 
     /**
@@ -134,22 +113,17 @@ public class Event {
      * @param date The date
      */
     public void setDate(Date date) {
-        this._date = date;
+        put(KEY_DATE, date);
     }
 
     /**
-     * Gets the EventDetails for this Event
-     * @return The EventDetails for the Event
+     * Gets a ParseQuery which will retrieve all of this Events details
+     * @return The query
      */
-    public List<EventDetail> getEventDetails() {
-        return _eventDetails;
-    }
+    public ParseQuery<EventDetail> getEventDetailsQuery() {
+        ParseQuery<EventDetail> detailsQuery = EventDetail.getQuery();
+        detailsQuery.whereEqualTo(EventDetail.PARENT_EVENT_KEY, getObjectId());
 
-    /**
-     * Sets the EventDetails for this Event
-     * @param eventDetails The EventDetails
-     */
-    public void setEventDetails(List<EventDetail> eventDetails) {
-        this._eventDetails = eventDetails;
+        return detailsQuery;
     }
 }

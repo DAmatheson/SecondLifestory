@@ -1,52 +1,36 @@
 /* EventDetail.java
- * Purpose: Model class for an event detail
+ * Purpose: Wrapper class for an event detail ParseObject
  *
  * Created by Drew on 11/23/2015.
  */
 
 package ca.secondlifestory.models;
 
+import com.parse.ParseClassName;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
 /**
- * Model class for event details
+ * Wrapper class for event details
  */
-public class EventDetail {
+@ParseClassName("EventDetail")
+public class EventDetail extends ParseObject {
 
-    private String _objectId;
-    private String _eventObjectId;
+    private static final String KEY_NAME = "name";
+    private static final String KEY_CREATURE_COUNT = "creatureCount";
 
-    private String _name;
-    private int _creatureCount;
+    public static final String PARENT_EVENT_KEY = "event";
 
-    /**
-     * Gets the ObjectId for the EventDetail
-     * @return ObjectId for the EventDetail
-     */
-    public String getObjectId() {
-        return _objectId;
+    public EventDetail() {
+
     }
 
     /**
-     * Sets the ObjectId for the EventDetail
-     * @param objectId for the EventDetail
+     * Sets the parent Event's ObjectId for this EventDetail
+     * @param parentObjectId for the parent of this EventDetail
      */
-    public void setObjectId(String objectId) {
-        this._objectId = objectId;
-    }
-
-    /**
-     * Gets the ObjectId for the Event this EventDetail is for
-     * @return ObjectId for the Event the EventDetail belongs to
-     */
-    public String getEventObjectId() {
-        return _eventObjectId;
-    }
-
-    /**
-     * Sets the ObjectId for the Event this EventDetail is for
-     * @param eventObjectId for the Event the EventDetail belongs to
-     */
-    public void setEventObjectId(String eventObjectId) {
-        this._eventObjectId = eventObjectId;
+    public void setParentEventObjectId(String parentObjectId) {
+        put(PARENT_EVENT_KEY, parentObjectId);
     }
 
     /**
@@ -54,7 +38,7 @@ public class EventDetail {
      * @return The name for the EventDetail
      */
     public String getName() {
-        return _name;
+        return getString(KEY_NAME);
     }
 
     /**
@@ -62,7 +46,7 @@ public class EventDetail {
      * @param name for the EventDetail
      */
     public void setName(String name) {
-        this._name = name;
+        put(KEY_NAME, name);
     }
 
     /**
@@ -70,7 +54,7 @@ public class EventDetail {
      * @return The creature count
      */
     public int getCreatureCount() {
-        return _creatureCount;
+        return getInt(KEY_CREATURE_COUNT);
     }
 
     /**
@@ -78,6 +62,10 @@ public class EventDetail {
      * @param creatureCount for the EventDetail
      */
     public void setCreatureCount(int creatureCount) {
-        this._creatureCount = creatureCount;
+        put(KEY_CREATURE_COUNT, creatureCount);
+    }
+
+    public static ParseQuery<EventDetail> getQuery() {
+        return ParseQuery.getQuery(EventDetail.class);
     }
 }

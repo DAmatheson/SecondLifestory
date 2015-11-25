@@ -1,32 +1,43 @@
 /* CharacterClass.java
- * Purpose: Model class for a character class
+ * Purpose: Model class for a character class ParseObject
  *
  * Created by Drew on 11/23/2015.
  */
 
 package ca.secondlifestory.models;
 
+import com.parse.ParseClassName;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
+
 /**
  * Model class for character classes
  */
-public class CharacterClass {
-    private String _objectId;
-    private String _name;
+@ParseClassName("CharacterClass")
+public class CharacterClass extends ParseObject {
+    private static final String KEY_USER = "user";
+    private static final String KEY_NAME = "name";
 
-    /**
-     * Gets the ObjectId for the CharacterClass
-     * @return The ObjectId for the CharacterClass
-     */
-    public String getObjectId() {
-        return _objectId;
+    public static final String PARSE_NAME = CharacterClass.class.getName();
+
+    public CharacterClass() {
+        // Required Empty Constructor
     }
 
     /**
-     * Sets the ObjectId for the CharacterClass
-     * @param objectId for the CharacterClass
+     * Gets the User the Character belongs to
+     * @return The ParseUser the character belongs to
      */
-    public void setObjectId(String objectId) {
-        this._objectId = objectId;
+    public ParseUser getUser() {
+        return getParseUser(KEY_USER);
+    }
+
+    /**
+     * Sets the User the Character belongs to
+     * @param user the Character belongs to
+     */
+    public void setUser(ParseUser user) {
+        put(KEY_USER, user);
     }
 
     /**
@@ -34,7 +45,7 @@ public class CharacterClass {
      * @return The name of the CharacterClass
      */
     public String getName() {
-        return _name;
+        return getString(KEY_NAME);
     }
 
     /**
@@ -42,6 +53,6 @@ public class CharacterClass {
      * @param name of the CharacterClass
      */
     public void setName(String name) {
-        this._name = name;
+        put(KEY_NAME, name);
     }
 }

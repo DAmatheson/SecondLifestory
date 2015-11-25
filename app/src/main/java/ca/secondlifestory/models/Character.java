@@ -6,37 +6,43 @@
 
 package ca.secondlifestory.models;
 
+import com.parse.ParseClassName;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
+
 /**
  * Model for a Character
  */
-public class Character {
-    private String _objectId;
-    private String _raceObjectId;
-    private String _classObjectId;
+@ParseClassName("Character")
+public class Character extends ParseObject {
+    private static final String KEY_USER = "user";
+    private static final String KEY_RACE_OBJECT_ID = "raceObjectId";
+    private static final String KEY_CLASS_OBJECT_ID = "classObjectId";
+    private static final String KEY_NAME = "name";
+    private static final String KEY_LIVING = "living";
+    private static final String KEY_DETAILS = "details";
+    private static final String KEY_EXPERIENCE = "experience";
 
-    private String _name;
-    private boolean _living;
-    private String _details;
-    private int _experience;
+    private static final String PARSE_NAME = Character.class.getName();
 
     // TODO: Do we want these? Or a an instance of Race/Class. Haven't made getter/setters for these
     private String _raceName;
     private String _className;
 
     /**
-     * Gets the ObjectId for the Character
-     * @return The ObjectId for the Character
+     * Gets the User the Character belongs to
+     * @return The ParseUser the character belongs to
      */
-    public String getObjectId() {
-        return _objectId;
+    public ParseUser getUser() {
+        return getParseUser(KEY_USER);
     }
 
     /**
-     * Sets the ObjectId for the Character
-     * @param objectId for the Character
+     * Sets the User the Character belongs to
+     * @param user the Character belongs to
      */
-    public void setObjectId(String objectId) {
-        this._objectId = objectId;
+    public void setUser(ParseUser user) {
+        put(KEY_USER, user);
     }
 
     /**
@@ -44,7 +50,7 @@ public class Character {
      * @return The ObjectId for the Character's Race
      */
     public String getRaceObjectId() {
-        return _raceObjectId;
+        return getString(KEY_RACE_OBJECT_ID);
     }
 
     /**
@@ -52,7 +58,7 @@ public class Character {
      * @param raceObjectId for the Character's Race
      */
     public void setRaceObjectId(String raceObjectId) {
-        this._raceObjectId = raceObjectId;
+        put(KEY_RACE_OBJECT_ID, raceObjectId);
     }
 
     /**
@@ -60,7 +66,7 @@ public class Character {
      * @return The ObjectId for the Character's CharacterClass
      */
     public String getClassObjectId() {
-        return _classObjectId;
+        return getString(KEY_CLASS_OBJECT_ID);
     }
 
     /**
@@ -68,7 +74,7 @@ public class Character {
      * @param classObjectId for the Character's CharacterClass
      */
     public void setClassObjectId(String classObjectId) {
-        this._classObjectId = classObjectId;
+        put(KEY_CLASS_OBJECT_ID, classObjectId);
     }
 
     /**
@@ -76,7 +82,7 @@ public class Character {
      * @return The Character's name
      */
     public String getName() {
-        return _name;
+        return getString(KEY_NAME);
     }
 
     /**
@@ -84,7 +90,7 @@ public class Character {
      * @param name of the Character
      */
     public void setName(String name) {
-        this._name = name;
+        put(KEY_NAME, name);
     }
 
     /**
@@ -92,7 +98,7 @@ public class Character {
      * @return True if the character is alive, false otherwise.
      */
     public boolean isLiving() {
-        return _living;
+        return getBoolean(KEY_LIVING);
     }
 
     /**
@@ -100,7 +106,7 @@ public class Character {
      * @param living flag for if the character is alive
      */
     public void setLiving(boolean living) {
-        this._living = living;
+        put(KEY_LIVING, living);
     }
 
     /**
@@ -108,7 +114,7 @@ public class Character {
      * @return The Details for the Character
      */
     public String getDetails() {
-        return _details;
+        return getString(KEY_DETAILS);
     }
 
     /**
@@ -116,7 +122,7 @@ public class Character {
      * @param details string for the Character
      */
     public void setDetails(String details) {
-        this._details = details;
+        put(KEY_DETAILS, details);
     }
 
     /**
@@ -124,7 +130,7 @@ public class Character {
      * @return The Character's experience amount
      */
     public int getExperience() {
-        return _experience;
+        return getInt(KEY_EXPERIENCE);
     }
 
     /**
@@ -132,6 +138,6 @@ public class Character {
      * @param experience amount for the Character
      */
     public void setExperience(int experience) {
-        this._experience = experience;
+        put(KEY_EXPERIENCE, experience);
     }
 }

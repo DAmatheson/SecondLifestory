@@ -17,6 +17,7 @@ import com.parse.ParseObject;
 import ca.secondlifestory.activities.CustomizeActivity;
 import ca.secondlifestory.R;
 import ca.secondlifestory.activities.SettingsActivity;
+import ca.secondlifestory.models.CharacterClass;
 
 /**
  * An activity representing a list of Characters. This activity
@@ -65,10 +66,6 @@ public class CharacterActivity extends AppCompatActivity
             // 'activated' state when touched.
             listFragment.setActivateOnItemClick(true);
         }
-
-        ParseObject testObject = new ParseObject("TestObject");
-        testObject.put("foo", "bar");
-        testObject.saveInBackground();
     }
 
     @Override

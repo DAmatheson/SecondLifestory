@@ -69,6 +69,7 @@ public class CharacterActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);
+
         return true;
     }
 
@@ -108,17 +109,14 @@ public class CharacterActivity extends AppCompatActivity
             // In two-pane mode, show the detail view in this activity by
             // adding or replacing the detail fragment using a
             // fragment transaction.
-            Bundle arguments = new Bundle();
-            arguments.putString(CharacterDetailFragment.ARG_ITEM_ID, id);
-            CharacterDetailFragment fragment = new CharacterDetailFragment();
-            fragment.setArguments(arguments);
+            detailFragment = CharacterDetailFragment.newInstance(id);
             getFragmentManager().beginTransaction()
-                    .replace(R.id.character_detail, fragment)
+                    .replace(R.id.character_detail, detailFragment)
                     .commit();
         } else {
             // In single-pane mode, simply start the detail activity
             // for the selected item ID.
-            detailFragment = new CharacterDetailFragment();
+            detailFragment = CharacterDetailFragment.newInstance(id);
 
             getFragmentManager().
                     beginTransaction().

@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import ca.secondlifestory.adapters.PlayerCharacterQueryAdapter;
 import ca.secondlifestory.dummy.DummyContent;
 
 /**
@@ -26,23 +27,6 @@ import ca.secondlifestory.dummy.DummyContent;
 public class CharacterListFragment extends android.app.ListFragment {
 
     /**
-     * The serialization (saved instance state) Bundle key representing the
-     * activated item position. Only used on tablets.
-     */
-    private static final String STATE_ACTIVATED_POSITION = "activated_position";
-
-    /**
-     * The fragment's current callback object, which is notified of list item
-     * clicks.
-     */
-    private Callbacks mCallbacks = sDummyCallbacks;
-
-    /**
-     * The current activated item position. Only used on tablets.
-     */
-    private int mActivatedPosition = ListView.INVALID_POSITION;
-
-    /**
      * A callback interface that all activities containing this fragment must
      * implement. This mechanism allows activities to be notified of item
      * selections.
@@ -55,14 +39,23 @@ public class CharacterListFragment extends android.app.ListFragment {
     }
 
     /**
-     * A dummy implementation of the {@link Callbacks} interface that does
-     * nothing. Used only when this fragment is not attached to an activity.
+     * The serialization (saved instance state) Bundle key representing the
+     * activated item position. Only used on tablets.
      */
-    private static Callbacks sDummyCallbacks = new Callbacks() {
-        @Override
-        public void onItemSelected(String id) {
-        }
-    };
+    private static final String STATE_ACTIVATED_POSITION = "activated_position";
+
+    /**
+     * The fragment's current callback object, which is notified of list item
+     * clicks.
+     */
+    private Callbacks mCallbacks;
+
+    /**
+     * The current activated item position. Only used on tablets.
+     */
+    private int mActivatedPosition = ListView.INVALID_POSITION;
+
+    private PlayerCharacterQueryAdapter adapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -75,12 +68,10 @@ public class CharacterListFragment extends android.app.ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // TODO: replace with a real list adapter.
-        setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(
-                getActivity(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
-                DummyContent.ITEMS));
+        adapter = new PlayerCharacterQueryAdapter(getActivity());
+        adapter.setTextKey("name");
+
+        setListAdapter(adapter);
     }
 
     @Override
@@ -111,7 +102,7 @@ public class CharacterListFragment extends android.app.ListFragment {
         super.onDetach();
 
         // Reset the active callbacks interface to the dummy implementation.
-        mCallbacks = sDummyCallbacks;
+        mCallbacks = null;
     }
 
     @Override
@@ -120,7 +111,7 @@ public class CharacterListFragment extends android.app.ListFragment {
 
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
-        mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
+        mCallbacks.onItemSelected(adapter.getItem(position).getObjectId());
     }
 
     @Override

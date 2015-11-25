@@ -26,4 +26,14 @@
     <!-- style for list views when not on a large or sw600dp device -->
     <style name="listViewStyle" parent="listViewStyleBase"></style>
 
+    <style name="detailTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/detail_text</item>
+        <item name="android:textColor">@color/primary_text_default_material_dark</item>
+    </style>
+
+    <style name="detailTextViewLabel" parent="detailTextView">
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

@@ -30,6 +30,7 @@
     <string name="delete_event">Delete Event</string>
     <string name="edit_event">Edit Event</string>
 
+    <string name="custom_races_and_classes">Custom Races &amp; Classes</string>
     <string name="race_name">Race Name</string>
     <string name="class_name">Class Name</string>
     <string name="save_new_race">Save New Race</string>

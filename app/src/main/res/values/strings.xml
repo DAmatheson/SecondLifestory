@@ -29,4 +29,16 @@
     <string name="description">Description</string>
     <string name="delete_event">Delete Event</string>
     <string name="edit_event">Edit Event</string>
+
+    <string name="race_name">Race Name</string>
+    <string name="class_name">Class Name</string>
+    <string name="save_new_race">Save New Race</string>
+    <string name="save_new_class">Save New Class</string>
+    <string name="delete_race">Delete Race</string>
+    <string name="delete_class">Delete Class</string>
+
+    <string name="tutorials">Tutorials and FAQs</string>
+    <string name="delete_all_characters">Delete All Characters</string>
+    <string name="delete_all_data">Delete All Data</string>
+    <string name="copyright">&#169; 2015 - Drew Matheson &amp; Isaac West</string>
 </resources>

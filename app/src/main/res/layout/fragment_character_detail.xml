@@ -4,27 +4,21 @@
     Purpose: Detail fragment layout for CharacterDetailFragment
 
     Drew Matheson, 2015.11.17: Created
+    Isaac West, 2015.11.24: Initial Layout
 -->
 
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/standard_padding"
-    android:background="@color/background_material_dark"
+    style="@style/pageLayout"
     tools:context="ca.drewm.leaguetracker.PlayerStatsDetailFragment"
     android:clickable="true"> <!-- Prevent any fragments behind this from being clicked -->
 
     <TextView
         android:id="@+id/character_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/header_text"
-        android:textColor="@color/primary_text_default_material_dark"
-        android:text="@string/character_name"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_alignParentTop="true" />
+        style="@style/pageHeader"
+        android:layout_alignParentTop="true"
+        android:text="@string/character_name" />
 
     <LinearLayout
         android:id="@+id/character_details_layout"

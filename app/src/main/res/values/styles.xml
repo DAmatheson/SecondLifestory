@@ -5,6 +5,16 @@
         <!-- CustomizeActivity your theme here. -->
     </style>
 
+    <style name="pageLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
+        <item name="android:paddingRight">@dimen/activity_horizontal_margin</item>
+        <item name="android:paddingTop">@dimen/activity_vertical_margin</item>
+        <item name="android:paddingBottom">@dimen/activity_vertical_margin</item>
+        <item name="android:background">@color/background_material_dark</item>
+    </style>
+
     <!-- style for empty list view items -->
     <style name="emptyListViewItem">
         <item name="android:layout_width">fill_parent</item>
@@ -25,6 +35,14 @@
 
     <!-- style for list views when not on a large or sw600dp device -->
     <style name="listViewStyle" parent="listViewStyleBase"></style>
+
+    <style name="pageHeader">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/header_text</item>
+        <item name="android:textColor">@color/primary_text_default_material_dark</item>
+        <item name="android:layout_marginBottom">@dimen/activity_vertical_margin</item>
+    </style>
 
     <style name="detailTextView">
         <item name="android:layout_width">wrap_content</item>

@@ -165,6 +165,6 @@ public class PlayerCharacter extends ParseObject {
      * @return The ParseQuery
      */
     public static ParseQuery<PlayerCharacter> getQuery() {
-        return ParseQuery.getQuery(PlayerCharacter.class).fromLocalDatastore();
+        return ParseQuery.getQuery(PlayerCharacter.class);//.fromLocalDatastore();
     }
 }

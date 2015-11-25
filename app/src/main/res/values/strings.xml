@@ -19,8 +19,8 @@
     <string name="character_class">Class</string>
     <string name="total_xp">Total XP</string>
     <string name="status">Status</string>
-    <string name="delete_character">Delete Character</string>
-    <string name="edit_character">Edit Character</string>
+    <string name="delete_character">Delete</string>
+    <string name="edit_character">Edit</string>
 
     <string name="event_title">Source</string>
     <string name="date">Date</string>

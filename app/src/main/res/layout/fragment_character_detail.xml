@@ -14,6 +14,14 @@
     tools:context="ca.drewm.leaguetracker.PlayerStatsDetailFragment"
     android:clickable="true"> <!-- Prevent any fragments behind this from being clicked -->
 
+    <ProgressBar
+        style="?android:attr/progressBarStyle"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/loadingIndicator"
+        android:progressDrawable="@drawable/loading_spinning_indicator"
+        android:layout_centerInParent="true" />
+
     <TextView
         android:id="@+id/character_name"
         style="@style/pageHeader"
@@ -45,6 +53,7 @@
                 style="@style/detailTextViewLabel"
                 android:text="@string/status" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -11,6 +11,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Model class for character events
@@ -23,14 +24,18 @@ public class Event extends ParseObject {
     private static final String KEY_EXPERIENCE = "experience";
     private static final String KEY_DESCRIPTION = "description";
     private static final String KEY_DATE = "date";
+    private static final String KEY_DETAILS = "eventDetails";
 
+    /**
+     * Instantiates a new instance of Event
+     */
     public Event() {
-        // Required empty constructor
+        // Required Empty Constructor
     }
 
     /**
-     * Sets the ObjectId of the Character this  Event belongs to
-     * @param objectId of the Character this event belongs to
+     * Sets the ObjectId of the PlayerCharacter this  Event belongs to
+     * @param objectId of the PlayerCharacter this event belongs to
      */
     public void setCharacterObjectId(String objectId) {
         put(KEY_CHARACTER, objectId);
@@ -117,13 +122,18 @@ public class Event extends ParseObject {
     }
 
     /**
-     * Gets a ParseQuery which will retrieve all of this Events details
-     * @return The query
+     * Gets the EventDetails for this Event
+     * @return List of EventDetails for this Event
      */
-    public ParseQuery<EventDetail> getEventDetailsQuery() {
-        ParseQuery<EventDetail> detailsQuery = EventDetail.getQuery();
-        detailsQuery.whereEqualTo(EventDetail.PARENT_EVENT_KEY, getObjectId());
+    public List<EventDetail> getDetails() {
+        return getList(KEY_DETAILS);
+    }
 
-        return detailsQuery;
+    /**
+     * Sets the EventDetails for this Event
+     * @param details list for this Event
+     */
+    public void setDetails(List<EventDetail> details) {
+        put(KEY_DETAILS, details);
     }
 }

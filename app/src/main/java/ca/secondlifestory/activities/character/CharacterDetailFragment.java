@@ -17,7 +17,7 @@ import ca.secondlifestory.R;
 import ca.secondlifestory.dummy.DummyContent;
 
 /**
- * A fragment representing a single Character detail screen.
+ * A fragment representing a single PlayerCharacter detail screen.
  * This fragment is contained in a {@link CharacterActivity}.
  */
 public class CharacterDetailFragment extends Fragment {

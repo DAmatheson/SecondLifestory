@@ -14,7 +14,7 @@ import android.view.MenuItem;
 import ca.secondlifestory.R;
 
 /**
- * An activity representing a list of Character Events. This activity
+ * An activity representing a list of PlayerCharacter Events. This activity
  * has different presentations for handset and tablet-size devices. On
  * handsets, the activity presents a list of items, which when touched,
  * lead to a {@link EventDetailFragment} representing

@@ -8,6 +8,7 @@ package ca.secondlifestory.models;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 /**
@@ -15,26 +16,28 @@ import com.parse.ParseUser;
  */
 @ParseClassName("CharacterClass")
 public class CharacterClass extends ParseObject {
+
     private static final String KEY_USER = "user";
     private static final String KEY_NAME = "name";
 
-    public static final String PARSE_NAME = CharacterClass.class.getName();
-
+    /**
+     * Instantiates a new instance of CharacterClass
+     */
     public CharacterClass() {
         // Required Empty Constructor
     }
 
     /**
-     * Gets the User the Character belongs to
-     * @return The ParseUser the character belongs to
+     * Gets the User the CharacterClass belongs to
+     * @return The ParseUser the CharacterClass belongs to
      */
     public ParseUser getUser() {
         return getParseUser(KEY_USER);
     }
 
     /**
-     * Sets the User the Character belongs to
-     * @param user the Character belongs to
+     * Sets the User the CharacterClass belongs to
+     * @param user the CharacterClass belongs to
      */
     public void setUser(ParseUser user) {
         put(KEY_USER, user);
@@ -54,5 +57,13 @@ public class CharacterClass extends ParseObject {
      */
     public void setName(String name) {
         put(KEY_NAME, name);
+    }
+
+    /**
+     * Gets a ParseQuery for CharacterClass objects
+     * @return The ParseQuery
+     */
+    public static ParseQuery<CharacterClass> getQuery() {
+        return ParseQuery.getQuery(CharacterClass.class);
     }
 }

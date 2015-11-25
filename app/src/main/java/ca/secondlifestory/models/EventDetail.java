@@ -19,18 +19,11 @@ public class EventDetail extends ParseObject {
     private static final String KEY_NAME = "name";
     private static final String KEY_CREATURE_COUNT = "creatureCount";
 
-    public static final String PARENT_EVENT_KEY = "event";
-
-    public EventDetail() {
-
-    }
-
     /**
-     * Sets the parent Event's ObjectId for this EventDetail
-     * @param parentObjectId for the parent of this EventDetail
+     * Instantiates a new instance of EventDetail
      */
-    public void setParentEventObjectId(String parentObjectId) {
-        put(PARENT_EVENT_KEY, parentObjectId);
+    public EventDetail() {
+        // Required Empty Constructor
     }
 
     /**
@@ -65,6 +58,10 @@ public class EventDetail extends ParseObject {
         put(KEY_CREATURE_COUNT, creatureCount);
     }
 
+    /**
+     * Gets a ParseQuery for EventDetail objects
+     * @return The ParseQuery
+     */
     public static ParseQuery<EventDetail> getQuery() {
         return ParseQuery.getQuery(EventDetail.class);
     }

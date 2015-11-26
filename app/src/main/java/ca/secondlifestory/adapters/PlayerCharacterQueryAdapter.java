@@ -1,4 +1,6 @@
-/**
+/* PlayerCharacterQueryAdapter.java
+ * Purpose: ParseQueryAdapter for PlayerCharacter object lists
+ *
  * Created by Drew on 11/25/2015.
  */
 
@@ -15,6 +17,9 @@ import com.parse.ParseQueryAdapter;
 import ca.secondlifestory.R;
 import ca.secondlifestory.models.PlayerCharacter;
 
+/**
+ * Query Adapter for PlayerCharacter
+ */
 public class PlayerCharacterQueryAdapter extends ParseQueryAdapter<PlayerCharacter> {
     public PlayerCharacterQueryAdapter(Context context, ParseQueryAdapter.QueryFactory<PlayerCharacter> queryFactory) {
         super (context, queryFactory);
@@ -25,8 +30,7 @@ public class PlayerCharacterQueryAdapter extends ParseQueryAdapter<PlayerCharact
 
             @Override
             public ParseQuery<PlayerCharacter> create() {
-                ParseQuery query = PlayerCharacter.getQuery();
-                return query;
+                return PlayerCharacter.getQuery();
             }
         });
     }
@@ -40,7 +44,10 @@ public class PlayerCharacterQueryAdapter extends ParseQueryAdapter<PlayerCharact
 
         super.getItemView(object, v, parent);
 
-        // Add the title view
+
+        TextView id = (TextView) v.findViewById(R.id.character_id);
+        id.setText(object.getObjectId());
+
         TextView characterName = (TextView) v.findViewById(R.id.character_name);
         characterName.setText(object.getName());
 

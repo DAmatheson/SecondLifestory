@@ -32,6 +32,7 @@ import ca.secondlifestory.R;
 public class EventActivity extends AppCompatActivity
         implements EventListFragment.Callbacks {
 
+    public static final String ARG_CHARACTER_ID = "characterObjectId";
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
@@ -56,11 +57,19 @@ public class EventActivity extends AppCompatActivity
             // activity should be in two-pane mode.
             mTwoPane = true;
 
-
             // In two-pane mode, list items should be given the
             // 'activated' state when touched.
             listFragment.setActivateOnItemClick(true);
+        } else {
+            listFragment.setActivateOnItemClick(false);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        listFragment.setCharacterObjectId(getIntent().getStringExtra(ARG_CHARACTER_ID));
+
+        super.onResume();
     }
 
     @Override
@@ -85,6 +94,17 @@ public class EventActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() > 0) {
+            getFragmentManager().popBackStack();
+
+            return;
+        }
+
+        super.onBackPressed();
     }
 
     /**

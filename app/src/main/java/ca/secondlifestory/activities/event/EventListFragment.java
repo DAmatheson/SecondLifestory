@@ -8,10 +8,15 @@ package ca.secondlifestory.activities.event;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import ca.secondlifestory.R;
+import ca.secondlifestory.adapters.EventQueryAdapter;
 import ca.secondlifestory.dummy.DummyContent;
 
 /**
@@ -35,12 +40,14 @@ public class EventListFragment extends android.app.ListFragment {
      * The fragment's current callback object, which is notified of list item
      * clicks.
      */
-    private Callbacks mCallbacks = sDummyCallbacks;
+    private Callbacks mCallbacks;
 
     /**
      * The current activated item position. Only used on tablets.
      */
     private int mActivatedPosition = ListView.INVALID_POSITION;
+
+    private EventQueryAdapter adapter;
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -55,16 +62,6 @@ public class EventListFragment extends android.app.ListFragment {
     }
 
     /**
-     * A dummy implementation of the {@link Callbacks} interface that does
-     * nothing. Used only when this fragment is not attached to an activity.
-     */
-    private static Callbacks sDummyCallbacks = new Callbacks() {
-        @Override
-        public void onItemSelected(String id) {
-        }
-    };
-
-    /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
@@ -76,11 +73,18 @@ public class EventListFragment extends android.app.ListFragment {
         super.onCreate(savedInstanceState);
 
         // TODO: replace with a real list adapter.
-        setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(
+        setListAdapter(new ArrayAdapter<>(
                 getActivity(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
                 DummyContent.ITEMS));
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_event_list, container);
+
+        return v;
     }
 
     @Override
@@ -110,8 +114,13 @@ public class EventListFragment extends android.app.ListFragment {
     public void onDetach() {
         super.onDetach();
 
-        // Reset the active callbacks interface to the dummy implementation.
-        mCallbacks = sDummyCallbacks;
+        mCallbacks = null;
+    }
+
+    public void setCharacterObjectId(String characterObjectId) {
+        adapter = new EventQueryAdapter(getActivity(), characterObjectId);
+
+        setListAdapter(adapter);
     }
 
     @Override

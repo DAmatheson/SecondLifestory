@@ -8,6 +8,7 @@ package ca.secondlifestory.activities.character;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,13 +73,12 @@ public class CharacterListFragment extends android.app.ListFragment {
         super.onCreate(savedInstanceState);
 
         adapter = new PlayerCharacterQueryAdapter(getActivity());
-        adapter.setTextKey("name");
 
         setListAdapter(adapter);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_character_list, container);
 
         return v;

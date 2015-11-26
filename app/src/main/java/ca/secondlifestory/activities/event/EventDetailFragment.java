@@ -45,7 +45,7 @@ public class EventDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments().containsKey(ARG_ITEM_ID)) {
+        if (getArguments() != null && getArguments().containsKey(ARG_ITEM_ID)) {
             // Load the dummy content specified by the fragment
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
@@ -60,7 +60,7 @@ public class EventDetailFragment extends Fragment {
 
         // Show the dummy content as text in a TextView.
         if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.event_detail)).setText(mItem.content);
+            ((TextView) rootView.findViewById(R.id.character_name)).setText(mItem.content);
         }
 
         return rootView;

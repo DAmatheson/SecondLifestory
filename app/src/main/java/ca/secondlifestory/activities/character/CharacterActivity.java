@@ -11,10 +11,14 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import ca.secondlifestory.activities.CustomizeActivity;
 import ca.secondlifestory.R;
 import ca.secondlifestory.activities.SettingsActivity;
+import ca.secondlifestory.activities.event.EventActivity;
 
 /**
  * An activity representing a list of Characters. This activity
@@ -139,6 +143,17 @@ public class CharacterActivity extends AppCompatActivity
                     addToBackStack(null).
                     commit();
         }
+    }
+
+    public void viewEventsButtonClicked(View view) {
+        TextView idView = (TextView) ((ViewGroup)view.getParent()).findViewById(R.id.character_id);
+
+        String characterObjectId = idView.getText().toString();
+
+        Intent eventActivityIntent = new Intent(this, EventActivity.class);
+        eventActivityIntent.putExtra(EventActivity.ARG_CHARACTER_ID, characterObjectId);
+
+        startActivity(eventActivityIntent);
     }
 
     // TODO: Taken from the generated detail activity

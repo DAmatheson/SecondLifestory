@@ -32,7 +32,8 @@
 
     <ListView
         android:id="@android:id/list"
-        style="@style/listViewStyle" />
+        style="@style/listViewStyle"
+        />
 
     <TextView
         style="@style/emptyListViewItem"

@@ -19,12 +19,13 @@ import java.util.List;
 @ParseClassName("Event")
 public class Event extends ParseObject {
     private static final String KEY_EVENT_TYPE = "eventType";
-    private static final String KEY_CHARACTER = "character";
     private static final String KEY_CHARACTER_COUNT = "characterCount";
     private static final String KEY_EXPERIENCE = "experience";
     private static final String KEY_DESCRIPTION = "description";
     private static final String KEY_DATE = "date";
     private static final String KEY_DETAILS = "eventDetails";
+
+    public static final String KEY_CHARACTER = "character";
 
     /**
      * Instantiates a new instance of Event
@@ -135,5 +136,13 @@ public class Event extends ParseObject {
      */
     public void setDetails(List<EventDetail> details) {
         put(KEY_DETAILS, details);
+    }
+
+    /**
+     * Gets a ParseQuery for Event objects
+     * @return The ParseQuery
+     */
+    public static ParseQuery<Event> getQuery() {
+        return ParseQuery.getQuery(Event.class);
     }
 }

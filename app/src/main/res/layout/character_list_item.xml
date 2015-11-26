@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<!-- character_list_item.xml
+    Purpose: List item for CharacterListFragment
+
+    Drew Matheson, 2015.11.25: Created
+-->
+
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/activityLayout"
@@ -12,6 +18,13 @@
     android:paddingEnd="?android:attr/listPreferredItemPaddingRight"
     android:descendantFocusability="blocksDescendants">
 
+    <!-- Hidden TextView for getting the Character's Id -->
+    <TextView
+        android:id="@+id/character_id"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone" />
+
     <!-- View Event List button -->
     <ImageButton
         android:id="@+id/view_events_button"
@@ -22,7 +35,8 @@
         android:src="@drawable/ic_list_white_24dp"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:contentDescription="@string/editImageDescription" />
+        android:contentDescription="@string/editImageDescription"
+        android:onClick="viewEventsButtonClicked"/>
 
     <!-- Character name -->
     <TextView

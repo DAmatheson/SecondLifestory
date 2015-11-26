@@ -10,7 +10,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/pageLayout"
+    style="@style/activityLayout"
     tools:context="ca.secondlifestory.activities.SettingsActivity">
 
     <LinearLayout

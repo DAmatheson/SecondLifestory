@@ -62,8 +62,7 @@ public class LoginActivity extends AppCompatActivity {
     private void startCharacterActivity() {
         Intent intent = new Intent(this, CharacterActivity.class);
 
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
         startActivity(intent);
+        finish();
     }
 }

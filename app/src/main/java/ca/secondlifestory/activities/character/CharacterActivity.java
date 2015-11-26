@@ -62,6 +62,8 @@ public class CharacterActivity extends AppCompatActivity
             // In two-pane mode, list items should be given the
             // 'activated' state when touched.
             listFragment.setActivateOnItemClick(true);
+        } else {
+            listFragment.setActivateOnItemClick(false);
         }
     }
 
@@ -99,32 +101,43 @@ public class CharacterActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() > 0) {
+            getFragmentManager().popBackStack();
+
+            return;
+        }
+
+        super.onBackPressed();
+    }
+
     /**
      * Callback method from {@link CharacterListFragment.Callbacks}
      * indicating that the item with the given ID was selected.
      */
     @Override
     public void onItemSelected(String id) {
+
+        detailFragment = CharacterDetailFragment.newInstance(id);
+
         if (mTwoPane) {
             // In two-pane mode, show the detail view in this activity by
             // adding or replacing the detail fragment using a
             // fragment transaction.
-            detailFragment = CharacterDetailFragment.newInstance(id);
+
             getFragmentManager().beginTransaction()
                     .replace(R.id.character_detail, detailFragment)
                     .commit();
         } else {
             // In single-pane mode, simply start the detail activity
             // for the selected item ID.
-            detailFragment = CharacterDetailFragment.newInstance(id);
 
             getFragmentManager().
                     beginTransaction().
                     replace(android.R.id.content, detailFragment).
                     addToBackStack(null).
                     commit();
-
-            //detailIntent.putExtra(CharacterDetailFragment.ARG_ITEM_ID, id);
         }
     }
 

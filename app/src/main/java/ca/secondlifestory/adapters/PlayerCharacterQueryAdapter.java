@@ -41,8 +41,11 @@ public class PlayerCharacterQueryAdapter extends ParseQueryAdapter<PlayerCharact
         super.getItemView(object, v, parent);
 
         // Add the title view
-        TextView titleTextView = (TextView) v.findViewById(android.R.id.text1);
-        titleTextView.setText(object.getName());
+        TextView characterName = (TextView) v.findViewById(R.id.character_name);
+        characterName.setText(object.getName());
+
+        TextView raceClass = (TextView) v.findViewById(R.id.race_class);
+        raceClass.setText(String.format("%s %s", object.getRace(), object.getClassName()));
 
         return v;
     }

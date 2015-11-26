@@ -11,7 +11,6 @@ import com.parse.Parse;
 import com.parse.ParseObject;
 
 import ca.secondlifestory.models.*;
-import ca.secondlifestory.models.PlayerCharacter;
 
 /**
  * Application object containing setup logic for the whole app

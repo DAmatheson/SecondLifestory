@@ -9,7 +9,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/pageLayout"
+    style="@style/activityLayout"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
@@ -21,8 +21,6 @@
         android:name="ca.secondlifestory.activities.character.CharacterListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         tools:context=".CharacterActivity"
         tools:layout="@layout/fragment_character_list" />
 </LinearLayout>

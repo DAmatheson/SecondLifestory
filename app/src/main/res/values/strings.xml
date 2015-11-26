@@ -42,4 +42,5 @@
     <string name="delete_all_characters">Delete All Characters</string>
     <string name="delete_all_data">Delete All Data</string>
     <string name="copyright">&#169; 2015 - Drew Matheson &amp; Isaac West</string>
+    <string name="editImageDescription">Edit</string>
 </resources>

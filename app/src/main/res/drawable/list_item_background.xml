@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- list_item_background.xml
+    Purpose: Background drawable for items in a ListView
+
+    Drew Matheson, 2015.11.25: Created
+-->
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Selected and pressed -->
+    <item android:state_pressed="true"
+        android:state_activated="true"
+        android:state_enabled="true">
+        <shape>
+            <solid android:color="@color/button_material_dark" />
+        </shape>
+    </item>
+
+    <!-- Selected -->
+    <item
+        android:state_pressed="false"
+        android:state_activated="true"
+        android:state_enabled="true">
+        <shape>
+            <solid android:color="@color/accent_material_light" />
+        </shape>
+    </item>
+
+    <!-- Pressed -->
+    <item
+        android:state_pressed="true"
+        android:state_enabled="true">
+        <shape>
+            <solid android:color="@color/primary_material_dark"/>
+        </shape>
+    </item>
+
+    <!-- Default state -->
+    <item
+        android:state_enabled="true">
+        <shape>
+            <solid android:color="@color/background_floating_material_dark"/>
+        </shape>
+    </item>
+</selector>

@@ -17,7 +17,9 @@
         android:layout_height="36dp"
         android:layout_gravity="right"
         android:background="@drawable/button_background_roundedcorner"
-        android:src="@drawable/ic_add_circle_outline_white_36dp_states" />
+        android:src="@drawable/ic_add_circle_outline_white_36dp_states"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        />
 
     <ListView
         android:id="@android:id/list"

@@ -16,7 +16,8 @@
     android:paddingStart="?android:attr/listPreferredItemPaddingLeft"
     android:paddingRight="?android:attr/listPreferredItemPaddingRight"
     android:paddingEnd="?android:attr/listPreferredItemPaddingRight"
-    android:descendantFocusability="blocksDescendants">
+    android:descendantFocusability="blocksDescendants"
+    android:background="@drawable/list_item_background" >
 
     <!-- Hidden TextView for getting the Character's Id -->
     <TextView
@@ -31,12 +32,15 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:src="@drawable/ic_list_white_24dp"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_list_white_24dp_states"
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:contentDescription="@string/editImageDescription"
-        android:onClick="viewEventsButtonClicked"/>
+        android:onClick="viewEventsButtonClicked"
+        android:background="@drawable/button_background_roundedcorner"
+        android:padding="4dp"
+        android:layout_centerVertical="true" />
 
     <!-- Character name -->
     <TextView
@@ -45,7 +49,6 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceListItem"
         android:gravity="center_vertical"
-        android:background="?android:attr/activatedBackgroundIndicator"
         android:textColor="@color/primary_text_default_material_dark"
         android:ellipsize="end"
         android:lines="1"
@@ -68,7 +71,7 @@
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
         android:layout_below="@id/character_name"
-        android:text="Ford Vehicle" />
+        android:text="Placeholder Race Class" />
 </RelativeLayout>
 
 

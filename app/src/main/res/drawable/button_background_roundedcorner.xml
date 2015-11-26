@@ -5,12 +5,13 @@
 
     Drew Matheson, 2015.11.25: Created
 -->
+
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:state_pressed="true"
         android:state_enabled="true">
         <shape xmlns:android="http://schemas.android.com/apk/res/android">
-            <solid android:color="@color/button_material_dark"/>
+            <solid android:color="@color/material_blue_grey_950"/>
             <corners android:radius="6dp"/>
         </shape>
     </item>
@@ -19,7 +20,7 @@
         android:state_enabled="true">
         <shape xmlns:android="http://schemas.android.com/apk/res/android">
 
-            <solid android:color="@color/accent_material_light"/>
+            <solid android:color="@color/material_blue_grey_800"/>
             <corners android:radius="6dp"/>
         </shape>
     </item>

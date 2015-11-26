@@ -15,8 +15,8 @@
     android:gravity="center_vertical"
     android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
     android:paddingRight="?android:attr/listPreferredItemPaddingRight"
-    android:background="?android:attr/activatedBackgroundIndicator"
+    android:background="@drawable/list_item_background"
     android:minHeight="?android:attr/listPreferredItemHeightSmall"
     android:textColor="@color/primary_text_default_material_dark"
     android:ellipsize="end"
-    android:lines="2"/>
+    android:lines="2" />

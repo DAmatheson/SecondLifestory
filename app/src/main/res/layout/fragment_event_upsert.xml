@@ -6,9 +6,12 @@
     Drew Matheson, 2015.11.23: Created
 -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    style="@style/fragmentLayout"
     tools:context="ca.secondlifestory.activities.event.EventUpsertFragment">
 
     <!-- TODO: Update blank fragment layout -->

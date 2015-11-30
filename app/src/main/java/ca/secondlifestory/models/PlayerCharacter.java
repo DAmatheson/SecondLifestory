@@ -49,35 +49,35 @@ public class PlayerCharacter extends ParseObject {
     }
 
     /**
-     * Gets the name for the PlayerCharacter's Race
-     * @return The name for the PlayerCharacter's Race
+     * Gets the Race for the PlayerCharacter
+     * @return The Race for the PlayerCharacter
      */
-    public String getRace() {
-        return getString(KEY_RACE);
+    public Race getRace() {
+        return (Race)getParseObject(KEY_RACE);
     }
 
     /**
-     * Sets the name for the PlayerCharacter's Race
-     * @param raceName for the PlayerCharacter's Race
+     * Sets the race for the PlayerCharacter
+     * @param race for the PlayerCharacter
      */
-    public void setRace(String raceName) {
-        put(KEY_RACE, raceName);
+    public void setRace(Race race) {
+        put(KEY_RACE, race);
     }
 
     /**
-     * Gets the name for the PlayerCharacter's CharacterClass
-     * @return The name for the PlayerCharacter's CharacterClass
+     * Gets the name for the PlayerCharacter
+     * @return The name for the PlayerCharacter
      */
-    public String getCharacterClass() {
-        return getString(KEY_CLASS);
+    public CharacterClass getCharacterClass() {
+        return (CharacterClass)getParseObject(KEY_CLASS);
     }
 
     /**
-     * Sets the className for the PlayerCharacter's CharacterClass
-     * @param className for the PlayerCharacter's CharacterClass
+     * Sets the CharacterClass for the PlayerCharacter
+     * @param characterClass for the PlayerCharacter
      */
-    public void setCharacterClass(String className) {
-        put(KEY_CLASS, className);
+    public void setCharacterClass(CharacterClass characterClass) {
+        put(KEY_CLASS, characterClass);
     }
 
     /**
@@ -165,6 +165,10 @@ public class PlayerCharacter extends ParseObject {
      * @return The ParseQuery
      */
     public static ParseQuery<PlayerCharacter> getQuery() {
-        return ParseQuery.getQuery(PlayerCharacter.class);//.fromLocalDatastore();
+        ParseQuery<PlayerCharacter> query = ParseQuery.getQuery(PlayerCharacter.class);
+        query.whereEqualTo(KEY_USER, ParseUser.getCurrentUser());
+        query.include(KEY_RACE).include(KEY_CLASS);
+
+        return query;//.fromLocalDatastore();
     }
 }

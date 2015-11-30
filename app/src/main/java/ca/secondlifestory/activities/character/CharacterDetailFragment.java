@@ -6,11 +6,13 @@
 
 package ca.secondlifestory.activities.character;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,11 +29,17 @@ import ca.secondlifestory.models.PlayerCharacter;
  * This fragment is contained in a {@link CharacterActivity}.
  */
 public class CharacterDetailFragment extends Fragment {
+    public interface Callbacks {
+        void onEditClicked(String characterObjectId);
+    }
+
     /**
      * The fragment argument representing the item ID that this fragment
      * represents.
      */
-    public static final String ARG_CHARACTER_ID = "characterObjectId";
+    private static final String ARG_CHARACTER_ID = "characterObjectId";
+
+    private Callbacks mListener;
 
     /**
      * The dummy content this fragment is presenting.
@@ -46,6 +54,9 @@ public class CharacterDetailFragment extends Fragment {
     private TextView totalXp;
     private TextView status;
     private TextView description;
+
+    private Button editButton;
+    private Button deleteButton;
 
     /**
      * Creates a new instance of the fragment with the specified character object id
@@ -78,7 +89,7 @@ public class CharacterDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.fragment_character_detail, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_character_detail, container, false);
 
         loadingIndicator = (ProgressBar)rootView.findViewById(R.id.loadingIndicator);
 
@@ -106,8 +117,8 @@ public class CharacterDetailFragment extends Fragment {
                         mItem = object;
 
                         name.setText(mItem.getName());
-                        race.setText(mItem.getRace());
-                        characterClass.setText(mItem.getCharacterClass());
+                        race.setText(mItem.getRace().getName());
+                        characterClass.setText(mItem.getCharacterClass().getName());
                         totalXp.setText(Integer.toString(mItem.getExperience()));
                         status.setText(mItem.isLiving() ? "Alive" : "Dead");
                         description.setText(mItem.getDetails());
@@ -118,6 +129,33 @@ public class CharacterDetailFragment extends Fragment {
             });
         }
 
+        editButton = (Button)rootView.findViewById(R.id.edit_character_button);
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onEditClicked(mItem.getObjectId());
+            }
+        });
+
+        deleteButton = (Button)rootView.findViewById(R.id.delete_character_button);
+
         return rootView;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (Callbacks) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement Callbacks");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 }

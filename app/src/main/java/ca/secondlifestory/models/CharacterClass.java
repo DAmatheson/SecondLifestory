@@ -18,7 +18,7 @@ import com.parse.ParseUser;
 public class CharacterClass extends ParseObject {
 
     private static final String KEY_USER = "user";
-    private static final String KEY_NAME = "name";
+    public static final String KEY_NAME = "name";
 
     /**
      * Instantiates a new instance of CharacterClass
@@ -60,10 +60,13 @@ public class CharacterClass extends ParseObject {
     }
 
     /**
-     * Gets a ParseQuery for CharacterClass objects
+     * Gets a ParseQuery for CharacterClass objects for the current ParseUser
      * @return The ParseQuery
      */
     public static ParseQuery<CharacterClass> getQuery() {
-        return ParseQuery.getQuery(CharacterClass.class);
+        ParseQuery<CharacterClass> query = ParseQuery.getQuery(CharacterClass.class);
+        query.whereEqualTo(KEY_USER, ParseUser.getCurrentUser());
+
+        return query;
     }
 }

@@ -99,7 +99,7 @@
             android:padding="@dimen/standard_padding" />
         <Button
             android:id="@+id/edit_character_button"
-            android:text="@string/edit_character"
+            android:text="@string/edit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

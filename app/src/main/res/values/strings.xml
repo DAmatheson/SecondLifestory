@@ -20,7 +20,6 @@
     <string name="total_xp">Total XP</string>
     <string name="status">Status</string>
     <string name="delete_character">Delete</string>
-    <string name="edit_character">Edit</string>
 
     <string name="event_title">Source</string>
     <string name="date">Date</string>
@@ -42,5 +41,6 @@
     <string name="delete_all_characters">Delete All Characters</string>
     <string name="delete_all_data">Delete All Data</string>
     <string name="copyright">&#169; 2015 - Drew Matheson &amp; Isaac West</string>
-    <string name="editImageDescription">Edit</string>
+    <string name="edit">Edit</string>
+    <string name="create_character">Create Character</string>
 </resources>

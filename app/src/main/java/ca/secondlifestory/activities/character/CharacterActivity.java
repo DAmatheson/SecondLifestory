@@ -13,12 +13,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import ca.secondlifestory.activities.CustomizeActivity;
 import ca.secondlifestory.R;
 import ca.secondlifestory.activities.SettingsActivity;
 import ca.secondlifestory.activities.event.EventActivity;
+import ca.secondlifestory.models.PlayerCharacter;
 
 /**
  * An activity representing a list of Characters. This activity
@@ -36,8 +38,9 @@ import ca.secondlifestory.activities.event.EventActivity;
  * {@link CharacterListFragment.Callbacks} interface
  * to listen for item selections.
  */
-public class CharacterActivity extends AppCompatActivity
-        implements CharacterListFragment.Callbacks {
+public class CharacterActivity extends AppCompatActivity implements CharacterListFragment.Callbacks,
+                                                                    CharacterDetailFragment.Callbacks,
+                                                                    CharacterUpsertFragment.Callbacks {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -69,6 +72,27 @@ public class CharacterActivity extends AppCompatActivity
         } else {
             listFragment.setActivateOnItemClick(false);
         }
+
+        ImageButton createCharacter = (ImageButton) findViewById(R.id.create_character_button);
+        createCharacter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CharacterUpsertFragment createFragment = CharacterUpsertFragment.newInstance();
+
+                if (mTwoPane) {
+                    getFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.character_detail, createFragment)
+                            .commit();
+                } else {
+                    CharacterActivity.this.getFragmentManager()
+                            .beginTransaction()
+                            .replace(android.R.id.content, createFragment)
+                            .addToBackStack(null)
+                            .commit();
+                }
+            }
+        });
     }
 
     @Override
@@ -137,11 +161,11 @@ public class CharacterActivity extends AppCompatActivity
             // In single-pane mode, simply start the detail activity
             // for the selected item ID.
 
-            getFragmentManager().
-                    beginTransaction().
-                    replace(android.R.id.content, detailFragment).
-                    addToBackStack(null).
-                    commit();
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(android.R.id.content, detailFragment)
+                    .addToBackStack(null)
+                    .commit();
         }
     }
 
@@ -154,6 +178,47 @@ public class CharacterActivity extends AppCompatActivity
         eventActivityIntent.putExtra(EventActivity.ARG_CHARACTER_ID, characterObjectId);
 
         startActivity(eventActivityIntent);
+    }
+
+    @Override
+    public void onCharacterCreated(PlayerCharacter character) {
+
+    }
+
+    @Override
+    public void onCharacterModified(PlayerCharacter character) {
+
+    }
+
+    @Override
+    public void onCancelPressed() {
+        if (mTwoPane) {
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.character_detail, detailFragment)
+                    .commit();
+        } else {
+            getFragmentManager().popBackStack();
+        }
+    }
+
+    @Override
+    public void onEditClicked(String characterObjectId) {
+        CharacterUpsertFragment createFragment =
+                CharacterUpsertFragment.newInstance(characterObjectId);
+
+        if (mTwoPane) {
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.character_detail, createFragment)
+                    .commit();
+        } else {
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(android.R.id.content, createFragment)
+                    .addToBackStack(null)
+                    .commit();
+        }
     }
 
     // TODO: Taken from the generated detail activity

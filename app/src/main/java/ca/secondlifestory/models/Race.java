@@ -18,7 +18,7 @@ import com.parse.ParseUser;
 public class Race extends ParseObject {
 
     private static final String KEY_USER = "user";
-    private static final String KEY_NAME = "name";
+    public static final String KEY_NAME = "name";
 
     /**
      * Instantiates a new instance of Race
@@ -60,10 +60,13 @@ public class Race extends ParseObject {
     }
 
     /**
-     * Gets a ParseQuery for Race objects
+     * Gets a ParseQuery for Race objects for the current ParseUser
      * @return The ParseQuery
      */
     public static ParseQuery<Race> getQuery() {
-        return ParseQuery.getQuery(Race.class);
+        ParseQuery<Race> query = ParseQuery.getQuery(Race.class);
+        query.whereEqualTo(Race.KEY_USER, ParseUser.getCurrentUser());
+
+        return query;
     }
 }

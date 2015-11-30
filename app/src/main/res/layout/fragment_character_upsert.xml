@@ -6,13 +6,65 @@
     Drew Matheson, 2015.11.23: Created
 -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/fragmentLayout"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="ca.secondlifestory.activities.character.CharacterUpsertFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="Character Upsert" />
+    <TextView
+        android:id="@+id/upsert_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/create_character"
+        style="@style/pageHeader"/>
 
-</FrameLayout>
+    <EditText
+        android:id="@+id/upsert_character_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Name"
+        android:singleLine="true"
+        android:layout_below="@id/upsert_title"/>
+
+    <Spinner
+        android:id="@+id/upsert_character_race"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/upsert_character_name"/>
+
+    <Spinner
+        android:id="@+id/upsert_character_class"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/upsert_character_race" />
+
+    <EditText
+        android:id="@+id/upsert_character_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Details"
+        android:minLines="1"
+        android:maxLines="8"
+        android:layout_below="@id/upsert_character_class"/>
+
+    <Button
+        android:id="@+id/upsert_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/upsert_character_details"
+        android:text="Save"
+        android:background="@drawable/button_background_roundedcorner"/>
+
+    <Button
+        android:id="@+id/upsert_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/upsert_save"
+        android:layout_alignTop="@id/upsert_save"
+        android:text="@android:string/cancel"
+        android:background="@drawable/button_background_roundedcorner"/>
+
+</RelativeLayout>

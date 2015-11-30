@@ -52,7 +52,9 @@ public class PlayerCharacterQueryAdapter extends ParseQueryAdapter<PlayerCharact
         characterName.setText(object.getName());
 
         TextView raceClass = (TextView) v.findViewById(R.id.race_class);
-        raceClass.setText(String.format("%s %s", object.getRace(), object.getClassName()));
+        raceClass.setText(String.format("%s %s",
+                object.getRace().getName(),
+                object.getCharacterClass().getName()));
 
         return v;
     }

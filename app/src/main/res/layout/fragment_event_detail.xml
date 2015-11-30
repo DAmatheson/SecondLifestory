@@ -10,7 +10,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/activityLayout"
+    style="@style/fragmentLayout"
     tools:context="ca.drewm.leaguetracker.PlayerStatsDetailFragment"
     android:clickable="true"> <!-- Prevent any fragments behind this from being clicked -->
 

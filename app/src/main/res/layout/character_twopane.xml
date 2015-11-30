@@ -21,13 +21,28 @@
     master/detail flow.
     -->
 
-    <fragment
-        android:id="@+id/character_list"
-        android:name="ca.secondlifestory.activities.character.CharacterListFragment"
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        tools:layout="@layout/fragment_character_list" />
+        android:orientation="vertical">
+        <ImageButton
+            android:id="@+id/create_character_button"
+            android:layout_width="fill_parent"
+            android:layout_height="36dp"
+            android:layout_gravity="right"
+            android:background="@drawable/button_background_roundedcorner"
+            android:src="@drawable/ic_add_circle_outline_white_36dp_states"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            />
+
+        <fragment
+            android:id="@+id/character_list"
+            android:name="ca.secondlifestory.activities.character.CharacterListFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout="@layout/fragment_character_list" />
+    </LinearLayout>
 
     <fragment
         android:id="@+id/character_detail"
@@ -36,5 +51,4 @@
         android:layout_height="match_parent"
         android:layout_weight="3"
         tools:layout="@layout/fragment_character_detail" />
-
 </LinearLayout>

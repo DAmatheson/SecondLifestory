@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- ic_add_circle_outline_white_36dp_states.xml
-    Purpose: Version of ic_add_circle_outline_white_36dp with different states.
+<!-- ic_playerlist_add_white_36dp_States.xml
+    Purpose: Version of ic_playerlist_add_white_36dp with different states.
 
     Drew Matheson, 2015.11.30: Created
 -->
@@ -10,9 +10,9 @@
     <item
         android:state_pressed="true"
         android:state_enabled="true"
-        android:drawable="@drawable/ic_add_circle_outline_white_36dp_pressed"/>
+        android:drawable="@drawable/ic_playlist_add_white_36dp_pressed"/>
 
     <item
         android:state_enabled="true"
-        android:drawable="@drawable/ic_add_circle_outline_white_36dp"/>
+        android:drawable="@drawable/ic_playlist_add_white_36dp"/>
 </selector>

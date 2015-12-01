@@ -1,18 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:textColor">@color/primary_text_default_material_dark</item>
-        <item name="android:textColorPrimary">@color/primary_text_default_material_dark</item>
-        <item name="android:textColorPrimaryInverse">@color/primary_dark_material_light</item>
-        <item name="android:textColorPrimaryDisableOnly">@color/primary_text_disabled_material_dark</item>
-        <item name="android:textColorPrimaryInverseDisableOnly">@color/primary_text_disabled_material_light</item>
-        <item name="android:textColorHighlight">@color/highlighted_text_material_dark</item>
-        <item name="android:textColorHighlightInverse">@color/highlighted_text_material_light</item>
-        <item name="android:textColorHint">@color/hint_foreground_material_dark</item>
-        <item name="android:textColorHintInverse">@color/hint_foreground_material_light</item>
-        <item name="android:textColorSecondary">@color/secondary_text_default_material_dark</item>
-        <item name="android:textColorSecondaryInverse">@color/secondary_text_default_material_light</item>
+    <style name="AppTheme" parent="Theme.AppCompat">
     </style>
 
     <style name="activityLayout">
@@ -25,7 +14,8 @@
         <item name="android:background">@color/background_material_dark</item>
     </style>
 
-    <style name="fragmentLayout" parent="activityLayout"></style>
+    <style name="fragmentLayout" parent="activityLayout">
+    </style>
 
     <!-- style for empty list view items -->
     <style name="emptyListViewItem">
@@ -65,5 +55,21 @@
 
     <style name="detailTextViewLabel" parent="detailTextView">
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="pageHeader.eventListCharacterName">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_toLeftOf">@id/add_event_button</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:paddingRight">4sp</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:ems">14</item>
+    </style>
+
+    <style name="eventListAddEventButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:background">@drawable/button_background_roundedcorner</item>
     </style>
 </resources>

@@ -6,17 +6,44 @@
     Drew Matheson, 2015.11.25: Created
 -->
 
-<TextView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@android:id/text1"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:textAppearance="?android:attr/textAppearanceListItemSmall"
-    android:gravity="center_vertical"
-    android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-    android:paddingRight="?android:attr/listPreferredItemPaddingRight"
-    android:background="@drawable/list_item_background"
+    android:layout_height="match_parent"
     android:minHeight="?android:attr/listPreferredItemHeightSmall"
-    android:textColor="@color/primary_text_default_material_dark"
-    android:ellipsize="end"
-    android:lines="2" />
+    android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+    android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+    android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+    android:descendantFocusability="blocksDescendants"
+    android:background="@drawable/list_item_background" >
+
+    <TextView
+        android:id="@+id/event_listitem_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceListItem"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:gravity="center_vertical"
+        android:textColor="@color/primary_text_default_material_dark" />
+
+    <!-- Event date -->
+    <TextView
+        android:id="@+id/event_listitem_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:textColor="@color/secondary_text_default_material_dark"
+        android:layout_alignLeft="@id/event_listitem_name"
+        android:layout_alignStart="@id/event_listitem_name"
+        android:textSize="12sp"
+        android:layout_marginLeft="4dp"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:paddingRight="5dp"
+        android:layout_below="@id/event_listitem_name"
+        android:text="Placeholder Date" />
+
+</RelativeLayout>

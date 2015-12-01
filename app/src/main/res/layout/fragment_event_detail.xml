@@ -14,11 +14,20 @@
     tools:context="ca.drewm.leaguetracker.PlayerStatsDetailFragment"
     android:clickable="true"> <!-- Prevent any fragments behind this from being clicked -->
 
+    <ProgressBar
+        style="?android:attr/progressBarStyle"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/loadingIndicator"
+        android:progressDrawable="@drawable/loading_spinning_indicator"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
     <TextView
         android:id="@+id/character_name"
         style="@style/pageHeader"
         android:layout_alignParentTop="true"
-        android:text="@string/character_name" />
+        android:text="Placeholder Character Name" />
 
     <LinearLayout
         android:id="@+id/event_details_layout"
@@ -82,18 +91,20 @@
         android:layout_alignParentBottom="true">
         <Button
             android:id="@+id/delete_event_button"
-            android:text="@string/delete_event"
+            android:text="@string/delete"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="@dimen/standard_padding" />
+            android:padding="@dimen/standard_padding"
+            android:background="@drawable/button_background_roundedcorner" />
         <Button
             android:id="@+id/edit_event_button"
-            android:text="@string/edit_event"
+            android:text="@string/edit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="@dimen/standard_padding" />
+            android:padding="@dimen/standard_padding"
+            android:background="@drawable/button_background_roundedcorner" />
     </LinearLayout>
 
 </RelativeLayout>

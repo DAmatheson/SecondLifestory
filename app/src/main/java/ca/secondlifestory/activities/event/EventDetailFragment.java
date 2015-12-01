@@ -6,15 +6,23 @@
 
 package ca.secondlifestory.activities.event;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 
 import ca.secondlifestory.R;
-import ca.secondlifestory.dummy.DummyContent;
+import ca.secondlifestory.models.Event;
 
 /**
  * A fragment representing a single Event detail screen.
@@ -23,16 +31,45 @@ import ca.secondlifestory.dummy.DummyContent;
  * on handsets.
  */
 public class EventDetailFragment extends Fragment {
+    public interface Callbacks {
+        void onEditClicked(String characterObjectId, String eventId);
+    }
+
     /**
      * The fragment argument representing the item ID that this fragment
      * represents.
      */
-    public static final String ARG_ITEM_ID = "item_id";
+    private static final String ARG_CHARACTER_ID = "EventDetailFragment.characterObjectId";
+    private static final String ARG_EVENT_ID = "EventDetailFragment.eventObjectId";
+
+    private Callbacks mListener;
 
     /**
-     * The dummy content this fragment is presenting.
+     * The content this fragment is presenting.
      */
-    private DummyContent.DummyItem mItem;
+    private Event mItem;
+
+    private ProgressBar loadingIndicator;
+
+    private TextView eventTitle;
+    private TextView date;
+    private TextView experience;
+    private TextView characterCount;
+    private TextView description;
+
+    private Button editButton;
+    private Button deleteButton;
+
+    public static EventDetailFragment newInstance(String characterId, String eventId) {
+        Bundle args = new Bundle();
+        args.putString(ARG_CHARACTER_ID, characterId);
+        args.putString(ARG_EVENT_ID, eventId);
+
+        EventDetailFragment fragment = new EventDetailFragment();
+        fragment.setArguments(args);
+
+        return fragment;
+    }
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -44,13 +81,6 @@ public class EventDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null && getArguments().containsKey(ARG_ITEM_ID)) {
-            // Load the dummy content specified by the fragment
-            // arguments. In a real-world scenario, use a Loader
-            // to load content from a content provider.
-            mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
-        }
     }
 
     @Override
@@ -58,11 +88,74 @@ public class EventDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_event_detail, container, false);
 
-        // Show the dummy content as text in a TextView.
-        if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.character_name)).setText(mItem.content);
+        loadingIndicator = (ProgressBar)rootView.findViewById(R.id.loadingIndicator);
+
+        eventTitle = (TextView) rootView.findViewById(R.id.event_title);
+        date = (TextView) rootView.findViewById(R.id.event_date);
+        experience = (TextView) rootView.findViewById(R.id.event_xp);
+        characterCount = (TextView) rootView.findViewById(R.id.event_characters_present);
+        description = (TextView) rootView.findViewById(R.id.event_description);
+
+        if (getArguments() != null && getArguments().containsKey(ARG_CHARACTER_ID)) {
+
+            loadingIndicator.setVisibility(View.VISIBLE);
+
+            ParseQuery<Event> query = Event.getQuery();
+            query.include(Event.KEY_CHARACTER);
+            query.getInBackground(getArguments().getString(ARG_EVENT_ID), new GetCallback<Event>() {
+                @Override
+                public void done(Event object, ParseException e) {
+                    loadingIndicator.setVisibility(View.GONE);
+
+                    if (e == null) {
+                        mItem = object;
+
+                        // TODO: Decide if we want to do this
+                        getActivity().setTitle(mItem.getCharacter().getName() + " Events");
+
+                        // TODO: Event Title
+                        date.setText(mItem.getDate().toString());
+                        experience.setText(Integer.toString(mItem.getExperience()));
+                        characterCount.setText(Integer.toString(mItem.getCharacterCount()));
+                        description.setText(mItem.getDescription());
+                    } else {
+                        // TODO: Error handling
+                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
         }
 
+        editButton = (Button) rootView.findViewById(R.id.edit_event_button);
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: Set this up in a better way. getArguments might return null
+                mListener.onEditClicked(getArguments().getString(ARG_CHARACTER_ID), getArguments().getString(ARG_EVENT_ID));
+            }
+        });
+
+        deleteButton = (Button) rootView.findViewById(R.id.delete_event_button);
+
         return rootView;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        // Activities containing this fragment must implement its callbacks.
+        if (!(activity instanceof Callbacks)) {
+            throw new IllegalStateException("Activity must implement fragment's callbacks.");
+        }
+
+        mListener = (Callbacks) activity;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        mListener = null;
     }
 }

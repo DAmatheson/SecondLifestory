@@ -14,7 +14,7 @@
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
     android:showDividers="middle"
-    tools:context=".CharacterListActivity">
+    tools:context="ca.secondlifestory.activities.character.CharacterActivity">
 
     <!--
     This layout is a two-pane layout for the Characters

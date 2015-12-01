@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import ca.secondlifestory.R;
+import ca.secondlifestory.models.Event;
 
 /**
  * An activity representing a list of PlayerCharacter Events. This activity
@@ -29,8 +30,9 @@ import ca.secondlifestory.R;
  * {@link EventListFragment.Callbacks} interface
  * to listen for item selections.
  */
-public class EventActivity extends AppCompatActivity
-        implements EventListFragment.Callbacks {
+public class EventActivity extends AppCompatActivity implements EventListFragment.Callbacks,
+                                                                EventDetailFragment.Callbacks,
+                                                                EventUpsertFragment.Callbacks {
 
     public static final String ARG_CHARACTER_ID = "characterObjectId";
     /**
@@ -63,6 +65,9 @@ public class EventActivity extends AppCompatActivity
         } else {
             listFragment.setActivateOnItemClick(false);
         }
+
+        // TODO: change this to only set title in dual-pane mode and list view of one-pane mode
+        setTitle("Character Name's " + getString(R.string.title_activity_event));
     }
 
     @Override
@@ -113,33 +118,57 @@ public class EventActivity extends AppCompatActivity
      */
     @Override
     public void onItemSelected(String id) {
+        detailFragment = EventDetailFragment.newInstance(getIntent().getStringExtra(ARG_CHARACTER_ID), id);
+
         if (mTwoPane) {
             // In two-pane mode, show the detail view in this activity by
             // adding or replacing the detail fragment using a
             // fragment transaction.
-
-            Bundle arguments = new Bundle();
-            arguments.putString(EventDetailFragment.ARG_ITEM_ID, id);
-            EventDetailFragment fragment = new EventDetailFragment();
-            fragment.setArguments(arguments);
             getFragmentManager().beginTransaction()
-                    .replace(R.id.event_detail, fragment)
+                    .replace(R.id.event_detail, detailFragment)
                     .commit();
-
-            detailFragment = fragment;
         } else {
             // In single-pane mode, simply start the detail activity
             // for the selected item ID.
-
-            detailFragment = new EventDetailFragment();
-
             getFragmentManager().
                     beginTransaction().
                     replace(android.R.id.content, detailFragment).
                     addToBackStack(null).
                     commit();
-
-            //detailIntent.putExtra(CharacterDetailFragment.ARG_ITEM_ID, id);
         }
+    }
+
+    @Override
+    public void onEditClicked(String characterObjectId, String eventId) {
+        EventUpsertFragment upsertFragment =
+                EventUpsertFragment.newInstance(characterObjectId, eventId);
+
+        if (mTwoPane) {
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.event_detail, upsertFragment)
+                    .commit();
+        } else {
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(android.R.id.content, upsertFragment)
+                    .addToBackStack(null)
+                    .commit();
+        }
+    }
+
+    @Override
+    public void onEventCreated(Event event) {
+
+    }
+
+    @Override
+    public void onEventModified(Event event) {
+
+    }
+
+    @Override
+    public void onCancelPressed() {
+
     }
 }

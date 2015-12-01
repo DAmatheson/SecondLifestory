@@ -34,6 +34,14 @@ public class Event extends ParseObject {
         // Required Empty Constructor
     }
 
+    public PlayerCharacter getCharacter() {
+        return (PlayerCharacter) getParseObject(KEY_CHARACTER);
+    }
+
+    public void setCharacter(PlayerCharacter character) {
+        put(KEY_CHARACTER, character);
+    }
+
     /**
      * Sets the ObjectId of the PlayerCharacter this  Event belongs to
      * @param objectId of the PlayerCharacter this event belongs to

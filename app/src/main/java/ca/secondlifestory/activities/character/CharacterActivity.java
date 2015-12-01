@@ -204,52 +204,20 @@ public class CharacterActivity extends AppCompatActivity implements CharacterLis
 
     @Override
     public void onEditClicked(String characterObjectId) {
-        CharacterUpsertFragment createFragment =
+        CharacterUpsertFragment upsertFragment =
                 CharacterUpsertFragment.newInstance(characterObjectId);
 
         if (mTwoPane) {
             getFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.character_detail, createFragment)
+                    .replace(R.id.character_detail, upsertFragment)
                     .commit();
         } else {
             getFragmentManager()
                     .beginTransaction()
-                    .replace(android.R.id.content, createFragment)
+                    .replace(android.R.id.content, upsertFragment)
                     .addToBackStack(null)
                     .commit();
         }
     }
-
-    // TODO: Taken from the generated detail activity
-    /*@Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_character_detail);
-
-        // Show the Up button in the action bar.
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        // savedInstanceState is non-null when there is fragment state
-        // saved from previous configurations of this activity
-        // (e.g. when rotating the screen from portrait to landscape).
-        // In this case, the fragment will automatically be re-added
-        // to its container so we don't need to manually add it.
-        // For more information, see the Fragments API guide at:
-        //
-        // http://developer.android.com/guide/components/fragments.html
-        //
-        if (savedInstanceState == null) {
-            // Create the detail fragment and add it to the activity
-            // using a fragment transaction.
-            Bundle arguments = new Bundle();
-            arguments.putString(CharacterDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(CharacterDetailFragment.ARG_ITEM_ID));
-            CharacterDetailFragment fragment = new CharacterDetailFragment();
-            fragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.character_detail_container, fragment)
-                    .commit();
-        }
-    }*/
 }

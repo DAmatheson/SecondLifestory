@@ -40,7 +40,7 @@ public class EventListFragment extends android.app.ListFragment {
      * The fragment's current callback object, which is notified of list item
      * clicks.
      */
-    private Callbacks mCallbacks;
+    private Callbacks mListener;
 
     /**
      * The current activated item position. Only used on tablets.
@@ -107,14 +107,14 @@ public class EventListFragment extends android.app.ListFragment {
             throw new IllegalStateException("Activity must implement fragment's callbacks.");
         }
 
-        mCallbacks = (Callbacks) activity;
+        mListener = (Callbacks) activity;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
 
-        mCallbacks = null;
+        mListener = null;
     }
 
     public void setCharacterObjectId(String characterObjectId) {
@@ -129,7 +129,7 @@ public class EventListFragment extends android.app.ListFragment {
 
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
-        mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
+        mListener.onItemSelected(adapter.getItem(position).getObjectId());
     }
 
     @Override

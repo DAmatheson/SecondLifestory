@@ -50,8 +50,13 @@ public class EventQueryAdapter extends ParseQueryAdapter<Event> {
 
         super.getItemView(object, v, parent);
 
-        TextView characterName = (TextView) v.findViewById(android.R.id.text1);
-        characterName.setText(object.getDescription());
+        // TODO: Actually make an event title?
+        TextView eventName = (TextView) v.findViewById(R.id.event_listitem_name);
+        eventName.setText(object.getDescription());
+
+        // TODO: Format date
+        TextView eventDate = (TextView) v.findViewById(R.id.event_listitem_date);
+        eventDate.setText(object.getDate().toString());
 
         return v;
     }

@@ -1,34 +1,51 @@
 <resources>
     <string name="app_name">Second Lifestory</string>
 
+    <!-- Activity titles -->
     <string name="title_activity_login">Login</string>
     <string name="title_activity_character">Characters</string>
     <string name="title_activity_event">Events</string>
     <string name="title_activity_customize">Customize</string>
     <string name="title_activity_settings">Settings</string>
 
+    <!-- Menu/Action titles -->
     <string name="action_settings">Settings</string>
     <string name="action_customize">Customize</string>
 
+    <!-- Shared strings -->
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="save">Save</string>
+    <string name="cancel">@android:string/cancel</string>
+    <string name="ok">@android:string/ok</string>
+
+    <!-- Empty list item text -->
     <string name="eventsEmptyEntry">No Events</string>
     <string name="charactersEmptyEntry">No Characters</string>
 
+    <!-- Character Details -->
     <string name="character_name">Character Name</string>
-
     <string name="race">Race</string>
     <string name="character_class">Class</string>
     <string name="total_xp">Total XP</string>
     <string name="status">Status</string>
-    <string name="delete_character">Delete</string>
 
+    <!-- Create Character -->
+    <string name="create_character">Create Character</string>
+
+    <!-- Edit Character -->
+
+    <!-- Event Details -->
     <string name="event_title">Source</string>
     <string name="date">Date</string>
     <string name="xp_gained">XP Gained</string>
     <string name="characters_present">Shared By</string>
     <string name="description">Description</string>
-    <string name="delete_event">Delete Event</string>
-    <string name="edit_event">Edit Event</string>
 
+    <!-- Create Event -->
+    <!-- Edit Event -->
+
+    <!-- Customize Activity -->
     <string name="custom_races_and_classes">Custom Races &amp; Classes</string>
     <string name="race_name">Race Name</string>
     <string name="class_name">Class Name</string>
@@ -37,10 +54,13 @@
     <string name="delete_race">Delete Race</string>
     <string name="delete_class">Delete Class</string>
 
+    <!-- Settings Activity -->
     <string name="tutorials">Tutorials and FAQs</string>
     <string name="delete_all_characters">Delete All Characters</string>
     <string name="delete_all_data">Delete All Data</string>
     <string name="copyright">&#169; 2015 - Drew Matheson &amp; Isaac West</string>
-    <string name="edit">Edit</string>
-    <string name="create_character">Create Character</string>
+    <string name="characterNamePlaceholder">Name</string>
+    <string name="characterDetailsPlaceholder">Details</string>
+
+    <!-- Unsorted -->
 </resources>

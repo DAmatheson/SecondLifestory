@@ -19,38 +19,71 @@ import ca.secondlifestory.models.Event;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link EventUpsertFragment.OnFragmentInteractionListener} interface
+ * {@link Callbacks} interface
  * to handle interaction events.
  * Use the {@link EventUpsertFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class EventUpsertFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     */
+    public interface Callbacks {
+        void onEventCreated(Event event);
+        void onEventModified(Event event);
+        void onCancelPressed();
+    }
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private static final String ARG_CHARACTER_ID = "EventUpsertFragment.characterObjectId";
+    private static final String ARG_EVENT_ID = "EventUpsertFragment.eventId";
+    private static final String ARG_IN_EDIT_MODE = "EventUpsertFragment.inEditMode";
 
-    private OnFragmentInteractionListener mListener;
+    private String characterId;
+    private String eventId;
+    private Boolean inEditMode;
+
+    private Callbacks mListener;
 
     /**
      * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
+     * this fragment set into create mode.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment EventUpsertFragment.
+     * @param characterId The Id of the PlayerCharacter the Event belongs to
+     * @return A new instance of fragment EventUpsertFragment setup for create.
      */
-    // TODO: Rename and change types and number of parameters
-    public static EventUpsertFragment newInstance(String param1, String param2) {
+    public static EventUpsertFragment newInstance(String characterId) {
         EventUpsertFragment fragment = new EventUpsertFragment();
+
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_CHARACTER_ID, characterId);
+        args.putBoolean(ARG_IN_EDIT_MODE, false);
+
         fragment.setArguments(args);
+
+        return fragment;
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment set into edit mode for the provided EventId.
+     *
+     * @param characterId The Id of the PlayerCharacter the Event belongs to
+     * @param eventId The Id of the Event to edit.
+     * @return A new instance of fragment EventUpsertFragment setup for edit.
+     */
+    public static EventUpsertFragment newInstance(String characterId, String eventId) {
+        EventUpsertFragment fragment = new EventUpsertFragment();
+
+        Bundle args = new Bundle();
+        args.putString(ARG_CHARACTER_ID, characterId);
+        args.putString(ARG_EVENT_ID, eventId);
+        args.putBoolean(ARG_IN_EDIT_MODE, true);
+
+        fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -61,9 +94,11 @@ public class EventUpsertFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            characterId = getArguments().getString(ARG_CHARACTER_ID);
+            eventId = getArguments().getString(ARG_EVENT_ID);
+            inEditMode = getArguments().getBoolean(ARG_IN_EDIT_MODE);
         }
     }
 
@@ -78,7 +113,7 @@ public class EventUpsertFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnFragmentInteractionListener) activity;
+            mListener = (Callbacks) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement Callbacks");
@@ -90,17 +125,4 @@ public class EventUpsertFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onEventCreate(Event event);
-        void onEventModified(Event event);
-    }
-
 }

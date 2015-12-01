@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- ic_list_white_24dp_states.xml
+    Purpose: Version of ic_list_white_24dp with different states.
+
+    Drew Matheson, 2015.11.30: Created
+-->
+
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:state_pressed="true"

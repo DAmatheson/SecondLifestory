@@ -25,7 +25,7 @@
         android:id="@+id/upsert_character_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Name"
+        android:hint="@string/characterNamePlaceholder"
         android:singleLine="true"
         android:layout_below="@id/upsert_title"/>
 
@@ -45,7 +45,7 @@
         android:id="@+id/upsert_character_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Details"
+        android:hint="@string/characterDetailsPlaceholder"
         android:minLines="1"
         android:maxLines="8"
         android:layout_below="@id/upsert_character_class"/>
@@ -55,7 +55,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/upsert_character_details"
-        android:text="Save"
+        android:text="@string/save"
         android:background="@drawable/button_background_roundedcorner"/>
 
     <Button
@@ -64,7 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/upsert_save"
         android:layout_alignTop="@id/upsert_save"
-        android:text="@android:string/cancel"
+        android:text="@string/cancel"
         android:background="@drawable/button_background_roundedcorner"/>
 
 </RelativeLayout>

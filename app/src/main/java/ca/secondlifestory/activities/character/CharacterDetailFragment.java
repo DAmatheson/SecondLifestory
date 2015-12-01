@@ -42,7 +42,7 @@ public class CharacterDetailFragment extends Fragment {
     private Callbacks mListener;
 
     /**
-     * The dummy content this fragment is presenting.
+     * The content this fragment is presenting.
      */
     private PlayerCharacter mItem;
 
@@ -64,13 +64,13 @@ public class CharacterDetailFragment extends Fragment {
      * @return The setup new instance of PlayerStatsDetailFragment
      */
     public static CharacterDetailFragment newInstance(String characterObjectId) {
-            Bundle args = new Bundle();
-            args.putString(ARG_CHARACTER_ID, characterObjectId);
+        Bundle args = new Bundle();
+        args.putString(ARG_CHARACTER_ID, characterObjectId);
 
-            CharacterDetailFragment fragment = new CharacterDetailFragment();
-            fragment.setArguments(args);
+        CharacterDetailFragment fragment = new CharacterDetailFragment();
+        fragment.setArguments(args);
 
-            return fragment;
+        return fragment;
     }
 
     /**

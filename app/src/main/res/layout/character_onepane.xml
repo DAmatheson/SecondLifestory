@@ -12,7 +12,8 @@
     style="@style/activityLayout"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    tools:context="ca.secondlifestory.activities.character.CharacterActivity" >
 
     <ImageButton
         android:id="@+id/create_character_button"
@@ -25,12 +26,9 @@
         />
 
     <fragment
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/character_list"
         android:name="ca.secondlifestory.activities.character.CharacterListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".CharacterActivity"
         tools:layout="@layout/fragment_character_list" />
 </LinearLayout>

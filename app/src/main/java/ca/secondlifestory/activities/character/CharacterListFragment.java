@@ -12,12 +12,10 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import ca.secondlifestory.R;
 import ca.secondlifestory.adapters.PlayerCharacterQueryAdapter;
-import ca.secondlifestory.dummy.DummyContent;
 
 /**
  * A list fragment representing a list of Characters. This fragment

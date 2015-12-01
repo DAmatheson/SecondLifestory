@@ -17,7 +17,6 @@ import android.widget.ListView;
 
 import ca.secondlifestory.R;
 import ca.secondlifestory.adapters.EventQueryAdapter;
-import ca.secondlifestory.dummy.DummyContent;
 
 /**
  * A list fragment representing a list of Events. This fragment
@@ -71,13 +70,6 @@ public class EventListFragment extends android.app.ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // TODO: replace with a real list adapter.
-        setListAdapter(new ArrayAdapter<>(
-                getActivity(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
-                DummyContent.ITEMS));
     }
 
     @Override

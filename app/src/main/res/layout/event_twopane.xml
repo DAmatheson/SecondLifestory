@@ -30,9 +30,12 @@
 
         <ImageButton
             android:id="@+id/add_event_button"
-            android:src="@drawable/ic_playerlist_add_white_36dp_states"
             android:layout_width="match_parent"
-            style="@style/eventListAddEventButton"/>
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_playerlist_add_white_36dp_states"
+            android:contentDescription="@string/add_event"
+            style="@style/eventListAddEventButton"
+            android:layout_marginBottom="@dimen/activity_vertical_margin" />
 
         <fragment
             android:id="@+id/event_list"

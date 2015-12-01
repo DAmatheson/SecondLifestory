@@ -21,6 +21,10 @@ import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import ca.secondlifestory.R;
 import ca.secondlifestory.models.Event;
 
@@ -48,6 +52,9 @@ public class EventDetailFragment extends Fragment {
      * The content this fragment is presenting.
      */
     private Event mItem;
+
+    private final DateFormat dateFormatter = new SimpleDateFormat("EEE, MMM, yyyy");
+    private final DateFormat timeFormatter = SimpleDateFormat.getTimeInstance(DateFormat.SHORT, Locale.getDefault());
 
     private ProgressBar loadingIndicator;
 
@@ -90,7 +97,7 @@ public class EventDetailFragment extends Fragment {
 
         loadingIndicator = (ProgressBar)rootView.findViewById(R.id.loadingIndicator);
 
-        eventTitle = (TextView) rootView.findViewById(R.id.event_title);
+        eventTitle = (TextView) rootView.findViewById(R.id.event_detail_title);
         date = (TextView) rootView.findViewById(R.id.event_date);
         experience = (TextView) rootView.findViewById(R.id.event_xp);
         characterCount = (TextView) rootView.findViewById(R.id.event_characters_present);
@@ -110,14 +117,11 @@ public class EventDetailFragment extends Fragment {
                     if (e == null) {
                         mItem = object;
 
-                        // TODO: Decide if we want to do this
-                        getActivity().setTitle(mItem.getCharacter().getName() + " Events");
-
                         // TODO: Event Title
-                        date.setText(mItem.getDate().toString());
+                        date.setText(dateFormatter.format(mItem.getDate()) + " " + timeFormatter.format(mItem.getDate()));
                         experience.setText(Integer.toString(mItem.getExperience()));
                         characterCount.setText(Integer.toString(mItem.getCharacterCount()));
-                        description.setText(mItem.getDescription());
+                        //description.setText(mItem.getDescription());
                     } else {
                         // TODO: Error handling
                         Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();

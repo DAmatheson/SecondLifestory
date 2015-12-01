@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="primary_indigo" type="color">#3F51B5</item> <!-- indigo_500 -->
+    <item name="dark_indigo" type="color">#283593</item> <!-- indigo_800 -->
+    <item name="light_indigo" type="color">#C5CAE9</item> <!-- indigo_100 -->
+    <item name="accent" type="color">#607D8B</item> <!-- blue_grey_500 -->
+    <item name="accent_dark" type="color">#455a64</item> <!-- blue_grey_700 -->
+</resources>

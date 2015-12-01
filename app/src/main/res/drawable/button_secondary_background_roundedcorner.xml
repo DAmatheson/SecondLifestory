@@ -11,7 +11,7 @@
         android:state_pressed="true"
         android:state_enabled="true">
         <shape xmlns:android="http://schemas.android.com/apk/res/android">
-            <solid android:color="@color/dark_indigo"/>
+            <solid android:color="@color/accent_dark"/>
             <corners android:radius="6dp"/>
         </shape>
     </item>
@@ -20,7 +20,7 @@
         android:state_enabled="true">
         <shape xmlns:android="http://schemas.android.com/apk/res/android">
 
-            <solid android:color="@color/primary_indigo"/>
+            <solid android:color="@color/accent"/>
             <corners android:radius="6dp"/>
         </shape>
     </item>

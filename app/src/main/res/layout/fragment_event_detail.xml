@@ -24,17 +24,20 @@
         android:visibility="gone"/>
 
     <TextView
-        android:id="@+id/character_name"
+        android:id="@+id/event_detail_title"
         style="@style/pageHeader"
         android:layout_alignParentTop="true"
-        android:text="Placeholder Character Name" />
+        android:text="Title"
+        android:maxLines="2"
+        android:ellipsize="start"
+        />
 
     <LinearLayout
         android:id="@+id/event_details_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@id/character_name">
+        android:layout_below="@id/event_detail_title">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,24 +46,25 @@
             android:layout_marginRight="@dimen/activity_horizontal_margin">
             <TextView
                 style="@style/detailTextViewLabel"
-                android:text="@string/event_title" />
-            <TextView
-                style="@style/detailTextViewLabel"
                 android:text="@string/date" />
             <TextView
                 style="@style/detailTextViewLabel"
-                android:text="@string/xp_gained" />
+                android:text="@string/xp_gained"
+                />
             <TextView
                 style="@style/detailTextViewLabel"
                 android:text="@string/characters_present" />
+
+            <TextView
+                android:id="@+id/event_description_label"
+                style="@style/detailTextViewLabel"
+                android:text="@string/description"
+                android:layout_below="@id/event_details_layout"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <TextView
-                android:id="@+id/event_title"
-                style="@style/detailTextView" />
             <TextView
                 android:id="@+id/event_date"
                 style="@style/detailTextView" />
@@ -73,38 +77,44 @@
         </LinearLayout>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/event_description_label"
-        style="@style/detailTextViewLabel"
-        android:text="@string/description"
-        android:layout_below="@id/event_details_layout"/>
-
-    <TextView
-        android:id="@+id/event_description"
-        style="@style/detailTextView"
-        android:layout_below="@id/event_description_label" />
-
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/footer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_alignParentBottom="true">
         <Button
             android:id="@+id/delete_event_button"
             android:text="@string/delete"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="@dimen/standard_padding"
-            android:background="@drawable/button_background_roundedcorner" />
+            android:background="@drawable/button_secondary_background_roundedcorner" />
+
         <Button
             android:id="@+id/edit_event_button"
             android:text="@string/edit"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="@dimen/standard_padding"
-            android:background="@drawable/button_background_roundedcorner" />
-    </LinearLayout>
+            android:background="@drawable/button_background_roundedcorner"
+            android:layout_toRightOf="@id/delete_event_button"
+            android:layout_alignTop="@id/delete_event_button"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="10dp" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/description_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/event_details_layout"
+        android:layout_above="@id/footer"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin">
+        <TextView
+            android:id="@+id/event_description"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            style="@style/detailTextView"/>
+    </ScrollView>
+
 
 </RelativeLayout>

@@ -12,6 +12,7 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import ca.secondlifestory.R;
 import ca.secondlifestory.models.Event;
@@ -46,6 +47,11 @@ public class EventUpsertFragment extends Fragment {
     private Boolean inEditMode;
 
     private Callbacks mListener;
+
+    private Event event;
+
+    private Button saveButton;
+    private Button cancelButton;
 
     /**
      * Use this factory method to create a new instance of
@@ -106,7 +112,31 @@ public class EventUpsertFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_event_upsert, container, false);
+        View v = inflater.inflate(R.layout.fragment_event_upsert, container, false);
+
+        saveButton = (Button) v.findViewById(R.id.upsert_save);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: save stuff, validate
+
+                if (characterId == null) {
+                    mListener.onEventCreated(event);
+                } else {
+                    mListener.onEventModified(event);
+                }
+            }
+        });
+
+        cancelButton = (Button) v.findViewById(R.id.upsert_cancel);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onCancelPressed();
+            }
+        });
+
+        return v;
     }
 
     @Override

@@ -6,6 +6,7 @@
 
 package ca.secondlifestory.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,11 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseQueryAdapter;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import ca.secondlifestory.R;
 import ca.secondlifestory.models.Event;
 import ca.secondlifestory.models.PlayerCharacter;
@@ -23,6 +29,9 @@ import ca.secondlifestory.models.PlayerCharacter;
  * QueryAdapter for Event
  */
 public class EventQueryAdapter extends ParseQueryAdapter<Event> {
+
+    private final DateFormat dateFormatter = SimpleDateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
+
     public EventQueryAdapter(Context context, ParseQueryAdapter.QueryFactory<Event> queryFactory) {
         super (context, queryFactory);
     }
@@ -56,7 +65,7 @@ public class EventQueryAdapter extends ParseQueryAdapter<Event> {
 
         // TODO: Format date
         TextView eventDate = (TextView) v.findViewById(R.id.event_listitem_date);
-        eventDate.setText(object.getDate().toString());
+        eventDate.setText(dateFormatter.format(object.getDate()));
 
         return v;
     }

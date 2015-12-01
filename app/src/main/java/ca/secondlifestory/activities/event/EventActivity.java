@@ -6,13 +6,20 @@
 
 package ca.secondlifestory.activities.event;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 
 import ca.secondlifestory.R;
 import ca.secondlifestory.models.Event;
+import ca.secondlifestory.models.PlayerCharacter;
 
 /**
  * An activity representing a list of PlayerCharacter Events. This activity
@@ -41,6 +48,8 @@ public class EventActivity extends AppCompatActivity implements EventListFragmen
      */
     private boolean mTwoPane;
 
+    private String characterId;
+
     private EventListFragment listFragment;
     private EventDetailFragment detailFragment;
 
@@ -66,13 +75,27 @@ public class EventActivity extends AppCompatActivity implements EventListFragmen
             listFragment.setActivateOnItemClick(false);
         }
 
-        // TODO: change this to only set title in dual-pane mode and list view of one-pane mode
-        setTitle("Character Name's " + getString(R.string.title_activity_event));
+        setTitle(getString(R.string.title_activity_event));
     }
 
     @Override
     protected void onResume() {
-        listFragment.setCharacterObjectId(getIntent().getStringExtra(ARG_CHARACTER_ID));
+        characterId = getIntent().getStringExtra(ARG_CHARACTER_ID);
+
+        listFragment.setCharacterObjectId(characterId);
+
+        ParseQuery<PlayerCharacter> query = PlayerCharacter.getQuery();
+        query.getInBackground(characterId, new GetCallback<PlayerCharacter>() {
+            @Override
+            public void done(PlayerCharacter object, ParseException e) {
+                if (e == null) {
+                    setTitle("Events for " + object.getName());
+                } else {
+                    // TODO: Error handling
+                    Toast.makeText(EventActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
         super.onResume();
     }
@@ -159,16 +182,23 @@ public class EventActivity extends AppCompatActivity implements EventListFragmen
 
     @Override
     public void onEventCreated(Event event) {
-
+        // TODO: Refresh list?
     }
 
     @Override
     public void onEventModified(Event event) {
-
+        // TODO: Refresh list?
     }
 
     @Override
     public void onCancelPressed() {
-
+        if (mTwoPane) {
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.event_detail, detailFragment)
+                    .commit();
+        } else {
+            getFragmentManager().popBackStack();
+        }
     }
 }

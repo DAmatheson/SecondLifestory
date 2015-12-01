@@ -43,6 +43,7 @@
     <string name="description">Description</string>
 
     <!-- Create Event -->
+    <string name="add_event">Add Event</string>
     <!-- Edit Event -->
 
     <!-- Customize Activity -->
@@ -61,6 +62,7 @@
     <string name="copyright">&#169; 2015 - Drew Matheson &amp; Isaac West</string>
     <string name="characterNamePlaceholder">Name</string>
     <string name="characterDetailsPlaceholder">Details</string>
+
 
     <!-- Unsorted -->
 </resources>

@@ -6,11 +6,10 @@
     Drew Matheson, 2015.11.17: Created
 -->
 
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/activityLayout"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="ca.secondlifestory.activities.event.EventActivity" >
@@ -22,13 +21,22 @@
         android:src="@drawable/ic_playerlist_add_white_36dp_states"
         android:contentDescription="@string/add_event"
         style="@style/eventListAddEventButton"
-        android:layout_marginBottom="@dimen/activity_vertical_margin" />
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_alignParentTop="true"/>
+
+    <Button
+        android:id="@+id/death_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Died"
+        android:layout_alignParentBottom="true"/>
 
     <fragment
         android:id="@+id/event_list"
         android:name="ca.secondlifestory.activities.event.EventListFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout="@android:layout/list_content" />
-
-</LinearLayout>
+        android:layout_height="fill_parent"
+        tools:layout="@android:layout/list_content"
+        android:layout_below="@id/add_event_button"
+        android:layout_above="@id/death_button" />
+</RelativeLayout>

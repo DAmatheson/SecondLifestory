@@ -21,27 +21,36 @@
     master/detail flow.
     -->
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:layout_weight="1">
         <ImageButton
             android:id="@+id/create_character_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="36dp"
+            android:layout_gravity="right"
             android:background="@drawable/button_background_roundedcorner"
             android:src="@drawable/ic_add_circle_outline_white_36dp_states"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
-            />
+            android:layout_alignParentTop="true" />
+
+        <CheckBox
+            android:id="@+id/filter_show_deceased"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Show Deceased"
+            android:layout_alignParentBottom="true" />
 
         <fragment
             android:id="@+id/character_list"
             android:name="ca.secondlifestory.activities.character.CharacterListFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:layout="@layout/fragment_character_list" />
-    </LinearLayout>
+            android:layout_height="fill_parent"
+            tools:layout="@layout/fragment_character_list"
+            android:layout_above="@id/filter_show_deceased"
+            android:layout_below="@id/create_character_button" />
+    </RelativeLayout>
 
     <fragment
         android:id="@+id/character_detail"

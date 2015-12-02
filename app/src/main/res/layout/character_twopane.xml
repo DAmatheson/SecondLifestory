@@ -28,9 +28,8 @@
         android:orientation="vertical">
         <ImageButton
             android:id="@+id/create_character_button"
-            android:layout_width="fill_parent"
-            android:layout_height="36dp"
-            android:layout_gravity="right"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:background="@drawable/button_background_roundedcorner"
             android:src="@drawable/ic_add_circle_outline_white_36dp_states"
             android:layout_marginBottom="@dimen/activity_vertical_margin"

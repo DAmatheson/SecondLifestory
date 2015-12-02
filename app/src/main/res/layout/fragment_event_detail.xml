@@ -11,7 +11,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/fragmentLayout"
-    tools:context="ca.drewm.leaguetracker.PlayerStatsDetailFragment"
+    tools:context="ca.secondlifestory.activities.event.PlayerStatsDetailFragment"
     android:clickable="true"> <!-- Prevent any fragments behind this from being clicked -->
 
     <ProgressBar
@@ -58,8 +58,7 @@
             <TextView
                 android:id="@+id/event_description_label"
                 style="@style/detailTextViewLabel"
-                android:text="@string/description"
-                android:layout_below="@id/event_details_layout"/>
+                android:text="@string/description" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -115,6 +114,4 @@
             android:layout_width="match_parent"
             style="@style/detailTextView"/>
     </ScrollView>
-
-
 </RelativeLayout>

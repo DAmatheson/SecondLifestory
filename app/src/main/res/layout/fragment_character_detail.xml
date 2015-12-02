@@ -11,7 +11,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/activityLayout"
-    tools:context="ca.drewm.leaguetracker.PlayerStatsDetailFragment"
+    tools:context="ca.secondlifestory.activities.character.PlayerStatsDetailFragment"
     android:clickable="true"> <!-- Prevent any fragments behind this from being clicked -->
 
     <ProgressBar
@@ -27,7 +27,9 @@
         android:id="@+id/character_name"
         style="@style/pageHeader"
         android:layout_alignParentTop="true"
-        android:text="@string/character_name" />
+        android:text="@string/character_name"
+        android:maxLines="2"
+        android:ellipsize="start"/>
 
     <LinearLayout
         android:id="@+id/character_details_layout"
@@ -53,8 +55,12 @@
             <TextView
                 style="@style/detailTextViewLabel"
                 android:text="@string/status" />
-        </LinearLayout>
 
+            <TextView
+                android:id="@+id/character_description_label"
+                style="@style/detailTextViewLabel"
+                android:text="@string/description" />
+        </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -74,35 +80,41 @@
         </LinearLayout>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/character_description_label"
-        style="@style/detailTextViewLabel"
-        android:text="@string/description"
-        android:layout_below="@id/character_details_layout"/>
-
-    <TextView
-        android:id="@+id/character_description"
-        style="@style/detailTextView"
-        android:layout_below="@id/character_description_label" />
-
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/footer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_alignParentBottom="true">
         <Button
             android:id="@+id/delete_character_button"
             android:text="@string/delete"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="@dimen/standard_padding" />
+            android:background="@drawable/button_secondary_background_roundedcorner" />
         <Button
             android:id="@+id/edit_character_button"
             android:text="@string/edit"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="@dimen/standard_padding" />
-    </LinearLayout>
+            android:layout_toRightOf="@id/delete_character_button"
+            android:layout_alignTop="@id/delete_character_button"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="10dp"/>
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/description_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/character_details_layout"
+        android:layout_above="@id/footer"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin">
+        <TextView
+            android:id="@+id/character_description"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="a\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\n"
+            style="@style/detailTextView"/>
+    </ScrollView>
 </RelativeLayout>

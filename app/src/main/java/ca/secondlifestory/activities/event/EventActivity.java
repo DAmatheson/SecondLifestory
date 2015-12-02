@@ -6,11 +6,11 @@
 
 package ca.secondlifestory.activities.event;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.parse.GetCallback;
@@ -53,6 +53,8 @@ public class EventActivity extends AppCompatActivity implements EventListFragmen
     private EventListFragment listFragment;
     private EventDetailFragment detailFragment;
 
+    private ImageButton addEventButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +62,27 @@ public class EventActivity extends AppCompatActivity implements EventListFragmen
 
         listFragment = (EventListFragment) getFragmentManager().findFragmentById(R.id.event_list);
         detailFragment = (EventDetailFragment) getFragmentManager().findFragmentById(R.id.event_detail);
+
+        addEventButton = (ImageButton) findViewById(R.id.add_event_button);
+        addEventButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventUpsertFragment upsertFragment = EventUpsertFragment.newInstance(characterId);
+
+                if (mTwoPane) {
+                    getFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.event_detail, upsertFragment)
+                            .commit();
+                } else {
+                    EventActivity.this.getFragmentManager()
+                            .beginTransaction()
+                            .replace(android.R.id.content, upsertFragment)
+                            .addToBackStack(null)
+                            .commit();
+                }
+            }
+        });
 
         if (detailFragment != null) {
             // The detail container view will be present only in the
@@ -98,12 +121,6 @@ public class EventActivity extends AppCompatActivity implements EventListFragmen
         });
 
         super.onResume();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
     }
 
     @Override

@@ -12,10 +12,18 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
 import ca.secondlifestory.R;
 import ca.secondlifestory.models.Event;
+import ca.secondlifestory.models.EventTypes;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,6 +50,8 @@ public class EventUpsertFragment extends Fragment {
     private static final String ARG_EVENT_ID = "EventUpsertFragment.eventId";
     private static final String ARG_IN_EDIT_MODE = "EventUpsertFragment.inEditMode";
 
+    private HashMap<String, EventTypes> typeItems;
+
     private String characterId;
     private String eventId;
     private Boolean inEditMode;
@@ -52,6 +62,7 @@ public class EventUpsertFragment extends Fragment {
 
     private Button saveButton;
     private Button cancelButton;
+    private Spinner eventTypeSpinner;
 
     /**
      * Use this factory method to create a new instance of
@@ -120,13 +131,21 @@ public class EventUpsertFragment extends Fragment {
             public void onClick(View v) {
                 // TODO: save stuff, validate
 
-                if (characterId == null) {
+                if (eventId == null) {
+                    EventTypes value = typeItems.get(eventTypeSpinner.getSelectedItem());
+
+                    Toast.makeText(getActivity(), value.name(), Toast.LENGTH_LONG).show();
+
                     mListener.onEventCreated(event);
                 } else {
+
                     mListener.onEventModified(event);
                 }
             }
         });
+
+        eventTypeSpinner = (Spinner) v.findViewById(R.id.upsert_event_type);
+        eventTypeSpinner.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, typeItems.keySet().toArray()));
 
         cancelButton = (Button) v.findViewById(R.id.upsert_cancel);
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -144,6 +163,10 @@ public class EventUpsertFragment extends Fragment {
         super.onAttach(activity);
         try {
             mListener = (Callbacks) activity;
+
+            typeItems = new HashMap<>();
+            typeItems.put(getString(R.string.event_type_combat), EventTypes.COMBAT);
+            typeItems.put(getString(R.string.event_type_event), EventTypes.EVENT);
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement Callbacks");

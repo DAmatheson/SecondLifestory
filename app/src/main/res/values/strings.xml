@@ -63,6 +63,11 @@
     <string name="characterNamePlaceholder">Name</string>
     <string name="characterDetailsPlaceholder">Details</string>
 
+    <!-- Event Types -->
+    <string name="event_type_combat">Combat</string>
+    <string name="event_type_event">Event</string>
+    <string name="event_type_death">Death</string>
+    <string name="event_type_resurrection">Resurrection</string>
 
     <!-- Unsorted -->
 </resources>

@@ -117,7 +117,7 @@ public class EventDetailFragment extends Fragment {
                     if (e == null) {
                         mItem = object;
 
-                        // TODO: Event Title
+                        eventTitle.setText(mItem.getTitle());
                         date.setText(dateFormatter.format(mItem.getDate()) + " " + timeFormatter.format(mItem.getDate()));
                         experience.setText(Integer.toString(mItem.getExperience()));
                         characterCount.setText(Integer.toString(mItem.getCharacterCount()));

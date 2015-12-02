@@ -26,7 +26,6 @@ public class Application extends android.app.Application {
         ParseObject.registerSubclass(PlayerCharacter.class);
         ParseObject.registerSubclass(CharacterClass.class);
         ParseObject.registerSubclass(Event.class);
-        ParseObject.registerSubclass(EventDetail.class);
         ParseObject.registerSubclass(Race.class);
 
         //noinspection SpellCheckingInspection

@@ -23,7 +23,7 @@ public class Event extends ParseObject {
     private static final String KEY_EXPERIENCE = "experience";
     private static final String KEY_DESCRIPTION = "description";
     private static final String KEY_DATE = "date";
-    private static final String KEY_DETAILS = "eventDetails";
+    private static final String KEY_TITLE = "title";
 
     public static final String KEY_CHARACTER = "character";
 
@@ -131,19 +131,19 @@ public class Event extends ParseObject {
     }
 
     /**
-     * Gets the EventDetails for this Event
-     * @return List of EventDetails for this Event
+     * Gets the title of the Event
+     * @return the title of the event
      */
-    public List<EventDetail> getDetails() {
-        return getList(KEY_DETAILS);
+    public String getTitle() {
+        return getString(KEY_TITLE);
     }
 
     /**
-     * Sets the EventDetails for this Event
-     * @param details list for this Event
+     * Sets the title of the Event
+     * @param title The title
      */
-    public void setDetails(List<EventDetail> details) {
-        put(KEY_DETAILS, details);
+    public void setTitle(String title) {
+        put(KEY_TITLE, title);
     }
 
     /**

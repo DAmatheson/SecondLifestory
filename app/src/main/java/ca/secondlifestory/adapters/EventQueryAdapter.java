@@ -6,7 +6,6 @@
 
 package ca.secondlifestory.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,6 @@ import com.parse.ParseQueryAdapter;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 import ca.secondlifestory.R;

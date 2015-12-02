@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,6 +61,8 @@ public class CharacterUpsertFragment extends Fragment {
     private boolean inEditMode;
     private String characterId;
     private PlayerCharacter character;
+
+    private ProgressBar loadingIndicator;
 
     private TextView title;
     private EditText nameText;
@@ -121,6 +124,8 @@ public class CharacterUpsertFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_character_upsert, container, false);
+
+        loadingIndicator = (ProgressBar)v.findViewById(R.id.loadingIndicator);
 
         title = (TextView) v.findViewById(R.id.upsert_title);
         nameText = (EditText) v.findViewById(R.id.upsert_character_name);
@@ -261,10 +266,14 @@ public class CharacterUpsertFragment extends Fragment {
     }
 
     private void setupForExistingCharacter(String characterId) {
+        loadingIndicator.setVisibility(View.VISIBLE);
+
         ParseQuery<PlayerCharacter> query = PlayerCharacter.getQuery();
         query.getInBackground(characterId, new GetCallback<PlayerCharacter>() {
             @Override
             public void done(PlayerCharacter object, ParseException e) {
+                loadingIndicator.setVisibility(View.GONE);
+
                 if (e == null) {
                     character = object;
 

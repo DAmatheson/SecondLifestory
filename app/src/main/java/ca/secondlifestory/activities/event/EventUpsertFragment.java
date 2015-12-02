@@ -14,11 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+
 import java.util.HashMap;
 
 import ca.secondlifestory.R;
@@ -60,9 +63,14 @@ public class EventUpsertFragment extends Fragment {
 
     private Event event;
 
+    private ProgressBar loadingIndicator;
+
+    // Inputs
+    private Spinner eventTypeSpinner;
+
     private Button saveButton;
     private Button cancelButton;
-    private Spinner eventTypeSpinner;
+
 
     /**
      * Use this factory method to create a new instance of
@@ -125,6 +133,8 @@ public class EventUpsertFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_event_upsert, container, false);
 
+        loadingIndicator = (ProgressBar)v.findViewById(R.id.loadingIndicator);
+
         saveButton = (Button) v.findViewById(R.id.upsert_save);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,7 +142,7 @@ public class EventUpsertFragment extends Fragment {
                 // TODO: save stuff, validate
 
                 if (eventId == null) {
-                    EventTypes value = typeItems.get(eventTypeSpinner.getSelectedItem());
+                    EventTypes value = typeItems.get(eventTypeSpinner.getSelectedItem().toString());
 
                     Toast.makeText(getActivity(), value.name(), Toast.LENGTH_LONG).show();
 
@@ -144,8 +154,36 @@ public class EventUpsertFragment extends Fragment {
             }
         });
 
+        if (eventId != null) {
+            loadingIndicator.setVisibility(View.VISIBLE);
+
+            ParseQuery<Event> query = Event.getQuery();
+            query.getInBackground(eventId, new GetCallback<Event>() {
+                @Override
+                public void done(Event object, ParseException e) {
+                    loadingIndicator.setVisibility(View.GONE);
+
+                    if (e == null) {
+                        event = object;
+
+                        // TODO: Add the values to the inputs
+                    } else {
+                        // TODO: Error handling
+                        Toast.makeText(EventUpsertFragment.this.getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        } else {
+            event = new Event();
+        }
+
         eventTypeSpinner = (Spinner) v.findViewById(R.id.upsert_event_type);
-        eventTypeSpinner.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, typeItems.keySet().toArray()));
+
+        ArrayAdapter<String> eventTypeAdapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_dropdown_item_1line,
+                typeItems.keySet().toArray(new String[typeItems.size()]));
+
+        eventTypeSpinner.setAdapter(eventTypeAdapter);
 
         cancelButton = (Button) v.findViewById(R.id.upsert_cancel);
         cancelButton.setOnClickListener(new View.OnClickListener() {

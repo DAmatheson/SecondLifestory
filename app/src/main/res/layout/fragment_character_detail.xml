@@ -114,7 +114,6 @@
             android:id="@+id/character_description"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:text="a\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\na\nan\n"
             style="@style/detailTextView"/>
     </ScrollView>
 </RelativeLayout>

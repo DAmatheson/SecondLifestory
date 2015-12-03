@@ -6,13 +6,13 @@
 
 package ca.secondlifestory.activities;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import ca.secondlifestory.BaseActivity;
 import ca.secondlifestory.R;
 
-public class CustomizeActivity extends AppCompatActivity {
+public class CustomizeActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -8,7 +8,6 @@ package ca.secondlifestory.activities.character;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +20,7 @@ import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 
+import ca.secondlifestory.BaseFragment;
 import ca.secondlifestory.R;
 import ca.secondlifestory.models.PlayerCharacter;
 
@@ -28,7 +28,7 @@ import ca.secondlifestory.models.PlayerCharacter;
  * A fragment representing a single PlayerCharacter detail screen.
  * This fragment is contained in a {@link CharacterActivity}.
  */
-public class CharacterDetailFragment extends Fragment {
+public class CharacterDetailFragment extends BaseFragment {
     public interface Callbacks {
         void onEditClicked(String characterObjectId);
     }
@@ -45,6 +45,7 @@ public class CharacterDetailFragment extends Fragment {
      * The content this fragment is presenting.
      */
     private PlayerCharacter mItem;
+    private String characterId;
 
     private ProgressBar loadingIndicator;
 
@@ -94,40 +95,13 @@ public class CharacterDetailFragment extends Fragment {
         loadingIndicator = (ProgressBar)rootView.findViewById(R.id.loadingIndicator);
 
         name = (TextView)rootView.findViewById(R.id.character_name);
+        name.setVisibility(View.INVISIBLE); // Hide the placeholder name
+
         race = (TextView)rootView.findViewById(R.id.character_race);
         characterClass = (TextView)rootView.findViewById(R.id.character_class);
         totalXp = (TextView)rootView.findViewById(R.id.character_xp);
         status = (TextView)rootView.findViewById(R.id.character_status);
         description = (TextView)rootView.findViewById(R.id.character_description);
-
-        if (getArguments() != null) {
-            // Load the dummy content specified by the fragment
-            // arguments. In a real-world scenario, use a Loader
-            // to load content from a content provider.
-
-            loadingIndicator.setVisibility(View.VISIBLE);
-
-            ParseQuery<PlayerCharacter> query = PlayerCharacter.getQuery();
-            query.getInBackground(getArguments().getString(ARG_CHARACTER_ID), new GetCallback<PlayerCharacter>() {
-                @Override
-                public void done(PlayerCharacter object, ParseException e) {
-                    if (e == null) {
-                        loadingIndicator.setVisibility(View.INVISIBLE);
-
-                        mItem = object;
-
-                        name.setText(mItem.getName());
-                        race.setText(mItem.getRace().getName());
-                        characterClass.setText(mItem.getCharacterClass().getName());
-                        totalXp.setText(Integer.toString(mItem.getExperience()));
-                        status.setText(mItem.isLiving() ? "Alive" : "Dead");
-                        description.setText(mItem.getDetails());
-                    } else {
-                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                }
-            });
-        }
 
         editButton = (Button)rootView.findViewById(R.id.edit_character_button);
         editButton.setOnClickListener(new View.OnClickListener() {
@@ -138,6 +112,18 @@ public class CharacterDetailFragment extends Fragment {
         });
 
         deleteButton = (Button)rootView.findViewById(R.id.delete_character_button);
+
+        editButton.setEnabled(false);
+        deleteButton.setEnabled(false);
+
+        if (getArguments() != null) {
+            // Load the dummy content specified by the fragment
+            // arguments. In a real-world scenario, use a Loader
+            // to load content from a content provider.
+            characterId = getArguments().getString(ARG_CHARACTER_ID);
+
+            loadCharacter(characterId);
+        }
 
         return rootView;
     }
@@ -157,5 +143,46 @@ public class CharacterDetailFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void notifyCharacterChanged() {
+        loadCharacter(characterId);
+    }
+
+    public void setCharacterId(String id) {
+        characterId = id;
+
+        loadCharacter(id);
+    }
+
+    private void loadCharacter(String characterId) {
+        loadingIndicator.setVisibility(View.VISIBLE);
+        editButton.setEnabled(false);
+        deleteButton.setEnabled(false);
+
+        ParseQuery<PlayerCharacter> query = PlayerCharacter.getQuery();
+        query.getInBackground(characterId, new GetCallback<PlayerCharacter>() {
+            @Override
+            public void done(PlayerCharacter object, ParseException e) {
+                if (e == null) {
+                    loadingIndicator.setVisibility(View.INVISIBLE);
+
+                    mItem = object;
+
+                    editButton.setEnabled(true);
+                    deleteButton.setEnabled(true);
+                    name.setVisibility(View.VISIBLE);
+
+                    name.setText(mItem.getName());
+                    race.setText(mItem.getRace().getName());
+                    characterClass.setText(mItem.getCharacterClass().getName());
+                    totalXp.setText(Integer.toString(mItem.getExperience()));
+                    status.setText(mItem.isLiving() ? "Alive" : "Dead");
+                    description.setText(mItem.getDetails());
+                } else {
+                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 }

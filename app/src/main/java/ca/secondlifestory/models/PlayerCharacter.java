@@ -169,6 +169,12 @@ public class PlayerCharacter extends ParseObject {
         query.whereEqualTo(KEY_USER, ParseUser.getCurrentUser());
         query.include(KEY_RACE).include(KEY_CLASS);
 
-        return query;//.fromLocalDatastore();
+        query.fromLocalDatastore();
+
+        return query;
+    }
+
+    public static PlayerCharacter createWithoutData(String objectId) {
+        return ParseObject.createWithoutData(PlayerCharacter.class, objectId);
     }
 }

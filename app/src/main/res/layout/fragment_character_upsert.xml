@@ -12,7 +12,8 @@
     style="@style/fragmentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ca.secondlifestory.activities.character.CharacterUpsertFragment">
+    tools:context="ca.secondlifestory.activities.character.CharacterUpsertFragment"
+    android:clickable="true"> <!-- Prevent any fragments behind this from being clicked -->
 
     <ProgressBar
         style="?android:attr/progressBarStyle"
@@ -28,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/create_character"
-        style="@style/pageHeader"/>
+        style="@style/pageHeader" />
 
     <EditText
         android:id="@+id/upsert_character_name"
@@ -36,19 +37,34 @@
         android:layout_height="wrap_content"
         android:hint="@string/characterNamePlaceholder"
         android:singleLine="true"
-        android:layout_below="@id/upsert_title"/>
+        android:layout_below="@id/upsert_title"
+        android:inputType="textNoSuggestions" />
+
+    <TextView
+        android:id="@+id/upsert_character_race_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/upsert_character_name"
+        android:text="Race"/>
 
     <Spinner
         android:id="@+id/upsert_character_race"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/upsert_character_name"/>
+        android:layout_below="@id/upsert_character_race_label"/>
+
+    <TextView
+        android:id="@+id/upsert_character_class_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/upsert_character_race"
+        android:text="Class"/>
 
     <Spinner
         android:id="@+id/upsert_character_class"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/upsert_character_race" />
+        android:layout_below="@id/upsert_character_class_label" />
 
     <EditText
         android:id="@+id/upsert_character_details"
@@ -57,23 +73,25 @@
         android:hint="@string/characterDetailsPlaceholder"
         android:minLines="1"
         android:maxLines="8"
-        android:layout_below="@id/upsert_character_class"/>
-
-    <Button
-        android:id="@+id/upsert_save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/upsert_character_details"
-        android:text="@string/save"
-        android:background="@drawable/button_background_roundedcorner"/>
+        android:singleLine="false"
+        android:layout_below="@id/upsert_character_class"
+        android:inputType="text|textCapSentences|textMultiLine|textLongMessage"/>
 
     <Button
         android:id="@+id/upsert_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/upsert_save"
-        android:layout_alignTop="@id/upsert_save"
+        android:layout_alignParentBottom="true"
         android:text="@string/cancel"
+        android:background="@drawable/button_secondary_background_roundedcorner"/>
+
+    <Button
+        android:id="@+id/upsert_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/upsert_cancel"
+        android:layout_alignParentRight="true"
+        android:text="@string/save"
         android:background="@drawable/button_background_roundedcorner"/>
 
 </RelativeLayout>

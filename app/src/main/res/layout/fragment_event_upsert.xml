@@ -12,7 +12,8 @@
     style="@style/fragmentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ca.secondlifestory.activities.event.EventUpsertFragment">
+    tools:context="ca.secondlifestory.activities.event.EventUpsertFragment"
+    android:clickable="true"> <!-- Prevent any fragments behind this from being clicked -->
 
     <ProgressBar
         style="?android:attr/progressBarStyle"

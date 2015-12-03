@@ -25,6 +25,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
+import ca.secondlifestory.BaseFragment;
 import ca.secondlifestory.R;
 import ca.secondlifestory.models.Event;
 
@@ -34,7 +35,7 @@ import ca.secondlifestory.models.Event;
  * in two-pane mode (on tablets) or a {@link EventDetailFragment}
  * on handsets.
  */
-public class EventDetailFragment extends Fragment {
+public class EventDetailFragment extends BaseFragment {
     public interface Callbacks {
         void onEditClicked(String characterObjectId, String eventId);
     }
@@ -80,7 +81,7 @@ public class EventDetailFragment extends Fragment {
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
+     * fragment (exception.g. upon screen orientation changes).
      */
     public EventDetailFragment() {
     }

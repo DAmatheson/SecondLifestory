@@ -58,4 +58,9 @@ public class PlayerCharacterQueryAdapter extends ParseQueryAdapter<PlayerCharact
 
         return v;
     }
+
+    public void notifyListChanged() {
+        // Unfortunately, there isn't a way to add new items with ParseQueryAdapter.
+        loadObjects();
+    }
 }

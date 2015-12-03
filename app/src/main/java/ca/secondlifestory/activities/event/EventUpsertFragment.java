@@ -24,6 +24,7 @@ import com.parse.ParseQuery;
 
 import java.util.HashMap;
 
+import ca.secondlifestory.BaseFragment;
 import ca.secondlifestory.R;
 import ca.secondlifestory.models.Event;
 import ca.secondlifestory.models.EventTypes;
@@ -36,7 +37,7 @@ import ca.secondlifestory.models.EventTypes;
  * Use the {@link EventUpsertFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EventUpsertFragment extends Fragment {
+public class EventUpsertFragment extends BaseFragment {
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated

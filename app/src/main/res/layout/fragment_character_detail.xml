@@ -96,10 +96,12 @@
             android:text="@string/edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/delete_character_button"
             android:layout_alignTop="@id/delete_character_button"
             android:layout_alignParentRight="true"
-            android:layout_marginLeft="10dp"/>
+            android:layout_alignParentEnd="true"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:background="@drawable/button_background_roundedcorner"/>
     </RelativeLayout>
 
     <ScrollView

@@ -7,7 +7,6 @@
 package ca.secondlifestory.activities.event;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -17,6 +16,7 @@ import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 
+import ca.secondlifestory.BaseActivity;
 import ca.secondlifestory.R;
 import ca.secondlifestory.models.Event;
 import ca.secondlifestory.models.PlayerCharacter;
@@ -37,13 +37,13 @@ import ca.secondlifestory.models.PlayerCharacter;
  * {@link EventListFragment.Callbacks} interface
  * to listen for item selections.
  */
-public class EventActivity extends AppCompatActivity implements EventListFragment.Callbacks,
+public class EventActivity extends BaseActivity implements EventListFragment.Callbacks,
                                                                 EventDetailFragment.Callbacks,
                                                                 EventUpsertFragment.Callbacks {
 
     public static final String ARG_CHARACTER_ID = "characterObjectId";
     /**
-     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
+     * Whether or not the activity is in two-pane mode, i.exception. running on a tablet
      * device.
      */
     private boolean mTwoPane;

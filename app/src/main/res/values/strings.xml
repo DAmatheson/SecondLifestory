@@ -30,10 +30,10 @@
     <string name="total_xp">Total XP</string>
     <string name="status">Status</string>
 
-    <!-- Create Character -->
+    <!-- Create/Edit Character -->
     <string name="create_character">Create Character</string>
+    <string name="empty_character_name_error_message">Character name can\'t be empty.</string>
 
-    <!-- Edit Character -->
 
     <!-- Event Details -->
     <string name="event_title">Source</string>
@@ -42,9 +42,8 @@
     <string name="characters_present">Shared By</string>
     <string name="description">Description</string>
 
-    <!-- Create Event -->
+    <!-- Create/Edit Event -->
     <string name="add_event">Add Event</string>
-    <!-- Edit Event -->
 
     <!-- Customize Activity -->
     <string name="custom_races_and_classes">Custom Races &amp; Classes</string>
@@ -68,6 +67,8 @@
     <string name="event_type_event">Event</string>
     <string name="event_type_death">Death</string>
     <string name="event_type_resurrection">Resurrection</string>
+    <string name="load_classes_failed_error_message">Failed to load classes.</string>
+    <string name="load_races_failed_error_message">Failed to load races.</string>
 
     <!-- Unsorted -->
 </resources>

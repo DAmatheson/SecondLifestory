@@ -8,7 +8,6 @@ package ca.secondlifestory.activities.character;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import ca.secondlifestory.BaseActivity;
 import ca.secondlifestory.activities.CustomizeActivity;
 import ca.secondlifestory.R;
 import ca.secondlifestory.activities.SettingsActivity;
@@ -38,7 +38,7 @@ import ca.secondlifestory.models.PlayerCharacter;
  * {@link CharacterListFragment.Callbacks} interface
  * to listen for item selections.
  */
-public class CharacterActivity extends AppCompatActivity implements CharacterListFragment.Callbacks,
+public class CharacterActivity extends BaseActivity implements CharacterListFragment.Callbacks,
                                                                     CharacterDetailFragment.Callbacks,
                                                                     CharacterUpsertFragment.Callbacks {
 
@@ -48,13 +48,17 @@ public class CharacterActivity extends AppCompatActivity implements CharacterLis
      */
     private boolean mTwoPane;
 
+    private boolean inEditOrCreateMode = false;
+
     private CharacterListFragment listFragment;
     private CharacterDetailFragment detailFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.character_layout);
+        //setContentView(R.layout.character_twopane); // Note: Uncomment this to use two-pane
 
         listFragment = (CharacterListFragment) getFragmentManager().findFragmentById(R.id.character_list);
         detailFragment = (CharacterDetailFragment) getFragmentManager().findFragmentById(R.id.character_detail);
@@ -146,20 +150,19 @@ public class CharacterActivity extends AppCompatActivity implements CharacterLis
      */
     @Override
     public void onItemSelected(String id) {
-
-        detailFragment = CharacterDetailFragment.newInstance(id);
+        if (inEditOrCreateMode) {
+            // Return to the details fragment
+            getFragmentManager().popBackStack();
+        }
 
         if (mTwoPane) {
-            // In two-pane mode, show the detail view in this activity by
-            // adding or replacing the detail fragment using a
-            // fragment transaction.
-
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.character_detail, detailFragment)
-                    .commit();
+            // Update the detail fragment for the new id
+            detailFragment.setCharacterId(id);
         } else {
             // In single-pane mode, simply start the detail activity
             // for the selected item ID.
+
+            detailFragment = CharacterDetailFragment.newInstance(id);
 
             getFragmentManager()
                     .beginTransaction()
@@ -182,16 +185,31 @@ public class CharacterActivity extends AppCompatActivity implements CharacterLis
 
     @Override
     public void onCharacterCreated(PlayerCharacter character) {
+        // This will re-show the detail fragment in two-pane or the list in one-pane
+        inEditOrCreateMode = false;
 
+        getFragmentManager().popBackStack();
+
+        listFragment.notifyListChanged();
     }
 
     @Override
     public void onCharacterModified(PlayerCharacter character) {
+        inEditOrCreateMode = false;
 
+        if (mTwoPane) {
+            detailFragment.notifyCharacterChanged();
+        }
+
+        getFragmentManager().popBackStack();
+
+        listFragment.notifyListChanged();
     }
 
     @Override
     public void onCancelPressed() {
+        inEditOrCreateMode = false;
+
         if (mTwoPane) {
             getFragmentManager()
                     .beginTransaction()
@@ -207,10 +225,13 @@ public class CharacterActivity extends AppCompatActivity implements CharacterLis
         CharacterUpsertFragment upsertFragment =
                 CharacterUpsertFragment.newInstance(characterObjectId);
 
+        inEditOrCreateMode = true;
+
         if (mTwoPane) {
             getFragmentManager()
                     .beginTransaction()
                     .replace(R.id.character_detail, upsertFragment)
+                    .addToBackStack(null)
                     .commit();
         } else {
             getFragmentManager()

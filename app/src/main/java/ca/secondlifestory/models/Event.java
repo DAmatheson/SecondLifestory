@@ -11,7 +11,6 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * Model class for character events
@@ -151,6 +150,10 @@ public class Event extends ParseObject {
      * @return The ParseQuery
      */
     public static ParseQuery<Event> getQuery() {
-        return ParseQuery.getQuery(Event.class);
+        ParseQuery<Event> query = ParseQuery.getQuery(Event.class);
+
+        query.fromLocalDatastore();
+
+        return query;
     }
 }

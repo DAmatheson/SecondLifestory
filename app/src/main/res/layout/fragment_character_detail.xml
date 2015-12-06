@@ -104,7 +104,8 @@
         android:layout_below="@id/character_details_layout"
         android:layout_above="@id/footer"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin">
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:background="@color/background_floating_material_dark">
         <TextView
             android:id="@+id/character_description"
             android:layout_height="wrap_content"

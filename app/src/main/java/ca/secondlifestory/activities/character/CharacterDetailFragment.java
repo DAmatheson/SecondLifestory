@@ -16,12 +16,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 
+import java.util.List;
+
 import ca.secondlifestory.BaseFragment;
 import ca.secondlifestory.R;
+import ca.secondlifestory.models.Event;
 import ca.secondlifestory.models.PlayerCharacter;
 import ca.secondlifestory.utilities.SimpleDialogFragment;
 
@@ -132,6 +136,18 @@ public class CharacterDetailFragment extends BaseFragment {
                 deleteDialog.show(getFragmentManager(), null, new SimpleDialogFragment.OnPositiveCloseListener() {
                     @Override
                     public void onPositiveClose() {
+
+                        ParseQuery<Event> events = Event.getQuery();
+                        events.whereEqualTo(Event.KEY_CHARACTER, mItem.getObjectId());
+                        events.findInBackground(new FindCallback<Event>() {
+                            @Override
+                            public void done(List<Event> objects, ParseException e) {
+                                if (e == null) {
+                                    Event.deleteAllInBackground(objects);
+                                }
+                            }
+                        });
+
                         mItem.unpinInBackground();
                         mItem.deleteEventually();
 

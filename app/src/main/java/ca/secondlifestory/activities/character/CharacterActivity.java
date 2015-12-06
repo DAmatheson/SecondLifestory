@@ -193,6 +193,8 @@ public class CharacterActivity extends BaseActivity implements CharacterListFrag
                 } else {
                     index = ListView.INVALID_POSITION;
                 }
+
+                previouslySelectedListIndex = ListView.INVALID_POSITION;
             } else {
                 index = listFragment.getListView().getCheckedItemPosition();
             }

@@ -181,7 +181,7 @@ public class EventUpsertFragment extends BaseFragment {
         eventTypeSpinner = (Spinner) v.findViewById(R.id.upsert_event_type);
 
         ArrayAdapter<String> eventTypeAdapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_dropdown_item_1line,
+                R.layout.dropdown_item_1line,
                 typeItems.keySet().toArray(new String[typeItems.size()]));
 
         eventTypeSpinner.setAdapter(eventTypeAdapter);

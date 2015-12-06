@@ -26,10 +26,11 @@
 
     <TextView
         android:id="@+id/upsert_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/pageHeader"
+        android:layout_alignParentTop="true"
         android:text="@string/create_character"
-        style="@style/pageHeader" />
+        android:maxLines="2"
+        android:ellipsize="end" />
 
     <EditText
         android:id="@+id/upsert_character_name"
@@ -79,19 +80,14 @@
 
     <Button
         android:id="@+id/upsert_cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/secondaryButton"
         android:layout_alignParentBottom="true"
-        android:text="@string/cancel"
-        android:background="@drawable/button_secondary_background_roundedcorner"/>
+        android:text="@string/cancel" />
 
     <Button
         android:id="@+id/upsert_save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/primaryButton"
         android:layout_alignTop="@id/upsert_cancel"
-        android:layout_alignParentRight="true"
-        android:text="@string/save"
-        android:background="@drawable/button_background_roundedcorner"/>
+        android:text="@string/save" />
 
 </RelativeLayout>

@@ -23,14 +23,25 @@ import com.parse.ParseQuery;
 import ca.secondlifestory.BaseFragment;
 import ca.secondlifestory.R;
 import ca.secondlifestory.models.PlayerCharacter;
+import ca.secondlifestory.utilities.SimpleDialogFragment;
 
 /**
  * A fragment representing a single PlayerCharacter detail screen.
  * This fragment is contained in a {@link CharacterActivity}.
+ * <p/>
+ * Activities containing this fragment MUST implement the {@link Callbacks}
+ * interface.
  */
 public class CharacterDetailFragment extends BaseFragment {
+
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     */
     public interface Callbacks {
         void onEditClicked(String characterObjectId);
+        void onCharacterDeleted(String characterObjectId);
     }
 
     /**
@@ -112,6 +123,23 @@ public class CharacterDetailFragment extends BaseFragment {
         });
 
         deleteButton = (Button)rootView.findViewById(R.id.delete_character_button);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SimpleDialogFragment deleteDialog = SimpleDialogFragment.newInstance(R.string.ok,
+                        R.string.delete_character_message,
+                        R.string.no);
+                deleteDialog.show(getFragmentManager(), null, new SimpleDialogFragment.OnPositiveCloseListener() {
+                    @Override
+                    public void onPositiveClose() {
+                        mItem.unpinInBackground();
+                        mItem.deleteEventually();
+
+                        mListener.onCharacterDeleted(characterId);
+                    }
+                });
+            }
+        });
 
         editButton.setEnabled(false);
         deleteButton.setEnabled(false);

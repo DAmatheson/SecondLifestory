@@ -18,6 +18,7 @@
     <string name="save">Save</string>
     <string name="cancel">@android:string/cancel</string>
     <string name="ok">@android:string/ok</string>
+    <string name="no">@android:string/no</string>
 
     <!-- Empty list item text -->
     <string name="eventsEmptyEntry">No Events</string>
@@ -69,6 +70,7 @@
     <string name="event_type_resurrection">Resurrection</string>
     <string name="load_classes_failed_error_message">Failed to load classes.</string>
     <string name="load_races_failed_error_message">Failed to load races.</string>
+    <string name="delete_character_message">Delete This Character?</string>
 
     <!-- Unsorted -->
 </resources>

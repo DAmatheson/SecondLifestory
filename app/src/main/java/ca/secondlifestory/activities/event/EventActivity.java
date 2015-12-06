@@ -179,6 +179,20 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
     }
 
     @Override
+    public void onListLoaded() {
+        /*if (mTwoPane) {
+            if (listFragment.getListAdapter().getCount() > 0) {
+                PlayerCharacter checkedCharacter = (PlayerCharacter) listFragment.getListAdapter().
+                        getItem(listFragment.getListView().getCheckedItemPosition());
+
+                if (checkedCharacter != null) {
+                    detailFragment.setCharacterId(checkedCharacter.getObjectId());
+                }
+            }
+        }*/
+    }
+
+    @Override
     public void onEditClicked(String characterObjectId, String eventId) {
         EventUpsertFragment upsertFragment =
                 EventUpsertFragment.newInstance(characterObjectId, eventId);

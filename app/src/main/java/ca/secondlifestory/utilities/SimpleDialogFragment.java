@@ -10,8 +10,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import ca.secondlifestory.R;
@@ -41,7 +44,7 @@ public class SimpleDialogFragment extends DialogFragment {
     private static final String ARG_POSITIVE_TEXT_RES_ID = "positiveTextResId";
     private static final String ARG_NEGATIVE_TEXT_RES_ID = "negativeTextResId";
 
-    private OnPositiveCloseListener listener;
+    private OnPositiveCloseListener mListener;
 
     private String messageText;
     private int titleTextResId;
@@ -130,11 +133,8 @@ public class SimpleDialogFragment extends DialogFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        try {
-            listener = (OnPositiveCloseListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnPositiveCloseListener");
+        if (activity instanceof OnPositiveCloseListener) {
+            mListener = (OnPositiveCloseListener) activity;
         }
     }
 
@@ -167,7 +167,7 @@ public class SimpleDialogFragment extends DialogFragment {
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            listener.onPositiveClose();
+                            mListener.onPositiveClose();
                         }
                     };
 
@@ -192,5 +192,47 @@ public class SimpleDialogFragment extends DialogFragment {
 
             throw ex;
         }
+    }
+
+    @Override
+    public void show(@NonNull FragmentManager manager, String tag) {
+        if (mListener == null) {
+            throw new IllegalStateException(
+                    "Either "
+                    + getActivity().toString() +
+                    " must implement OnPositiveCloseListener or you must use one of the show " +
+                    "overloads which takes OnPositiveCloseListener as an argument");
+        }
+
+        super.show(manager, tag);
+    }
+
+    @Override
+    public int show(@NonNull FragmentTransaction transaction, String tag) {
+        if (mListener == null) {
+            throw new IllegalStateException(
+                    "Either "
+                    + getActivity().toString() +
+                    " must implement OnPositiveCloseListener or you must use one of the show " +
+                    "overloads which takes OnPositiveCloseListener as an argument");
+        }
+
+        return super.show(transaction, tag);
+    }
+
+    public void show(@NonNull FragmentManager manager,
+                     String tag,
+                     @NonNull OnPositiveCloseListener listener) {
+        mListener = listener;
+
+        super.show(manager, tag);
+    }
+
+    public int show(@NonNull FragmentTransaction transaction,
+                    String tag,
+                    @NonNull OnPositiveCloseListener listener) {
+        mListener = listener;
+
+        return super.show(transaction, tag);
     }
 }

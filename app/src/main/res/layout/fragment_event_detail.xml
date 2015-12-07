@@ -27,7 +27,7 @@
         android:id="@+id/event_detail_title"
         style="@style/pageHeader"
         android:layout_alignParentTop="true"
-        android:text="Title"
+        android:text="@string/event_title"
         android:maxLines="2"
         android:ellipsize="start"
         />
@@ -83,21 +83,14 @@
         android:layout_alignParentBottom="true">
         <Button
             android:id="@+id/delete_event_button"
-            android:text="@string/delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/button_secondary_background_roundedcorner" />
+            style="@style/secondaryButton"
+            android:text="@string/delete" />
 
         <Button
             android:id="@+id/edit_event_button"
+            style="@style/primaryButton"
             android:text="@string/edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/button_background_roundedcorner"
-            android:layout_toRightOf="@id/delete_event_button"
-            android:layout_alignTop="@id/delete_event_button"
-            android:layout_alignParentRight="true"
-            android:layout_marginLeft="10dp" />
+            android:layout_alignTop="@id/delete_event_button" />
     </RelativeLayout>
 
     <ScrollView
@@ -107,7 +100,8 @@
         android:layout_below="@id/event_details_layout"
         android:layout_above="@id/footer"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin">
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:background="@color/background_floating_material_dark">
         <TextView
             android:id="@+id/event_description"
             android:layout_height="wrap_content"

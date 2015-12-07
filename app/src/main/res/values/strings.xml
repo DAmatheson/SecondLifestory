@@ -18,6 +18,7 @@
     <string name="save">Save</string>
     <string name="cancel">@android:string/cancel</string>
     <string name="ok">@android:string/ok</string>
+    <string name="no">@android:string/no</string>
 
     <!-- Empty list item text -->
     <string name="eventsEmptyEntry">No Events</string>
@@ -29,13 +30,17 @@
     <string name="character_class">Class</string>
     <string name="total_xp">Total XP</string>
     <string name="status">Status</string>
+    <string name="delete_character_message">Delete This Character?</string>
 
     <!-- Create/Edit Character -->
     <string name="create_character">Create Character</string>
     <string name="empty_character_name_error_message">Character name can\'t be empty.</string>
+    <string name="load_classes_failed_error_message">Failed to load classes.</string>
+    <string name="load_races_failed_error_message">Failed to load races.</string>
+    <string name="class_label">Class</string>
 
     <!-- Event Details -->
-    <string name="event_title">Source</string>
+    <string name="event_title">Event Title</string>
     <string name="date">Date</string>
     <string name="xp_gained">XP Gained</string>
     <string name="characters_present">Shared By</string>
@@ -43,6 +48,11 @@
 
     <!-- Create/Edit Event -->
     <string name="add_event">Add Event</string>
+    <string name="event_type">Event Type</string>
+    <string name="create_event">Create Event</string>
+    <string name="character_count_hint"># Characters Present</string>
+    <string name="xp_amount_hint">Experience Amount</string>
+    <string name="event_description_hint">Description</string>
 
     <!-- Customize Activity -->
     <string name="custom_races_and_classes">Custom Races &amp; Classes</string>
@@ -70,8 +80,5 @@
     <string name="event_type_event">Event</string>
     <string name="event_type_death">Death</string>
     <string name="event_type_resurrection">Resurrection</string>
-    <string name="load_classes_failed_error_message">Failed to load classes.</string>
-    <string name="load_races_failed_error_message">Failed to load races.</string>
-
     <!-- Unsorted -->
 </resources>

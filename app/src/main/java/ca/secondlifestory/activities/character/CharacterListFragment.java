@@ -13,9 +13,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.parse.ParseQueryAdapter;
+
+import java.util.List;
+
 import ca.secondlifestory.BaseListFragment;
 import ca.secondlifestory.R;
 import ca.secondlifestory.adapters.PlayerCharacterQueryAdapter;
+import ca.secondlifestory.models.PlayerCharacter;
 
 /**
  * A list fragment representing a list of Characters. This fragment
@@ -44,6 +49,20 @@ public class CharacterListFragment extends BaseListFragment {
         adapter = new PlayerCharacterQueryAdapter(getActivity());
 
         setListAdapter(adapter);
+
+        adapter.addOnQueryLoadListener(new ParseQueryAdapter.OnQueryLoadListener<PlayerCharacter>() {
+            @Override
+            public void onLoading() {
+
+            }
+
+            @Override
+            public void onLoaded(List<PlayerCharacter> list, Exception e) {
+                if (e == null) {
+                    mListener.onListLoaded();
+                }
+            }
+        });
     }
 
     @Override

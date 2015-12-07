@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import ca.secondlifestory.BaseActivity;
@@ -47,6 +48,8 @@ public class CharacterActivity extends BaseActivity implements CharacterListFrag
      * device.
      */
     private boolean mTwoPane;
+
+    private int previouslySelectedListIndex = ListView.INVALID_POSITION;
 
     private boolean inEditOrCreateMode = false;
 
@@ -87,6 +90,7 @@ public class CharacterActivity extends BaseActivity implements CharacterListFrag
                     getFragmentManager()
                             .beginTransaction()
                             .replace(R.id.character_detail, createFragment)
+                            .addToBackStack(null)
                             .commit();
                 } else {
                     CharacterActivity.this.getFragmentManager()
@@ -172,6 +176,42 @@ public class CharacterActivity extends BaseActivity implements CharacterListFrag
         }
     }
 
+    @Override
+    public void onListLoaded() {
+        if (mTwoPane) {
+            int index;
+
+            if (previouslySelectedListIndex != ListView.INVALID_POSITION) {
+                if (previouslySelectedListIndex == 0) {
+                    // Select the first item again
+                    index = previouslySelectedListIndex < listFragment.getListAdapter().getCount()
+                            ? previouslySelectedListIndex
+                            : ListView.INVALID_POSITION;
+                } else if (previouslySelectedListIndex - 1 < listFragment.getListAdapter().getCount()) {
+                    // Select the item before the previously selected item
+                    index = previouslySelectedListIndex - 1;
+                } else {
+                    index = ListView.INVALID_POSITION;
+                }
+
+                previouslySelectedListIndex = ListView.INVALID_POSITION;
+            } else {
+                index = listFragment.getListView().getCheckedItemPosition();
+            }
+
+            if (listFragment.getListAdapter().getCount() > 0 && index != ListView.INVALID_POSITION) {
+                PlayerCharacter checkedCharacter = (PlayerCharacter) listFragment.getListAdapter().
+                        getItem(index);
+
+                listFragment.setSelection(index);
+
+                if (checkedCharacter != null) {
+                    detailFragment.setCharacterId(checkedCharacter.getObjectId());
+                }
+            }
+        }
+    }
+
     public void viewEventsButtonClicked(View view) {
         TextView idView = (TextView) ((ViewGroup)view.getParent()).findViewById(R.id.character_id);
 
@@ -191,6 +231,9 @@ public class CharacterActivity extends BaseActivity implements CharacterListFrag
         getFragmentManager().popBackStack();
 
         listFragment.notifyListChanged();
+
+        // TODO: Make the list load method select the new item
+        //       This is going to be hard to do while using the parse query adapter.
     }
 
     @Override
@@ -240,5 +283,24 @@ public class CharacterActivity extends BaseActivity implements CharacterListFrag
                     .addToBackStack(null)
                     .commit();
         }
+    }
+
+    @Override
+    public void onCharacterDeleted(String characterObjectId) {
+        if (mTwoPane) {
+            detailFragment = new CharacterDetailFragment();
+
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.character_detail, detailFragment)
+                    .commit();
+        } else {
+            // Go back to the list fragment
+            getFragmentManager().popBackStack();
+        }
+
+        previouslySelectedListIndex = listFragment.getListView().getCheckedItemPosition();
+
+        listFragment.notifyListChanged();
     }
 }

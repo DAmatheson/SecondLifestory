@@ -198,7 +198,7 @@ public class CharacterUpsertFragment extends BaseFragment {
             detailsText.setText(savedInstanceState.getString(STATE_DETAILS));
 
             setupRaceSpinnerItems(savedInstanceState.getParcelable(STATE_RACE_SPINNER));
-            setupClassSpinnerItems(savedInstanceState.getParcelable(STATE_RACE_SPINNER));
+            setupClassSpinnerItems(savedInstanceState.getParcelable(STATE_CLASS_SPINNER));
         } else if (getArguments() != null) {
             inEditMode = getArguments().getBoolean(ARG_IN_EDIT_MODE);
             characterId = getArguments().getString(ARG_CHARACTER_ID);
@@ -308,7 +308,7 @@ public class CharacterUpsertFragment extends BaseFragment {
                     public ParseQuery<CharacterClass> create() {
                         return CharacterClass.getQuery();
                     }
-                });
+                }, R.layout.dropdown_item_1line);
 
         classQueryAdapter.setTextKey(CharacterClass.KEY_NAME);
         classSpinner.setAdapter(classQueryAdapter);
@@ -367,7 +367,7 @@ public class CharacterUpsertFragment extends BaseFragment {
 
                         return query;
                     }
-                });
+                }, R.layout.dropdown_item_1line);
 
         raceQueryAdapter.setTextKey(Race.KEY_NAME);
         raceSpinner.setAdapter(raceQueryAdapter);

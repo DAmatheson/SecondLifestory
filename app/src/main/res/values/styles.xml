@@ -15,6 +15,10 @@
     </style>
 
     <style name="fragmentLayout" parent="activityLayout">
+        <!--<item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>-->
     </style>
 
     <!-- style for empty list view items -->
@@ -57,19 +61,26 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="pageHeader.eventListCharacterName">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_toLeftOf">@id/add_event_button</item>
-        <item name="android:layout_alignParentLeft">true</item>
-        <item name="android:paddingRight">4sp</item>
-        <item name="android:maxLines">2</item>
-        <item name="android:ems">14</item>
-    </style>
-
     <style name="eventListAddEventButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_alignParentRight">true</item>
         <item name="android:background">@drawable/button_background_roundedcorner</item>
+    </style>
+
+    <style name="primaryButton">
+        <item name="android:background">@drawable/button_background_roundedcorner</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:paddingLeft">40dp</item>
+        <item name="android:paddingRight">40dp</item>
+    </style>
+
+    <style name="secondaryButton" parent="primaryButton">
+        <item name="android:background">@drawable/button_secondary_background_roundedcorner</item>
+        <item name="android:layout_alignParentRight">false</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
     </style>
 </resources>

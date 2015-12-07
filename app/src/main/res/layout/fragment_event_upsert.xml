@@ -28,20 +28,28 @@
         android:id="@+id/upsert_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Create Event"
+        android:text="@string/create_event"
         style="@style/pageHeader"/>
+
+    <TextView
+        android:id="@+id/upsert_event_type_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/event_type"
+        android:layout_below="@id/upsert_title" />
 
     <Spinner
         android:id="@+id/upsert_event_type"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/upsert_title"/>
+        android:layout_height="40dp"
+        android:layout_below="@id/upsert_event_type_label"/>
 
     <EditText
         android:id="@+id/upsert_event_character_count"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Character Count"
+        android:hint="@string/character_count_hint"
+        android:inputType="number"
         android:singleLine="true"
         android:layout_below="@id/upsert_event_type"/>
 
@@ -49,7 +57,8 @@
         android:id="@+id/upsert_event_experience"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Experience Amount"
+        android:hint="@string/xp_amount_hint"
+        android:inputType="number"
         android:singleLine="true"
         android:layout_below="@id/upsert_event_character_count"/>
 
@@ -57,26 +66,22 @@
         android:id="@+id/upsert_event_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Description"
-        android:minLines="1"
+        android:hint="@string/event_description_hint"
+        android:inputType="text|textCapSentences|textMultiLine|textLongMessage"
+        android:minLines="2"
         android:maxLines="8"
         android:layout_below="@id/upsert_event_experience"/>
 
     <Button
-        android:id="@+id/upsert_save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/upsert_event_description"
-        android:text="@string/save"
-        android:background="@drawable/button_background_roundedcorner"/>
+        android:id="@+id/upsert_cancel"
+        style="@style/secondaryButton"
+        android:text="@string/cancel"
+        android:layout_alignParentBottom="true"/>
 
     <Button
-        android:id="@+id/upsert_cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/upsert_save"
-        android:layout_alignTop="@id/upsert_save"
-        android:text="@string/cancel"
-        android:background="@drawable/button_background_roundedcorner"/>
+        android:id="@+id/upsert_save"
+        style="@style/primaryButton"
+        android:layout_alignTop="@id/upsert_cancel"
+        android:text="@string/save" />
 
 </RelativeLayout>

@@ -25,6 +25,7 @@ public class BaseListFragment extends android.app.ListFragment {
          * Callback for when an item has been selected.
          */
         void onItemSelected(String id);
+        void onListLoaded();
     }
 
     /**
@@ -62,6 +63,13 @@ public class BaseListFragment extends android.app.ListFragment {
 
         // Reset the active callbacks interface to the dummy implementation.
         mListener = null;
+    }
+
+    @Override
+    public void setSelection(int position) {
+        super.setSelection(position);
+
+        setActivatedPosition(position);
     }
 
     /**

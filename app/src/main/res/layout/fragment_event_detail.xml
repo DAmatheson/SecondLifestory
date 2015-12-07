@@ -27,7 +27,6 @@
         android:id="@+id/event_detail_title"
         style="@style/pageHeader"
         android:layout_alignParentTop="true"
-        android:text="@string/event_title"
         android:maxLines="2"
         android:ellipsize="start"
         />

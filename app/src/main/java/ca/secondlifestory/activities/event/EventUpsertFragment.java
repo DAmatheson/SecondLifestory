@@ -232,18 +232,76 @@ public class EventUpsertFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 EventTypes value = typeItems.get(eventTypeSpinner.getSelectedItem().toString());
-                String title = titleText.getText().toString();
-                String description = descriptionText.getText().toString();
-                int xpAmount = Integer.parseInt(xpAmountText.getText().toString());
-                int characterCount = Integer.parseInt(characterCountText.getText().toString());
+                String title = titleText.getText().toString().trim();
+                String description = descriptionText.getText().toString().trim();
+                String xpAmountString = xpAmountText.getText().toString().trim();
+                String characterCountString = characterCountText.getText().toString().trim();
 
-                // TODO: Validate values here
+                String firstErrorMessage = null;
+
+                if (title.equals("")) {
+                    firstErrorMessage = "Title is required.";
+
+                    titleText.setError("Required");
+                }
+
+                if (xpAmountString.equals("") ||
+                        xpAmountString.equals("-") ||
+                        xpAmountString.equals("+")) {
+                    if (firstErrorMessage == null) firstErrorMessage = "XP Gained is required.";
+
+                    xpAmountText.setError("Required.");
+                }
+
+                if (characterCountString.equals("")) {
+                    if (firstErrorMessage == null)
+                        firstErrorMessage = "# Characters Present is required.";
+
+                    characterCountText.setError("Required.");
+                }
+
+                if (firstErrorMessage != null) {
+                    Toast.makeText(EventUpsertFragment.this.getActivity(),
+                            firstErrorMessage,
+                            Toast.LENGTH_SHORT)
+                            .show();
+
+                    return;
+                }
+
+                final int characterCount = Integer.parseInt(characterCountString);
+
+                if (characterCount < 1) {
+                    Toast.makeText(EventUpsertFragment.this.getActivity(),
+                            "# Characters present must be greater than zero.",
+                            Toast.LENGTH_SHORT).
+                            show();
+
+                    characterCountText.setError("Must be greater than zero.");
+
+                    return;
+                }
+
+                final int xpAmount = Integer.parseInt(xpAmountString);
 
                 event.setTitle(title);
                 event.setEventType(value);
                 event.setCharacterCount(characterCount);
                 event.setExperience(xpAmount);
                 event.setDescription(description);
+
+                ParseQuery<PlayerCharacter> query = PlayerCharacter.getQuery();
+                query.getInBackground(characterId, new GetCallback<PlayerCharacter>() {
+                    @Override
+                    public void done(PlayerCharacter object, ParseException e) {
+                        if (!inEditMode) {
+                            object.addExperience(xpAmount / characterCount);
+                        } else {
+                            // TODO: Get the delta between the old and new XP amount.
+                        }
+                        object.saveEventually();
+                    }
+                });
 
                 if (event.getDate() == null) {
                     event.setDate(new Date());

@@ -67,7 +67,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/xp_amount_hint"
-        android:inputType="number"
+        android:inputType="numberSigned"
         android:singleLine="true"
         android:layout_below="@id/upsert_event_character_count"/>
 

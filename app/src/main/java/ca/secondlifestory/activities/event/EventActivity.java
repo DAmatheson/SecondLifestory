@@ -88,10 +88,13 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
             public void onClick(View v) {
                 EventUpsertFragment upsertFragment = EventUpsertFragment.newInstance(characterId);
 
+                inEditOrCreateMode = true;
+
                 if (mTwoPane) {
                     getFragmentManager()
                             .beginTransaction()
                             .replace(R.id.event_detail, upsertFragment)
+                            .addToBackStack(null)
                             .commit();
                 } else {
                     EventActivity.this.getFragmentManager()
@@ -187,7 +190,7 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
 
     @Override
     public void onListLoaded() {
-        /*if (mTwoPane) {
+        if (mTwoPane) {
             int index;
 
             if (previouslySelectedListIndex != ListView.INVALID_POSITION) {
@@ -209,16 +212,15 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
             }
 
             if (listFragment.getListAdapter().getCount() > 0 && index != ListView.INVALID_POSITION) {
-                PlayerCharacter checkedCharacter = (PlayerCharacter) listFragment.getListAdapter().
-                        getItem(index);
+                Event checkedEvent = (Event) listFragment.getListAdapter().getItem(index);
 
                 listFragment.setSelection(index);
 
-                if (checkedCharacter != null) {
-                    detailFragment.setCharacterId(checkedCharacter.getObjectId());
+                if (checkedEvent != null) {
+                    detailFragment.setEventId(checkedEvent.getObjectId());
                 }
             }
-        }*/
+        }
     }
 
     //region EventDetailFragment.Callbacks methods
@@ -251,7 +253,7 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
 
             getFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.character_detail, detailFragment)
+                    .replace(R.id.event_detail, detailFragment)
                     .commit();
         } else {
             // Go back to the list fragment

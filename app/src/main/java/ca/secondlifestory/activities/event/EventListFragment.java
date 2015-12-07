@@ -13,9 +13,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.parse.ParseQueryAdapter;
+
+import java.util.List;
+
 import ca.secondlifestory.BaseListFragment;
 import ca.secondlifestory.R;
 import ca.secondlifestory.adapters.EventQueryAdapter;
+import ca.secondlifestory.models.Event;
 
 /**
  * A list fragment representing a list of Events. This fragment
@@ -64,6 +69,20 @@ public class EventListFragment extends BaseListFragment {
         adapter = new EventQueryAdapter(getActivity(), characterObjectId);
 
         setListAdapter(adapter);
+
+        adapter.addOnQueryLoadListener(new ParseQueryAdapter.OnQueryLoadListener<Event>() {
+            @Override
+            public void onLoading() {
+
+            }
+
+            @Override
+            public void onLoaded(List<Event> list, Exception e) {
+                if (e == null) {
+                    mListener.onListLoaded();
+                }
+            }
+        });
     }
 
     @Override

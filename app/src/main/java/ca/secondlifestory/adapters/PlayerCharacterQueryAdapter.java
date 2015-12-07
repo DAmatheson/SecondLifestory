@@ -30,7 +30,11 @@ public class PlayerCharacterQueryAdapter extends ParseQueryAdapter<PlayerCharact
 
             @Override
             public ParseQuery<PlayerCharacter> create() {
-                return PlayerCharacter.getQuery();
+                ParseQuery<PlayerCharacter> query = PlayerCharacter.getQuery();
+
+                query.orderByAscending("createdAt");
+
+                return query;
             }
         });
     }

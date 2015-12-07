@@ -127,6 +127,10 @@ public class EventDetailFragment extends BaseFragment {
                     @Override
                     public void onPositiveClose() {
 
+                        // Remove the experience from the event
+                        mItem.getCharacter().subtractExperience(mItem.getExperience());
+                        mItem.getCharacter().saveEventually();
+
                         mItem.unpinInBackground();
                         mItem.deleteEventually();
 
@@ -202,7 +206,7 @@ public class EventDetailFragment extends BaseFragment {
                     description.setText(mItem.getDescription());
                 } else {
                     // TODO: Error handling
-                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(EventDetailFragment.this.getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
         });

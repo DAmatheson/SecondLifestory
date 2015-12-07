@@ -75,9 +75,17 @@
     <string name="delete_race">Delete Race</string>
     <string name="delete_class">Delete Class</string>
     <string name="new_race_created_message">New race saved.</string>
+    <string name="new_race_already_exists">There is already a race with that name.</string>
     <string name="empty_race_name_error_message">Race name can\'t be empty.</string>
     <string name="new_class_created_message">New class saved.</string>
+    <string name="new_class_already_exists">There is already a class with that name.</string>
     <string name="empty_class_name_error_message">Class name can\'t be empty.</string>
+    <string name="cannot_delete_race">This race is in use by a character and cannot be deleted.</string>
+    <string name="delete_race_confirm">Delete This Race?</string>
+    <string name="race_deleted_message">Race Deleted.</string>
+    <string name="cannot_delete_class">This class is in use by a character and cannot be deleted.</string>
+    <string name="delete_class_confirm">Delete This Class?</string>
+    <string name="class_deleted_message">Class Deleted.</string>
 
     <!-- Settings Activity -->
     <string name="tutorials">Tutorials and FAQs</string>

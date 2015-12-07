@@ -90,6 +90,7 @@
 
 
     <Space
+        android:id="@+id/delete_class_spacer"
         android:layout_width="match_parent"
         android:layout_height="@dimen/standard_padding" />
 

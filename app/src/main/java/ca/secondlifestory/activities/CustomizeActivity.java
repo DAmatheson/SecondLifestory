@@ -48,6 +48,7 @@ public class CustomizeActivity extends BaseActivity {
     private Button saveClassButton;
 
     private Space deleteRaceSpacer;
+    private Space deleteClassSpacer;
     private TextView deleteRaceLabel;
     private TextView deleteClassLabel;
 
@@ -72,6 +73,7 @@ public class CustomizeActivity extends BaseActivity {
         saveClassButton = (Button) findViewById(R.id.new_class_button);
 
         deleteRaceSpacer = (Space) findViewById(R.id.delete_race_spacer);
+        deleteClassSpacer = (Space) findViewById(R.id.delete_class_spacer);
         deleteRaceLabel = (TextView) findViewById(R.id.delete_race_label);
         deleteClassLabel = (TextView) findViewById(R.id.delete_class_label);
 
@@ -165,10 +167,12 @@ public class CustomizeActivity extends BaseActivity {
             public void done(int count, ParseException e) {
                 if (e == null) {
                     if (count > 0) {
+                        deleteClassSpacer.setVisibility(View.VISIBLE);
                         deleteClassLabel.setVisibility(View.VISIBLE);
                         classSpinner.setVisibility(View.VISIBLE);
                         deleteClassButton.setVisibility(View.VISIBLE);
                     } else {
+                        deleteClassSpacer.setVisibility(View.GONE);
                         deleteClassLabel.setVisibility(View.GONE);
                         classSpinner.setVisibility(View.GONE);
                         deleteClassButton.setVisibility(View.GONE);

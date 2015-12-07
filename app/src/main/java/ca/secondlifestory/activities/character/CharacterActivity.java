@@ -11,10 +11,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import ca.secondlifestory.BaseActivity;
 import ca.secondlifestory.activities.CustomizeActivity;
@@ -213,9 +211,10 @@ public class CharacterActivity extends BaseActivity implements CharacterListFrag
     }
 
     public void viewEventsButtonClicked(View view) {
-        TextView idView = (TextView) ((ViewGroup)view.getParent()).findViewById(R.id.character_id);
-
-        String characterObjectId = idView.getText().toString();
+        String characterObjectId = ((PlayerCharacter)listFragment
+                .getListAdapter()
+                    .getItem(listFragment.getListView().getPositionForView(view)))
+            .getObjectId();
 
         Intent eventActivityIntent = new Intent(this, EventActivity.class);
         eventActivityIntent.putExtra(EventActivity.ARG_CHARACTER_ID, characterObjectId);

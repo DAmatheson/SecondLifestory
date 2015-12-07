@@ -67,7 +67,7 @@ public class Race extends ParseObject {
         ParseQuery<Race> query = ParseQuery.getQuery(Race.class);
         query.whereEqualTo(Race.KEY_USER, ParseUser.getCurrentUser());
 
-        //query.fromLocalDatastore();
+        query.fromLocalDatastore();
 
         return query;
     }

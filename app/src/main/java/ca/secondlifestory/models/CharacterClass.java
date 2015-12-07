@@ -67,7 +67,7 @@ public class CharacterClass extends ParseObject {
         ParseQuery<CharacterClass> query = ParseQuery.getQuery(CharacterClass.class);
         query.whereEqualTo(KEY_USER, ParseUser.getCurrentUser());
 
-        //query.fromLocalDatastore();
+        query.fromLocalDatastore();
 
         return query;
     }

@@ -24,6 +24,7 @@
 
         <Button
             android:id="@+id/tutorials"
+            style="@style/primaryButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/standard_padding"
@@ -32,20 +33,21 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:padding="@dimen/standard_padding"
+            android:layout_margin="@dimen/standard_padding"
             android:background="#ffffff"/>
 
         <Button
             android:id="@+id/delete_all_characters_button"
+            style="@style/secondaryButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/standard_padding"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginBottom="@dimen/standard_padding"
             android:text="@string/delete_all_characters"/>
         <Button
             android:id="@+id/delete_all_data_button"
+            style="@style/secondaryButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/standard_padding"
+            android:layout_height="@dimen/button_height"
             android:text="@string/delete_all_data"/>
     </LinearLayout>
 

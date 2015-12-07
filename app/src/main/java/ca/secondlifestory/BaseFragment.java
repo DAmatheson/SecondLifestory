@@ -9,6 +9,7 @@ package ca.secondlifestory;
 import android.app.Fragment;
 
 import ca.secondlifestory.utilities.LifestoryLogger;
+import ca.secondlifestory.utilities.LoggerSingleton;
 
 /**
  * Base fragment class for Second Lifestory
@@ -20,6 +21,6 @@ public abstract class BaseFragment extends Fragment {
      * @return  The logger for the application
      */
     protected LifestoryLogger getLogger() {
-        return ((Application)getActivity().getApplication()).getLogger();
+        return LoggerSingleton.getInstance();
     }
 }

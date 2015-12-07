@@ -35,10 +35,12 @@
             android:text="@string/save_new_race" />
 
         <Space
+            android:id="@+id/delete_race_spacer"
             android:layout_width="match_parent"
             android:layout_height="@dimen/activity_vertical_margin" />
 
         <TextView
+            android:id="@+id/delete_race_label"
             style="@style/detailTextViewLabel"
             android:text="@string/delete_race" />
         <Spinner
@@ -73,10 +75,12 @@
             android:text="@string/save_new_class" />
 
         <Space
+            android:id="@+id/delete_class_spacer"
             android:layout_width="match_parent"
             android:layout_height="@dimen/activity_vertical_margin" />
 
         <TextView
+            android:id="@+id/delete_class_label"
             style="@style/detailTextViewLabel"
             android:text="@string/delete_class" />
         <Spinner

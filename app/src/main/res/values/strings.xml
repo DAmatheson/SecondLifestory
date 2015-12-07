@@ -2,7 +2,7 @@
     <string name="app_name">Second Lifestory</string>
 
     <!-- Activity titles -->
-    <string name="title_activity_login">Login</string>
+    <string name="title_activity_login">Connecting...</string>
     <string name="title_activity_character">Characters</string>
     <string name="title_activity_event">Events</string>
     <string name="title_activity_customize">Customize</string>

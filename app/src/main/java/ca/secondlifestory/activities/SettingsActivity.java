@@ -64,7 +64,7 @@ public class SettingsActivity extends BaseActivity {
                             Toast.makeText(SettingsActivity.this,
                                     R.string.delete_all_characters_success,
                                     Toast.LENGTH_SHORT)
-                                    .show();
+                                .show();
                         }
                     }
                 );
@@ -113,6 +113,10 @@ public class SettingsActivity extends BaseActivity {
             @Override
             public void done(List<Race> objects, ParseException e) {
                 Race.deleteAllInBackground(objects);
+
+                Race.setupDefaultRaces(
+                        SettingsActivity.this.getResources()
+                                .getStringArray(R.array.defaultRaceNames));
             }
         });
 
@@ -121,6 +125,10 @@ public class SettingsActivity extends BaseActivity {
             @Override
             public void done(List<CharacterClass> objects, ParseException e) {
                 CharacterClass.deleteAllInBackground(objects);
+
+                CharacterClass.setupDefaultClasses(
+                        SettingsActivity.this.getResources()
+                                .getStringArray(R.array.defaultCharacterClassNames));
             }
         });
     }

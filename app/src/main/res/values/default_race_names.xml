@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="defaultRaceNames">
+        <item>Dwarf</item>
+        <item>Human</item>
+        <item>Halfling</item>
+        <item>Elf</item>
+        <item>Half-elf</item>
+        <item>Half-orc</item>
+        <item>Gnome</item>
+        <item>Dragonborn</item>
+        <item>Tiefling</item>
+    </string-array>
+</resources>

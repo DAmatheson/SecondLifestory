@@ -11,7 +11,6 @@ package ca.secondlifestory.activities;
 import android.content.Intent;
 import android.provider.Settings;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.parse.LogInCallback;
 import com.parse.ParseException;
@@ -21,6 +20,8 @@ import com.parse.SignUpCallback;
 import ca.secondlifestory.BaseActivity;
 import ca.secondlifestory.R;
 import ca.secondlifestory.activities.character.CharacterActivity;
+import ca.secondlifestory.models.CharacterClass;
+import ca.secondlifestory.models.Race;
 import ca.secondlifestory.utilities.SimpleDialogFragment;
 
 /**
@@ -41,10 +42,9 @@ public class LoginActivity extends BaseActivity implements SimpleDialogFragment.
             public void done(ParseUser user, ParseException e) {
                 if (user != null) {
                     startCharacterActivity();
-                } else if (e == null) {
-                   createNewUser(androidId);
-                }
-                else {
+                } else if (e == null || e.getCode() == ParseException.OBJECT_NOT_FOUND) {
+                    createNewUser(androidId);
+                } else {
                     LoginActivity.this.showLoginErrorAndFinish(e);
                 }
             }
@@ -65,7 +65,13 @@ public class LoginActivity extends BaseActivity implements SimpleDialogFragment.
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    // TODO: Populate the default races and classes
+                    Race.setupDefaultRaces(
+                            LoginActivity.this.getResources()
+                                    .getStringArray(R.array.defaultRaceNames));
+
+                    CharacterClass.setupDefaultClasses(
+                            LoginActivity.this.getResources()
+                                    .getStringArray(R.array.defaultCharacterClassNames));
 
                     startCharacterActivity();
                 } else {
@@ -91,18 +97,19 @@ public class LoginActivity extends BaseActivity implements SimpleDialogFragment.
      * @param e The ParseException from the failed login
      */
     private void showLoginErrorAndFinish(ParseException e) {
-        Log.e("LoginActivity", "ParseException code: " + e.getCode(), e);
+        getLogger().exception("LoginActivity", "ParseException code: " + e.getCode(), e);
 
         SimpleDialogFragment dialog;
 
         if (e.getCode() == ParseException.OBJECT_NOT_FOUND) {
             dialog = SimpleDialogFragment.newInstance(R.string.ok,
-                "Invalid login credentials.");
+                    getString(R.string.login_activity_invalid_credentials));
         } else {
             dialog = SimpleDialogFragment.newInstance(R.string.ok,
-                "You must have an internet connection available when starting Second Lifestory");
+                    getString(R.string.login_activity_internet_connection_required));
         }
 
+        dialog.onAttach(this); // TODO: Need to manually attach. Not sure why
         dialog.show(getFragmentManager(), null);
     }
 

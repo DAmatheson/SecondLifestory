@@ -24,6 +24,10 @@
     <string name="eventsEmptyEntry">No Events</string>
     <string name="charactersEmptyEntry">No Characters</string>
 
+    <!-- Login Activity -->
+    <string name="login_activity_internet_connection_required">You must have an internet connection available when starting Second Lifestory</string>
+    <string name="login_activity_invalid_credentials">Invalid login credentials.</string>
+
     <!-- Character Details -->
     <string name="character_name">Character Name</string>
     <string name="race">Race</string>

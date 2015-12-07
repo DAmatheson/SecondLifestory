@@ -11,12 +11,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Space;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import ca.secondlifestory.BaseActivity;
 
+import com.parse.CountCallback;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -45,6 +47,10 @@ public class CustomizeActivity extends BaseActivity {
     private Button saveRaceButton;
     private Button saveClassButton;
 
+    private Space deleteRaceSpacer;
+    private TextView deleteRaceLabel;
+    private TextView deleteClassLabel;
+
     private Spinner raceSpinner;
     private Spinner classSpinner;
 
@@ -64,6 +70,10 @@ public class CustomizeActivity extends BaseActivity {
 
         saveRaceButton = (Button) findViewById(R.id.new_race_button);
         saveClassButton = (Button) findViewById(R.id.new_class_button);
+
+        deleteRaceSpacer = (Space) findViewById(R.id.delete_race_spacer);
+        deleteRaceLabel = (TextView) findViewById(R.id.delete_race_label);
+        deleteClassLabel = (TextView) findViewById(R.id.delete_class_label);
 
         raceSpinner = (Spinner) findViewById(R.id.race_spinner);
         TextView racePlaceholder = new TextView(this);
@@ -106,9 +116,32 @@ public class CustomizeActivity extends BaseActivity {
                     public ParseQuery<Race> create() {
                         return Race.getQuery();
                     }
-                });
+                }, R.layout.dropdown_item_1line);
         raceQueryAdapter.setTextKey(Race.KEY_NAME);
         raceSpinner.setAdapter(raceQueryAdapter);
+
+        setDeleteRaceControlVisibility();
+    }
+
+    private void setDeleteRaceControlVisibility() {
+        Race.getQuery().countInBackground(new CountCallback() {
+            @Override
+            public void done(int count, ParseException e) {
+                if (e == null) {
+                    if (raceQueryAdapter.getCount() == 0) {
+                        deleteRaceSpacer.setVisibility(View.GONE);
+                        deleteRaceLabel.setVisibility(View.GONE);
+                        raceSpinner.setVisibility(View.GONE);
+                        deleteRaceButton.setVisibility(View.GONE);
+                    } else {
+                        deleteRaceSpacer.setVisibility(View.VISIBLE);
+                        deleteRaceLabel.setVisibility(View.VISIBLE);
+                        raceSpinner.setVisibility(View.VISIBLE);
+                        deleteRaceButton.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        });
     }
 
     private void setupClassSpinnerItems() {
@@ -119,9 +152,30 @@ public class CustomizeActivity extends BaseActivity {
                     public ParseQuery<CharacterClass> create() {
                         return CharacterClass.getQuery();
                     }
-                });
+                }, R.layout.dropdown_item_1line);
         classQueryAdapter.setTextKey(CharacterClass.KEY_NAME);
         classSpinner.setAdapter(classQueryAdapter);
+
+        setDeleteClassControlVisibility();
+    }
+
+    private void setDeleteClassControlVisibility() {
+        CharacterClass.getQuery().countInBackground(new CountCallback() {
+            @Override
+            public void done(int count, ParseException e) {
+                if (e == null) {
+                    if (count > 0) {
+                        deleteClassLabel.setVisibility(View.VISIBLE);
+                        classSpinner.setVisibility(View.VISIBLE);
+                        deleteClassButton.setVisibility(View.VISIBLE);
+                    } else {
+                        deleteClassLabel.setVisibility(View.GONE);
+                        classSpinner.setVisibility(View.GONE);
+                        deleteClassButton.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
     }
 
     private void setupClickListeners() {
@@ -155,15 +209,20 @@ public class CustomizeActivity extends BaseActivity {
                                         Toast.LENGTH_LONG)
                                         .show();
                             } else {
-                                newRace.pinInBackground();
-                                newRace.saveEventually();
+                                newRace.pinInBackground(new SaveCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                        newRace.saveEventually();
+                                        raceQueryAdapter.loadObjects();
+                                        setDeleteRaceControlVisibility();
 
-                                Toast.makeText(CustomizeActivity.this,
-                                        R.string.new_race_created_message,
-                                        Toast.LENGTH_SHORT)
-                                        .show();
+                                        Toast.makeText(CustomizeActivity.this,
+                                                R.string.new_race_created_message,
+                                                Toast.LENGTH_SHORT)
+                                                .show();
+                                    }
+                                });
 
-                                raceQueryAdapter.loadObjects();
                             }
                         }
                     }
@@ -201,15 +260,19 @@ public class CustomizeActivity extends BaseActivity {
                                         Toast.LENGTH_LONG)
                                         .show();
                             } else {
-                                newClass.pinInBackground();
-                                newClass.saveEventually();
+                                newClass.pinInBackground(new SaveCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                        newClass.saveEventually();
+                                        classQueryAdapter.loadObjects();
+                                        setDeleteClassControlVisibility();
 
-                                Toast.makeText(CustomizeActivity.this,
-                                        R.string.new_class_created_message,
-                                        Toast.LENGTH_SHORT)
-                                        .show();
-
-                                classQueryAdapter.loadObjects();
+                                        Toast.makeText(CustomizeActivity.this,
+                                                R.string.new_class_created_message,
+                                                Toast.LENGTH_SHORT)
+                                                .show();
+                                    }
+                                });
                             }
                         }
                     }
@@ -256,15 +319,19 @@ public class CustomizeActivity extends BaseActivity {
                                             }
                                         });
 
-                                        race.unpinInBackground();
-                                        race.deleteEventually();
+                                        race.unpinInBackground(new DeleteCallback() {
+                                            @Override
+                                            public void done(ParseException e) {
+                                                race.deleteEventually();
+                                                raceQueryAdapter.loadObjects();
+                                                setDeleteRaceControlVisibility();
 
-                                        Toast.makeText(CustomizeActivity.this,
-                                                R.string.race_deleted_message,
-                                                Toast.LENGTH_SHORT)
-                                                .show();
-
-                                        raceQueryAdapter.loadObjects();
+                                                Toast.makeText(CustomizeActivity.this,
+                                                        R.string.race_deleted_message,
+                                                        Toast.LENGTH_SHORT)
+                                                        .show();
+                                            }
+                                        });
                                     }
                                 });
                             }
@@ -313,15 +380,19 @@ public class CustomizeActivity extends BaseActivity {
                                             }
                                         });
 
-                                        characterClass.unpinInBackground();
-                                        characterClass.deleteEventually();
+                                        characterClass.unpinInBackground(new DeleteCallback() {
+                                            @Override
+                                            public void done(ParseException e) {
+                                                characterClass.deleteEventually();
+                                                classQueryAdapter.loadObjects();
+                                                setDeleteClassControlVisibility();
 
-                                        Toast.makeText(CustomizeActivity.this,
-                                                R.string.class_deleted_message,
-                                                Toast.LENGTH_SHORT)
-                                                .show();
-
-                                        classQueryAdapter.loadObjects();
+                                                Toast.makeText(CustomizeActivity.this,
+                                                        R.string.class_deleted_message,
+                                                        Toast.LENGTH_SHORT)
+                                                        .show();
+                                            }
+                                        });
                                     }
                                 });
                             }

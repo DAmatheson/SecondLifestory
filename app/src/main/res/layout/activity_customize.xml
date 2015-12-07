@@ -63,10 +63,12 @@
     </LinearLayout>
 
     <Space
+        android:id="@+id/delete_race_spacer"
         android:layout_width="match_parent"
         android:layout_height="@dimen/standard_padding" />
 
     <TextView
+        android:id="@+id/delete_race_label"
         style="@style/detailTextViewLabel"
         android:text="@string/delete_race" />
     <LinearLayout
@@ -92,6 +94,7 @@
         android:layout_height="@dimen/standard_padding" />
 
     <TextView
+        android:id="@+id/delete_class_label"
         style="@style/detailTextViewLabel"
         android:text="@string/delete_class" />
     <LinearLayout

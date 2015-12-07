@@ -71,4 +71,15 @@ public class CharacterClass extends ParseObject {
 
         return query;
     }
+
+    public static void setupDefaultClasses(String[] classNames) {
+        for (String className : classNames) {
+            CharacterClass newClass = new CharacterClass();
+            newClass.setName(className);
+            newClass.setUser(ParseUser.getCurrentUser());
+
+            newClass.pinInBackground();
+            newClass.saveEventually();
+        }
+    }
 }

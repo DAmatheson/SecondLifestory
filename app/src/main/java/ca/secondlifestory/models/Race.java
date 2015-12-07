@@ -71,4 +71,15 @@ public class Race extends ParseObject {
 
         return query;
     }
+
+    public static void setupDefaultRaces(String[] races) {
+        for (String raceName: races) {
+            Race race = new Race();
+            race.setName(raceName);
+            race.setUser(ParseUser.getCurrentUser());
+
+            race.pinInBackground();
+            race.saveEventually();
+        }
+    }
 }

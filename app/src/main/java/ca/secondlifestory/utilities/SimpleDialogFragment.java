@@ -106,6 +106,16 @@ public class SimpleDialogFragment extends DialogFragment {
                 INVALID_RES_ID);
     }
 
+    /**
+     * Creates a new instance of the fragment with the title, positive button text,
+     * negative button text, and message resource ids.
+     *
+     * @param positiveButtonTextResId The resource Id for the positive button's text
+     * @param titleTextResId The resource Id for the dialog's title
+     * @param negativeButtonTextResId The resource Id for the negative button's text
+     * @param messageResourceId The resource Id for the message text
+     * @return The setup new instance of TextEntryDialogFragment
+     */
     public static SimpleDialogFragment newInstance(int positiveButtonTextResId,
                                                    int titleTextResId,
                                                    int negativeButtonTextResId,

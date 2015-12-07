@@ -16,6 +16,11 @@ import ca.secondlifestory.models.*;
  * Application object containing setup logic for the whole app
  */
 public class Application extends android.app.Application {
+    /**
+     * SharedPreferences key for whether or not the show deceased characters checkbox is checked
+     */
+    public static final String ARG_SHOW_DECEASED_CHARACTERS = "Application.showDeceased";
+
     @Override
     public void onCreate() {
         super.onCreate();

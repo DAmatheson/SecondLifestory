@@ -26,10 +26,11 @@
 
     <CheckBox
         android:id="@+id/filter_show_deceased"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Show Deceased"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
     <fragment
         android:id="@+id/character_list"

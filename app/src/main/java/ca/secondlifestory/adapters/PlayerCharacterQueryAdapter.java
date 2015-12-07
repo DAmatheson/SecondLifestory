@@ -7,6 +7,8 @@
 package ca.secondlifestory.adapters;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import com.parse.ParseQuery;
 import com.parse.ParseQueryAdapter;
 
+import ca.secondlifestory.Application;
 import ca.secondlifestory.R;
 import ca.secondlifestory.models.PlayerCharacter;
 
@@ -25,12 +28,19 @@ public class PlayerCharacterQueryAdapter extends ParseQueryAdapter<PlayerCharact
         super (context, queryFactory);
     }
 
-    public PlayerCharacterQueryAdapter(Context context) {
+    public PlayerCharacterQueryAdapter(final Context context) {
         super(context, new ParseQueryAdapter.QueryFactory<PlayerCharacter>() {
 
             @Override
             public ParseQuery<PlayerCharacter> create() {
                 ParseQuery<PlayerCharacter> query = PlayerCharacter.getQuery();
+
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+                boolean showDeceased = prefs.getBoolean(Application.ARG_SHOW_DECEASED_CHARACTERS, false);
+
+                if (!showDeceased) {
+                    query.whereEqualTo(PlayerCharacter.KEY_LIVING, true);
+                }
 
                 query.orderByAscending("createdAt");
 

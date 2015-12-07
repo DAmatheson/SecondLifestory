@@ -21,7 +21,7 @@ public class PlayerCharacter extends ParseObject {
     public static final String KEY_RACE = "race";
     public static final String KEY_CLASS = "class";
     private static final String KEY_NAME = "name";
-    private static final String KEY_LIVING = "living";
+    public static final String KEY_LIVING = "living";
     private static final String KEY_DETAILS = "details";
     private static final String KEY_EXPERIENCE = "experience";
 

@@ -7,13 +7,18 @@
 package ca.secondlifestory.activities.character;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
+import ca.secondlifestory.Application;
 import ca.secondlifestory.BaseActivity;
 import ca.secondlifestory.activities.CustomizeActivity;
 import ca.secondlifestory.R;
@@ -97,6 +102,25 @@ public class CharacterActivity extends BaseActivity implements CharacterListFrag
                             .addToBackStack(null)
                             .commit();
                 }
+            }
+        });
+
+        CheckBox filterDeceased = (CheckBox) findViewById(R.id.filter_show_deceased);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        filterDeceased.setChecked(
+                prefs.getBoolean(Application.ARG_SHOW_DECEASED_CHARACTERS, false));
+
+        filterDeceased.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(CharacterActivity.this);
+
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putBoolean(Application.ARG_SHOW_DECEASED_CHARACTERS, isChecked);
+                editor.apply();
+
+                listFragment.notifyListChanged();
             }
         });
     }

@@ -135,13 +135,13 @@ public class CharacterDetailFragment extends BaseFragment {
                 deleteDialog.show(getFragmentManager(), null, new SimpleDialogFragment.OnPositiveCloseListener() {
                     @Override
                     public void onPositiveClose() {
-
                         ParseQuery<Event> events = Event.getQuery();
-                        events.whereEqualTo(Event.KEY_CHARACTER, mItem.getObjectId());
+                        events.whereEqualTo(Event.KEY_CHARACTER, mItem);
                         events.findInBackground(new FindCallback<Event>() {
                             @Override
                             public void done(List<Event> objects, ParseException e) {
                                 if (e == null) {
+                                    Event.unpinAllInBackground(objects);
                                     Event.deleteAllInBackground(objects);
                                 }
                             }

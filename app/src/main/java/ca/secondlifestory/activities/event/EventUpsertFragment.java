@@ -294,12 +294,20 @@ public class EventUpsertFragment extends BaseFragment {
                 query.getInBackground(characterId, new GetCallback<PlayerCharacter>() {
                     @Override
                     public void done(PlayerCharacter object, ParseException e) {
-                        if (!inEditMode) {
-                            object.addExperience(xpAmount / characterCount);
+                        if (e == null) {
+                            if (!inEditMode) {
+                                object.addExperience(xpAmount / characterCount);
+                            } else {
+                                // TODO: Get the delta between the old and new XP amount.
+                            }
+                            object.saveEventually();
                         } else {
-                            // TODO: Get the delta between the old and new XP amount.
+                            // TODO: Error handling
+                            Toast.makeText(EventUpsertFragment.this.getActivity(),
+                                    e.getMessage(),
+                                    Toast.LENGTH_LONG)
+                                .show();
                         }
-                        object.saveEventually();
                     }
                 });
 

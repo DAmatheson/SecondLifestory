@@ -19,13 +19,6 @@
     android:descendantFocusability="blocksDescendants"
     android:background="@drawable/list_item_background" >
 
-    <!-- Hidden TextView for getting the Character's Id -->
-    <TextView
-        android:id="@+id/character_id"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone" />
-
     <!-- View Event List button -->
     <ImageButton
         android:id="@+id/view_events_button"

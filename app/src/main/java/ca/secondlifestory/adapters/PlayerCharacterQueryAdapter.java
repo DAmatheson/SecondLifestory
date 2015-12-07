@@ -48,10 +48,6 @@ public class PlayerCharacterQueryAdapter extends ParseQueryAdapter<PlayerCharact
 
         super.getItemView(object, v, parent);
 
-
-        TextView id = (TextView) v.findViewById(R.id.character_id);
-        id.setText(object.getObjectId());
-
         TextView characterName = (TextView) v.findViewById(R.id.character_name);
         characterName.setText(object.getName());
 

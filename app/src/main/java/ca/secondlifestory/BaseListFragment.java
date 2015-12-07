@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import ca.secondlifestory.utilities.LifestoryLogger;
+import ca.secondlifestory.utilities.LoggerSingleton;
 
 /**
  * Base ListFragment class for LifeStory
@@ -117,7 +118,7 @@ public class BaseListFragment extends android.app.ListFragment {
     }
 
     protected LifestoryLogger getLogger() {
-        return ((Application)getActivity().getApplication()).getLogger();
+        return LoggerSingleton.getInstance();
     }
 
     protected void setActivatedPosition(int position) {

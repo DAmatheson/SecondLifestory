@@ -82,6 +82,12 @@
     <string name="copyright">&#169; 2015 - Drew Matheson &amp; Isaac West</string>
     <string name="characterNamePlaceholder">Name</string>
     <string name="characterDetailsPlaceholder">Details</string>
+    <string name="delete_all_characters_dialog_message">All character information will be delete permanently. This can not be undone.</string>
+    <string name="delete_all_data_dialog_message">All app data will be deleted permanently. This can not be undone.</string>
+    <string name="delete_all_characters_dialog_title">Delete character data?</string>
+    <string name="delete_all_data_dialog_title">Delete app data?</string>
+    <string name="delete_all_characters_success">All characters removed.</string>
+    <string name="delete_all_data_success">All data cleared.</string>
 
     <!-- Event Types -->
     <string name="event_type_combat">Combat</string>

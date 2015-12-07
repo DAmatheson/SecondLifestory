@@ -70,6 +70,10 @@
     <string name="save_new_class">Save New Class</string>
     <string name="delete_race">Delete Race</string>
     <string name="delete_class">Delete Class</string>
+    <string name="new_race_created_message">New race saved.</string>
+    <string name="empty_race_name_error_message">Race name can\'t be empty.</string>
+    <string name="new_class_created_message">New class saved.</string>
+    <string name="empty_class_name_error_message">Class name can\'t be empty.</string>
 
     <!-- Settings Activity -->
     <string name="tutorials">Tutorials and FAQs</string>

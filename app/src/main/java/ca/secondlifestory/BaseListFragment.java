@@ -7,6 +7,8 @@
 package ca.secondlifestory;
 
 import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
 
 import ca.secondlifestory.utilities.LifestoryLogger;
@@ -29,10 +31,10 @@ public class BaseListFragment extends android.app.ListFragment {
     }
 
     /**
-     * The serialization (saved instance state) Bundle key representing the
-     * activated item position. Only used on tablets.
+     * The serialization (saved instance state) Bundle keys
      */
-    protected static final String STATE_ACTIVATED_POSITION = "activated_position";
+    protected static final String STATE_ACTIVATED_POSITION = "BaseListFragment.activatedPosition";
+    protected static final String LIST_STATE = "BaseListFragment.listStateParcelable";
 
     /**
      * The current activated item position. Only used on tablets.
@@ -58,11 +60,41 @@ public class BaseListFragment extends android.app.ListFragment {
     }
 
     @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Restore the previously serialized activated item position.
+        if (savedInstanceState != null) {
+            View list = view.findViewById(android.R.id.list);
+
+            if (list != null) {
+                ((ListView)list).
+                        onRestoreInstanceState(savedInstanceState.getParcelable(LIST_STATE));
+            }
+
+            if (savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
+                setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
+            }
+        }
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
 
-        // Reset the active callbacks interface to the dummy implementation.
         mListener = null;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelable(LIST_STATE, getListView().onSaveInstanceState());
+
+        if (mActivatedPosition != ListView.INVALID_POSITION) {
+            // Serialize and persist the activated item position.
+            outState.putInt(STATE_ACTIVATED_POSITION, mActivatedPosition);
+        }
     }
 
     @Override

@@ -156,4 +156,8 @@ public class Event extends ParseObject {
 
         return query;
     }
+
+    public static Event createWithoutData(String objectId) {
+        return ParseObject.createWithoutData(Event.class, objectId);
+    }
 }

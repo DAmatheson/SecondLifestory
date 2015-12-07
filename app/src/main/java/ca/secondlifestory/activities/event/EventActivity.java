@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.parse.GetCallback;
@@ -38,8 +39,8 @@ import ca.secondlifestory.models.PlayerCharacter;
  * to listen for item selections.
  */
 public class EventActivity extends BaseActivity implements EventListFragment.Callbacks,
-                                                                EventDetailFragment.Callbacks,
-                                                                EventUpsertFragment.Callbacks {
+                                                           EventDetailFragment.Callbacks,
+                                                           EventUpsertFragment.Callbacks {
 
     public static final String ARG_CHARACTER_ID = "characterObjectId";
     /**
@@ -48,22 +49,40 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
      */
     private boolean mTwoPane;
 
+    private int previouslySelectedListIndex = ListView.INVALID_POSITION;
+
+    private boolean inEditOrCreateMode = false;
+
     private String characterId;
 
     private EventListFragment listFragment;
     private EventDetailFragment detailFragment;
 
-    private ImageButton addEventButton;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.event_layout);
+        //setContentView(R.layout.event_twopane); // Note: Uncomment this to use two-pane
 
         listFragment = (EventListFragment) getFragmentManager().findFragmentById(R.id.event_list);
         detailFragment = (EventDetailFragment) getFragmentManager().findFragmentById(R.id.event_detail);
 
-        addEventButton = (ImageButton) findViewById(R.id.add_event_button);
+        if (detailFragment != null) {
+            // The detail container view will be present only in the
+            // large-screen layouts (res/values-large and
+            // res/values-sw600dp). If this view is present, then the
+            // activity should be in two-pane mode.
+            mTwoPane = true;
+
+            // In two-pane mode, list items should be given the
+            // 'activated' state when touched.
+            listFragment.setActivateOnItemClick(true);
+        } else {
+            listFragment.setActivateOnItemClick(false);
+        }
+
+        ImageButton addEventButton = (ImageButton) findViewById(R.id.add_event_button);
         addEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,20 +103,6 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
             }
         });
 
-        if (detailFragment != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-large and
-            // res/values-sw600dp). If this view is present, then the
-            // activity should be in two-pane mode.
-            mTwoPane = true;
-
-            // In two-pane mode, list items should be given the
-            // 'activated' state when touched.
-            listFragment.setActivateOnItemClick(true);
-        } else {
-            listFragment.setActivateOnItemClick(false);
-        }
-
         setTitle(getString(R.string.title_activity_event));
     }
 
@@ -112,7 +117,7 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
             @Override
             public void done(PlayerCharacter object, ParseException e) {
                 if (e == null) {
-                    setTitle("Events for " + object.getName());
+                    setTitle(getString(R.string.events_title_prefix) + object.getName());
                 } else {
                     // TODO: Error handling
                     Toast.makeText(EventActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
@@ -158,18 +163,20 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
      */
     @Override
     public void onItemSelected(String id) {
-        detailFragment = EventDetailFragment.newInstance(getIntent().getStringExtra(ARG_CHARACTER_ID), id);
+        if (inEditOrCreateMode) {
+            // Return to the details fragment
+            getFragmentManager().popBackStack();
+        }
 
         if (mTwoPane) {
-            // In two-pane mode, show the detail view in this activity by
-            // adding or replacing the detail fragment using a
-            // fragment transaction.
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.event_detail, detailFragment)
-                    .commit();
+            // Update the detail fragment for the new id
+            detailFragment.setEventId(id);
         } else {
             // In single-pane mode, simply start the detail activity
             // for the selected item ID.
+
+            detailFragment = EventDetailFragment.newInstance(id);
+
             getFragmentManager().
                     beginTransaction().
                     replace(android.R.id.content, detailFragment).
@@ -181,9 +188,31 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
     @Override
     public void onListLoaded() {
         /*if (mTwoPane) {
-            if (listFragment.getListAdapter().getCount() > 0) {
+            int index;
+
+            if (previouslySelectedListIndex != ListView.INVALID_POSITION) {
+                if (previouslySelectedListIndex == 0) {
+                    // Select the first item again
+                    index = previouslySelectedListIndex < listFragment.getListAdapter().getCount()
+                            ? previouslySelectedListIndex
+                            : ListView.INVALID_POSITION;
+                } else if (previouslySelectedListIndex - 1 < listFragment.getListAdapter().getCount()) {
+                    // Select the item before the previously selected item
+                    index = previouslySelectedListIndex - 1;
+                } else {
+                    index = ListView.INVALID_POSITION;
+                }
+
+                previouslySelectedListIndex = ListView.INVALID_POSITION;
+            } else {
+                index = listFragment.getListView().getCheckedItemPosition();
+            }
+
+            if (listFragment.getListAdapter().getCount() > 0 && index != ListView.INVALID_POSITION) {
                 PlayerCharacter checkedCharacter = (PlayerCharacter) listFragment.getListAdapter().
-                        getItem(listFragment.getListView().getCheckedItemPosition());
+                        getItem(index);
+
+                listFragment.setSelection(index);
 
                 if (checkedCharacter != null) {
                     detailFragment.setCharacterId(checkedCharacter.getObjectId());
@@ -192,15 +221,19 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
         }*/
     }
 
+    //region EventDetailFragment.Callbacks methods
     @Override
-    public void onEditClicked(String characterObjectId, String eventId) {
+    public void onEditClicked(String eventId) {
         EventUpsertFragment upsertFragment =
-                EventUpsertFragment.newInstance(characterObjectId, eventId);
+                EventUpsertFragment.newInstance(characterId, eventId);
+
+        inEditOrCreateMode = true;
 
         if (mTwoPane) {
             getFragmentManager()
                     .beginTransaction()
                     .replace(R.id.event_detail, upsertFragment)
+                    .addToBackStack(null)
                     .commit();
         } else {
             getFragmentManager()
@@ -212,17 +245,54 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
     }
 
     @Override
+    public void onEventDeleted(String eventId) {
+        if (mTwoPane) {
+            detailFragment = new EventDetailFragment();
+
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.character_detail, detailFragment)
+                    .commit();
+        } else {
+            // Go back to the list fragment
+            getFragmentManager().popBackStack();
+        }
+
+        previouslySelectedListIndex = listFragment.getListView().getCheckedItemPosition();
+
+        listFragment.notifyListChanged();
+    }
+    //endregion EventDetailFragment.Callbacks methods
+
+    //region EventUpsertFragment.Callbacks methods
+    @Override
     public void onEventCreated(Event event) {
-        // TODO: Refresh list?
+        // This will re-show the detail fragment in two-pane or the list in one-pane
+        inEditOrCreateMode = false;
+
+        getFragmentManager().popBackStack();
+
+        listFragment.notifyListChanged();
+
+        // TODO: Make the list load method select the new item
+        //       This is going to be hard to do while using the parse query adapter.
     }
 
     @Override
     public void onEventModified(Event event) {
-        // TODO: Refresh list?
+        inEditOrCreateMode = false;
+
+        if (mTwoPane) {
+            detailFragment.notifyEventChanged();
+        }
+
+        getFragmentManager().popBackStack();
+
+        listFragment.notifyListChanged();
     }
 
     @Override
-    public void onCancelPressed() {
+    public void onUpsertCancelPressed() {
         if (mTwoPane) {
             getFragmentManager()
                     .beginTransaction()
@@ -232,4 +302,5 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
             getFragmentManager().popBackStack();
         }
     }
+    //endregion EventUpsertFragment.Callbacks methods
 }

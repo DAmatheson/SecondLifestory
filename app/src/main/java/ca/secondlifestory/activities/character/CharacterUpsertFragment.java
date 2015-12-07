@@ -57,7 +57,7 @@ public class CharacterUpsertFragment extends BaseFragment {
     public interface Callbacks {
         void onCharacterCreated(PlayerCharacter character);
         void onCharacterModified(PlayerCharacter character);
-        void onCancelPressed();
+        void onUpsertCancelPressed();
     }
 
     /**
@@ -253,7 +253,7 @@ public class CharacterUpsertFragment extends BaseFragment {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onCancelPressed();
+                mListener.onUpsertCancelPressed();
             }
         });
     }

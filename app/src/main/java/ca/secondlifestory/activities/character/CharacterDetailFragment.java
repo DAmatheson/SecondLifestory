@@ -95,8 +95,6 @@ public class CharacterDetailFragment extends BaseFragment {
      */
     public CharacterDetailFragment() { }
 
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,6 +131,7 @@ public class CharacterDetailFragment extends BaseFragment {
                 SimpleDialogFragment deleteDialog = SimpleDialogFragment.newInstance(R.string.ok,
                         R.string.delete_character_message,
                         R.string.no);
+
                 deleteDialog.show(getFragmentManager(), null, new SimpleDialogFragment.OnPositiveCloseListener() {
                     @Override
                     public void onPositiveClose() {
@@ -161,9 +160,6 @@ public class CharacterDetailFragment extends BaseFragment {
         deleteButton.setEnabled(false);
 
         if (getArguments() != null) {
-            // Load the dummy content specified by the fragment
-            // arguments. In a real-world scenario, use a Loader
-            // to load content from a content provider.
             characterId = getArguments().getString(ARG_CHARACTER_ID);
 
             loadCharacter(characterId);

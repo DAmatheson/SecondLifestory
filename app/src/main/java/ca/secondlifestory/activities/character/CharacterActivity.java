@@ -250,7 +250,7 @@ public class CharacterActivity extends BaseActivity implements CharacterListFrag
     }
 
     @Override
-    public void onCancelPressed() {
+    public void onUpsertCancelPressed() {
         inEditOrCreateMode = false;
 
         if (mTwoPane) {

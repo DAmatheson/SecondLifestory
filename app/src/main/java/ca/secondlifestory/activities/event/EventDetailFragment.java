@@ -6,9 +6,9 @@
 
 package ca.secondlifestory.activities.event;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +28,7 @@ import java.util.Locale;
 import ca.secondlifestory.BaseFragment;
 import ca.secondlifestory.R;
 import ca.secondlifestory.models.Event;
+import ca.secondlifestory.utilities.SimpleDialogFragment;
 
 /**
  * A fragment representing a single Event detail screen.
@@ -37,14 +38,14 @@ import ca.secondlifestory.models.Event;
  */
 public class EventDetailFragment extends BaseFragment {
     public interface Callbacks {
-        void onEditClicked(String characterObjectId, String eventId);
+        void onEditClicked(String eventId);
+        void onEventDeleted(String eventId);
     }
 
     /**
      * The fragment argument representing the item ID that this fragment
      * represents.
      */
-    private static final String ARG_CHARACTER_ID = "EventDetailFragment.characterObjectId";
     private static final String ARG_EVENT_ID = "EventDetailFragment.eventObjectId";
 
     private Callbacks mListener;
@@ -53,9 +54,12 @@ public class EventDetailFragment extends BaseFragment {
      * The content this fragment is presenting.
      */
     private Event mItem;
+    private String eventId;
 
-    private final DateFormat dateFormatter = new SimpleDateFormat("EEE, MMM, yyyy");
-    private final DateFormat timeFormatter = SimpleDateFormat.getTimeInstance(DateFormat.SHORT, Locale.getDefault());
+    @SuppressLint("SimpleDateFormat") // We want a fixed format regardless of locality
+    private final DateFormat dateFormatter = new SimpleDateFormat("EEE MMM d, yyyy");
+    private final DateFormat timeFormatter = SimpleDateFormat.getTimeInstance(DateFormat.SHORT,
+                                                                              Locale.getDefault());
 
     private ProgressBar loadingIndicator;
 
@@ -68,9 +72,8 @@ public class EventDetailFragment extends BaseFragment {
     private Button editButton;
     private Button deleteButton;
 
-    public static EventDetailFragment newInstance(String characterId, String eventId) {
+    public static EventDetailFragment newInstance(String eventId) {
         Bundle args = new Bundle();
-        args.putString(ARG_CHARACTER_ID, characterId);
         args.putString(ARG_EVENT_ID, eventId);
 
         EventDetailFragment fragment = new EventDetailFragment();
@@ -104,43 +107,43 @@ public class EventDetailFragment extends BaseFragment {
         characterCount = (TextView) rootView.findViewById(R.id.event_characters_present);
         description = (TextView) rootView.findViewById(R.id.event_description);
 
-        if (getArguments() != null && getArguments().containsKey(ARG_CHARACTER_ID)) {
-
-            loadingIndicator.setVisibility(View.VISIBLE);
-
-            ParseQuery<Event> query = Event.getQuery();
-            query.include(Event.KEY_CHARACTER);
-            query.getInBackground(getArguments().getString(ARG_EVENT_ID), new GetCallback<Event>() {
-                @Override
-                public void done(Event object, ParseException e) {
-                    loadingIndicator.setVisibility(View.GONE);
-
-                    if (e == null) {
-                        mItem = object;
-
-                        eventTitle.setText(mItem.getTitle());
-                        date.setText(dateFormatter.format(mItem.getDate()) + " " + timeFormatter.format(mItem.getDate()));
-                        experience.setText(Integer.toString(mItem.getExperience()));
-                        characterCount.setText(Integer.toString(mItem.getCharacterCount()));
-                        //description.setText(mItem.getDescription());
-                    } else {
-                        // TODO: Error handling
-                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                }
-            });
-        }
-
         editButton = (Button) rootView.findViewById(R.id.edit_event_button);
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Set this up in a better way. getArguments might return null
-                mListener.onEditClicked(getArguments().getString(ARG_CHARACTER_ID), getArguments().getString(ARG_EVENT_ID));
+                mListener.onEditClicked(eventId);
             }
         });
 
         deleteButton = (Button) rootView.findViewById(R.id.delete_event_button);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SimpleDialogFragment deleteDialog = SimpleDialogFragment.newInstance(R.string.ok,
+                        R.string.delete_event_message,
+                        R.string.no);
+
+                deleteDialog.show(getFragmentManager(), null, new SimpleDialogFragment.OnPositiveCloseListener() {
+                    @Override
+                    public void onPositiveClose() {
+
+                        mItem.unpinInBackground();
+                        mItem.deleteEventually();
+
+                        mListener.onEventDeleted(eventId);
+                    }
+                });
+            }
+        });
+
+        editButton.setEnabled(false);
+        deleteButton.setEnabled(false);
+
+        if (getArguments() != null) {
+            eventId = getArguments().getString(ARG_EVENT_ID);
+
+            loadEvent(eventId);
+        }
 
         return rootView;
     }
@@ -162,5 +165,46 @@ public class EventDetailFragment extends BaseFragment {
         super.onDetach();
 
         mListener = null;
+    }
+
+    public void notifyEventChanged() {
+        loadEvent(eventId);
+    }
+
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
+
+        loadEvent(eventId);
+    }
+
+    private void loadEvent(String eventId) {
+        loadingIndicator.setVisibility(View.VISIBLE);
+        editButton.setEnabled(false);
+        deleteButton.setEnabled(false);
+
+        ParseQuery<Event> query = Event.getQuery();
+        query.include(Event.KEY_CHARACTER);
+        query.getInBackground(eventId, new GetCallback<Event>() {
+            @Override
+            public void done(Event object, ParseException e) {
+                loadingIndicator.setVisibility(View.GONE);
+
+                if (e == null) {
+                    mItem = object;
+
+                    editButton.setEnabled(true);
+                    deleteButton.setEnabled(true);
+
+                    eventTitle.setText(mItem.getTitle());
+                    date.setText(dateFormatter.format(mItem.getDate()) + " " + timeFormatter.format(mItem.getDate()));
+                    experience.setText(Integer.toString(mItem.getExperience()));
+                    characterCount.setText(Integer.toString(mItem.getCharacterCount()));
+                    description.setText(mItem.getDescription());
+                } else {
+                    // TODO: Error handling
+                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 }

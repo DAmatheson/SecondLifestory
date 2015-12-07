@@ -83,4 +83,8 @@ public class EventListFragment extends BaseListFragment {
             outState.putInt(STATE_ACTIVATED_POSITION, mActivatedPosition);
         }
     }
+
+    public void notifyListChanged() {
+        adapter.notifyListChanged();
+    }
 }

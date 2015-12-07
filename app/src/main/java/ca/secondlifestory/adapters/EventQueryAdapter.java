@@ -65,4 +65,9 @@ public class EventQueryAdapter extends ParseQueryAdapter<Event> {
 
         return v;
     }
+
+    public void notifyListChanged() {
+        // Unfortunately, there isn't a way to add new items with ParseQueryAdapter.
+        loadObjects();
+    }
 }

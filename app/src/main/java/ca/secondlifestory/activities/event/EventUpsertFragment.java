@@ -14,20 +14,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 import ca.secondlifestory.BaseFragment;
 import ca.secondlifestory.R;
 import ca.secondlifestory.models.Event;
 import ca.secondlifestory.models.EventTypes;
+import ca.secondlifestory.models.PlayerCharacter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,15 +52,28 @@ public class EventUpsertFragment extends BaseFragment {
     public interface Callbacks {
         void onEventCreated(Event event);
         void onEventModified(Event event);
-        void onCancelPressed();
+        void onUpsertCancelPressed();
     }
 
+    /**
+     * The arguments Bundle keys
+     */
     private static final String ARG_CHARACTER_ID = "EventUpsertFragment.characterObjectId";
     private static final String ARG_EVENT_ID = "EventUpsertFragment.eventId";
     private static final String ARG_IN_EDIT_MODE = "EventUpsertFragment.inEditMode";
 
+    /**
+     * The serialization (saved instance state) Bundle keys
+     */
+    private static final String STATE_TITLE = "EventUpsertFragment.titleText";
+    private static final String STATE_EVENT_TYPE_SPINNER = "EventUpsertFragment.eventTypeSpinnerState";
+    private static final String STATE_CHARACTER_COUNT = "EventUpsertFragment.characterCountState";
+    private static final String STATE_XP_AMOUNT = "EventUpsertFragment.xpAmountState";
+    private static final String STATE_DESCRIPTION = "EventUpsertFragment.descriptionState";
+
     private HashMap<String, EventTypes> typeItems;
 
+    // characterId is needed only for restoring purposes
     private String characterId;
     private String eventId;
     private Boolean inEditMode;
@@ -65,9 +83,14 @@ public class EventUpsertFragment extends BaseFragment {
     private Event event;
 
     private ProgressBar loadingIndicator;
+    private ArrayAdapter<String> eventTypeAdapter;
 
     // Inputs
+    private EditText titleText;
     private Spinner eventTypeSpinner;
+    private EditText characterCountText;
+    private EditText xpAmountText;
+    private EditText descriptionText;
 
     private Button saveButton;
     private Button cancelButton;
@@ -118,14 +141,23 @@ public class EventUpsertFragment extends BaseFragment {
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (Callbacks) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement Callbacks");
+        }
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            characterId = getArguments().getString(ARG_CHARACTER_ID);
-            eventId = getArguments().getString(ARG_EVENT_ID);
-            inEditMode = getArguments().getBoolean(ARG_IN_EDIT_MODE);
-        }
+        typeItems = new HashMap<>();
+        typeItems.put(getString(R.string.event_type_combat), EventTypes.COMBAT);
+        typeItems.put(getString(R.string.event_type_event), EventTypes.EVENT);
     }
 
     @Override
@@ -136,85 +168,160 @@ public class EventUpsertFragment extends BaseFragment {
 
         loadingIndicator = (ProgressBar)v.findViewById(R.id.loadingIndicator);
 
-        saveButton = (Button) v.findViewById(R.id.upsert_save);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO: save stuff, validate
-
-                if (eventId == null) {
-                    EventTypes value = typeItems.get(eventTypeSpinner.getSelectedItem().toString());
-
-                    Toast.makeText(getActivity(), value.name(), Toast.LENGTH_LONG).show();
-
-                    mListener.onEventCreated(event);
-                } else {
-
-                    mListener.onEventModified(event);
-                }
-            }
-        });
-
-        if (eventId != null) {
-            loadingIndicator.setVisibility(View.VISIBLE);
-
-            ParseQuery<Event> query = Event.getQuery();
-            query.getInBackground(eventId, new GetCallback<Event>() {
-                @Override
-                public void done(Event object, ParseException e) {
-                    loadingIndicator.setVisibility(View.GONE);
-
-                    if (e == null) {
-                        event = object;
-
-                        // TODO: Add the values to the inputs
-                    } else {
-                        // TODO: Error handling
-                        Toast.makeText(EventUpsertFragment.this.getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                }
-            });
-        } else {
-            event = new Event();
-        }
-
+        titleText = (EditText) v.findViewById(R.id.upsert_event_title);
         eventTypeSpinner = (Spinner) v.findViewById(R.id.upsert_event_type);
+        characterCountText = (EditText) v.findViewById(R.id.upsert_event_character_count);
+        xpAmountText = (EditText) v.findViewById(R.id.upsert_event_experience);
+        descriptionText = (EditText) v.findViewById(R.id.upsert_event_description);
 
-        ArrayAdapter<String> eventTypeAdapter = new ArrayAdapter<>(getActivity(),
-                R.layout.dropdown_item_1line,
-                typeItems.keySet().toArray(new String[typeItems.size()]));
-
-        eventTypeSpinner.setAdapter(eventTypeAdapter);
-
+        saveButton = (Button) v.findViewById(R.id.upsert_save);
         cancelButton = (Button) v.findViewById(R.id.upsert_cancel);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onCancelPressed();
-            }
-        });
 
         return v;
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (Callbacks) activity;
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-            typeItems = new HashMap<>();
-            typeItems.put(getString(R.string.event_type_combat), EventTypes.COMBAT);
-            typeItems.put(getString(R.string.event_type_event), EventTypes.EVENT);
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement Callbacks");
+        eventTypeAdapter = new ArrayAdapter<>(getActivity(),
+                R.layout.dropdown_item_1line,
+                typeItems.keySet().toArray(new String[typeItems.size()]));
+
+        eventTypeSpinner.setAdapter(eventTypeAdapter);
+
+        if (savedInstanceState != null) {
+            // Restore the saved state
+
+            inEditMode = savedInstanceState.getBoolean(ARG_IN_EDIT_MODE);
+            characterId = savedInstanceState.getString(ARG_CHARACTER_ID);
+            eventId = savedInstanceState.getString(ARG_EVENT_ID);
+
+            if (inEditMode) {
+                event = Event.createWithoutData(eventId);
+            } else {
+                event = new Event();
+            }
+
+            event.setCharacter(PlayerCharacter.createWithoutData(characterId));
+
+            titleText.setText(savedInstanceState.getString(STATE_TITLE));
+            characterCountText.setText(savedInstanceState.getString(STATE_CHARACTER_COUNT));
+            xpAmountText.setText(savedInstanceState.getString(STATE_XP_AMOUNT));
+            descriptionText.setText(savedInstanceState.getString(STATE_DESCRIPTION));
+
+            eventTypeSpinner.onRestoreInstanceState(
+                    savedInstanceState.getParcelable(STATE_EVENT_TYPE_SPINNER));
+
+        } else if (getArguments() != null) {
+            characterId = getArguments().getString(ARG_CHARACTER_ID);
+
+            inEditMode = getArguments().getBoolean(ARG_IN_EDIT_MODE);
+
+            if (inEditMode) {
+                eventId = getArguments().getString(ARG_EVENT_ID);
+
+                setupForExistingEvent(eventId);
+            } else {
+                event = new Event();
+                event.setCharacter(PlayerCharacter.createWithoutData(characterId));
+            }
         }
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventTypes value = typeItems.get(eventTypeSpinner.getSelectedItem().toString());
+                String title = titleText.getText().toString();
+                String description = descriptionText.getText().toString();
+                int xpAmount = Integer.parseInt(xpAmountText.getText().toString());
+                int characterCount = Integer.parseInt(characterCountText.getText().toString());
+
+                // TODO: Validate values here
+
+                event.setTitle(title);
+                event.setEventType(value);
+                event.setCharacterCount(characterCount);
+                event.setExperience(xpAmount);
+                event.setDescription(description);
+
+                if (event.getDate() == null) {
+                    event.setDate(new Date());
+                }
+
+                event.pinInBackground();
+                event.saveEventually();
+
+                if (!inEditMode) {
+                    mListener.onEventCreated(event);
+                } else {
+                    mListener.onEventModified(event);
+                }
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onUpsertCancelPressed();
+            }
+        });
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelable(STATE_EVENT_TYPE_SPINNER, eventTypeSpinner.onSaveInstanceState());
+
+        outState.putString(ARG_CHARACTER_ID, characterId);
+        outState.putString(ARG_EVENT_ID, eventId);
+        outState.putBoolean(ARG_IN_EDIT_MODE, inEditMode);
+
+        outState.putString(STATE_TITLE, titleText.getText().toString());
+        outState.putString(STATE_CHARACTER_COUNT, characterCountText.getText().toString());
+        outState.putString(STATE_XP_AMOUNT, xpAmountText.getText().toString());
+        outState.putString(STATE_DESCRIPTION, descriptionText.getText().toString());
+    }
+
+    private void setupForExistingEvent(String eventId) {
+        loadingIndicator.setVisibility(View.VISIBLE);
+
+        ((TextView)getView().findViewById(R.id.upsert_title)).setText(R.string.edit_event);
+
+        ParseQuery<Event> query = Event.getQuery();
+        query.getInBackground(eventId, new GetCallback<Event>() {
+            @Override
+            public void done(Event object, ParseException e) {
+                loadingIndicator.setVisibility(View.GONE);
+
+                if (e == null) {
+                    event = object;
+
+                    // TODO: Consider page titleText
+
+                    titleText.setText(event.getTitle());
+                    characterCountText.setText(Integer.toString(event.getCharacterCount()));
+                    xpAmountText.setText(Integer.toString(event.getExperience()));
+                    descriptionText.setText(event.getDescription());
+
+                    // Select the type for the loaded event
+                    for (Map.Entry<String, EventTypes> entry : typeItems.entrySet()) {
+                        if (entry.getValue() == event.getEventType()) {
+                            eventTypeSpinner.setSelection(eventTypeAdapter.getPosition(entry.getKey()));
+                        }
+                    }
+                } else {
+                    // TODO: Handle error
+                    Toast.makeText(EventUpsertFragment.this.getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 }

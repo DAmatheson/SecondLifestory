@@ -12,12 +12,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/activityLayout"
     tools:context="ca.secondlifestory.activities.CustomizeActivity"
-    android:orientation="horizontal" >
-
-    <TextView
-        android:id="@+id/character_name"
-        style="@style/pageHeader"
-        android:text="@string/custom_races_and_classes" />
+    android:orientation="vertical" >
 
     <TextView
         style="@style/detailTextViewLabel"

@@ -18,8 +18,8 @@ import com.parse.ParseUser;
 public class PlayerCharacter extends ParseObject {
 
     private static final String KEY_USER = "user";
-    private static final String KEY_RACE = "race";
-    private static final String KEY_CLASS = "class";
+    public static final String KEY_RACE = "race";
+    public static final String KEY_CLASS = "class";
     private static final String KEY_NAME = "name";
     private static final String KEY_LIVING = "living";
     private static final String KEY_DETAILS = "details";

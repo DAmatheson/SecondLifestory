@@ -67,16 +67,20 @@
             android:orientation="vertical">
             <TextView
                 android:id="@+id/character_race"
-                style="@style/detailTextView" />
+                style="@style/detailTextView"
+                android:singleLine="true"/>
             <TextView
                 android:id="@+id/character_class"
-                style="@style/detailTextView" />
+                style="@style/detailTextView"
+                android:singleLine="true"/>
             <TextView
                 android:id="@+id/character_xp"
-                style="@style/detailTextView" />
+                style="@style/detailTextView"
+                android:singleLine="true"/>
             <TextView
                 android:id="@+id/character_status"
-                style="@style/detailTextView" />
+                style="@style/detailTextView"
+                android:singleLine="true"/>
         </LinearLayout>
     </LinearLayout>
 

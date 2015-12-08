@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- land\fragment_character_detail.xml
+    Purpose: Landscape Detail fragment layout for CharacterDetailFragment
+
+    Drew Matheson, 2015.12.08: Created
+-->
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/fragmentLayout"
+    tools:context="ca.secondlifestory.activities.character.PlayerStatsDetailFragment"
+    android:clickable="true"> <!-- Prevent any fragments behind this from being clicked -->
+
+    <ProgressBar
+        style="?android:attr/progressBarStyle"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/loadingIndicator"
+        android:progressDrawable="@drawable/loading_spinning_indicator"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/character_name"
+        style="@style/pageHeader"
+        android:layout_alignParentTop="true"
+        android:text="@string/character_name"
+        android:maxLines="2"
+        android:ellipsize="end"/>
+
+    <TextView
+        android:id="@+id/character_race_label"
+        style="@style/detailTextViewLabel"
+        android:text="@string/race"
+        android:layout_below="@id/character_name"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"/>
+    <TextView
+        android:id="@+id/character_race"
+        style="@style/detailTextView"
+        android:ems="12"
+        android:layout_toRightOf="@id/character_race_label"
+        android:layout_alignBaseline="@id/character_race_label"
+        android:singleLine="true" />
+
+    <TextView
+        android:id="@+id/character_class_label"
+        style="@style/detailTextViewLabel"
+        android:text="@string/character_class"
+        android:layout_toRightOf="@id/character_race"
+        android:layout_alignBaseline="@id/character_race"
+        android:layout_marginLeft="@dimen/standard_padding"
+        android:layout_marginRight="@dimen/activity_horizontal_margin" />
+    <TextView
+        android:id="@+id/character_class"
+        style="@style/detailTextView"
+        android:ems="12"
+        android:layout_toRightOf="@id/character_class_label"
+        android:layout_alignBaseline="@id/character_class_label"
+        android:singleLine="true" />
+
+    <TextView
+        android:id="@+id/total_xp_label"
+        style="@style/detailTextViewLabel"
+        android:text="@string/total_xp"
+        android:layout_below="@id/character_race_label"
+        android:layout_marginRight="@dimen/activity_horizontal_margin" />
+    <TextView
+        android:id="@+id/character_xp"
+        style="@style/detailTextView"
+        android:layout_toRightOf="@id/total_xp_label"
+        android:layout_alignBaseline="@id/total_xp_label" />
+
+    <TextView
+        android:id="@+id/character_status_label"
+        style="@style/detailTextViewLabel"
+        android:text="@string/status"
+        android:layout_toRightOf="@id/character_xp"
+        android:layout_alignBaseline="@id/character_xp"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_alignLeft="@id/character_class_label"/>
+    <TextView
+        android:id="@+id/character_status"
+        style="@style/detailTextView"
+        android:layout_toRightOf="@id/character_status_label"
+        android:layout_alignBaseline="@id/character_status_label" />
+
+    <TextView
+        android:id="@+id/character_description_label"
+        style="@style/detailTextViewLabel"
+        android:text="@string/description"
+        android:layout_below="@id/total_xp_label"/>
+
+    <RelativeLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+        <Button
+            android:id="@+id/delete_character_button"
+            android:text="@string/delete"
+            style="@style/secondaryButton" />
+        <Button
+            android:id="@+id/edit_character_button"
+            android:text="@string/edit"
+            style="@style/primaryButton"
+            android:layout_alignTop="@id/delete_character_button"
+            />
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/description_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/character_description_label"
+        android:layout_above="@id/footer"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:background="@color/background_floating_material_dark">
+        <TextView
+            android:id="@+id/character_description"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            style="@style/detailTextView"/>
+    </ScrollView>
+</RelativeLayout>

@@ -68,8 +68,8 @@ public class CharacterActivity extends BaseActivity implements CharacterListFrag
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //setContentView(R.layout.character_layout);
-        setContentView(R.layout.character_twopane); // Note: Uncomment this to use two-pane
+        setContentView(R.layout.character_layout);
+        //setContentView(R.layout.character_twopane); // Note: Uncomment this to use two-pane
 
         listFragment = (CharacterListFragment) getFragmentManager().findFragmentById(R.id.character_list);
 

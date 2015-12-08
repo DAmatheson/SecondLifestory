@@ -71,8 +71,8 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //setContentView(R.layout.event_layout);
-        setContentView(R.layout.event_twopane); // Note: Uncomment this to use two-pane
+        setContentView(R.layout.event_layout);
+        //setContentView(R.layout.event_twopane); // Note: Uncomment this to use two-pane
 
         listFragment = (EventListFragment) getFragmentManager().findFragmentById(R.id.event_list);
         if (savedInstanceState != null) {

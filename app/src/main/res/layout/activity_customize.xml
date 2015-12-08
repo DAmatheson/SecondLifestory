@@ -12,7 +12,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/activityLayout"
     tools:context="ca.secondlifestory.activities.CustomizeActivity"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:baselineAligned="false">
 
     <TextView
         style="@style/detailTextViewLabel"
@@ -26,14 +27,15 @@
             android:inputType="text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="1.25"
             android:singleLine="true" />
         <Button
             android:id="@+id/new_race_button"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/button_height"
             android:layout_weight="1"
-            android:text="@string/save_new_race" />
+            android:text="@string/save_new_race"
+            android:background="@drawable/button_background_roundedcorner" />
     </LinearLayout>
 
     <Space
@@ -52,14 +54,15 @@
             android:inputType="text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="1.25"
             android:singleLine="true" />
         <Button
             android:id="@+id/new_class_button"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/button_height"
             android:text="@string/save_new_class"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:background="@drawable/button_background_roundedcorner" />
     </LinearLayout>
 
     <Space
@@ -79,13 +82,14 @@
             android:id="@+id/race_spinner"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1.25" />
         <Button
             android:id="@+id/delete_race_button"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/button_height"
             android:layout_weight="1"
-            android:text="@string/delete_race" />
+            android:text="@string/delete_race"
+            android:background="@drawable/button_secondary_background_roundedcorner" />
     </LinearLayout>
 
 
@@ -106,12 +110,13 @@
             android:id="@+id/class_spinner"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1.25" />
         <Button
             android:id="@+id/delete_class_button"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/button_height"
             android:layout_weight="1"
-            android:text="@string/delete_class" />
+            android:text="@string/delete_class"
+            android:background="@drawable/button_secondary_background_roundedcorner" />
     </LinearLayout>
 </LinearLayout>

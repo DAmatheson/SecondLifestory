@@ -31,8 +31,11 @@
         <Button
             android:id="@+id/new_race_button"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/save_new_race" />
+            android:layout_height="@dimen/button_height"
+            android:text="@string/save_new_race"
+            android:background="@drawable/button_background_roundedcorner"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"/>
 
         <Space
             android:id="@+id/delete_race_spacer"
@@ -50,8 +53,11 @@
         <Button
             android:id="@+id/delete_race_button"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/delete_race" />
+            android:layout_height="@dimen/button_height"
+            android:text="@string/delete_race"
+            android:background="@drawable/button_background_roundedcorner"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"/>
     </LinearLayout>
 
     <LinearLayout
@@ -71,8 +77,11 @@
         <Button
             android:id="@+id/new_class_button"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/save_new_class" />
+            android:layout_height="@dimen/button_height"
+            android:text="@string/save_new_class"
+            android:background="@drawable/button_background_roundedcorner"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp" />
 
         <Space
             android:id="@+id/delete_class_spacer"
@@ -90,7 +99,10 @@
         <Button
             android:id="@+id/delete_class_button"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/delete_class" />
+            android:layout_height="@dimen/button_height"
+            android:text="@string/delete_class"
+            android:background="@drawable/button_background_roundedcorner"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp" />
     </LinearLayout>
 </LinearLayout>

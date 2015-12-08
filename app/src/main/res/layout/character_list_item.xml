@@ -8,31 +8,33 @@
 
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:minHeight="?android:attr/listPreferredItemHeightSmall"
-    android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-    android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-    android:paddingRight="?android:attr/listPreferredItemPaddingRight"
-    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+    android:paddingLeft="4dp"
     android:descendantFocusability="blocksDescendants"
     android:background="@drawable/list_item_background" >
 
     <!-- View Event List button -->
     <ImageButton
         android:id="@+id/view_events_button"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:src="@drawable/ic_list_white_24dp_states"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:contentDescription="@string/edit"
+        android:contentDescription="@string/view_events"
         android:onClick="viewEventsButtonClicked"
         android:background="@drawable/button_background_roundedcorner"
-        android:padding="4dp"
+        android:paddingLeft="1dp"
+        android:paddingRight="1dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginEnd="2dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_centerVertical="true" />
 
     <!-- Character name -->
@@ -40,17 +42,18 @@
         android:id="@+id/character_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceListItem"
-        android:gravity="center_vertical"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:textSize="15sp"
+        android:textStyle="bold"
         android:textColor="@color/primary_text_default_material_dark"
         android:ellipsize="end"
         android:singleLine="true"
         android:layout_toLeftOf="@id/view_events_button"
         android:layout_toStartOf="@id/view_events_button"
         android:layout_alignTop="@id/view_events_button"
+        android:layout_marginTop="6dp"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:text="Placeholder Name" />
+        android:layout_alignParentStart="true" />
 
     <!-- Character class and race -->
     <TextView
@@ -61,14 +64,15 @@
         android:textColor="@color/secondary_text_default_material_dark"
         android:layout_alignLeft="@id/character_name"
         android:layout_alignStart="@id/character_name"
-        android:layout_alignRight="@id/view_events_button"
-        android:textSize="12sp"
-        android:layout_marginLeft="4dp"
+        android:layout_toLeftOf="@id/view_events_button"
+        android:layout_toStartOf="@id/view_events_button"
+        android:textSize="11sp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginStart="2dp"
         android:singleLine="true"
         android:ellipsize="end"
-        android:paddingRight="5dp"
-        android:layout_below="@id/character_name"
-        android:text="Placeholder Race Class" />
+        android:paddingRight="2dp"
+        android:layout_below="@id/character_name" />
 </RelativeLayout>
 
 

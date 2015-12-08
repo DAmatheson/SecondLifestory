@@ -7,7 +7,6 @@
 package ca.secondlifestory.activities;
 
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,19 +21,16 @@ import com.parse.CountCallback;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseQueryAdapter;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ca.secondlifestory.R;
 import ca.secondlifestory.adapters.ParseSpinnerQueryAdapter;
 import ca.secondlifestory.models.CharacterClass;
-import ca.secondlifestory.models.Event;
 import ca.secondlifestory.models.PlayerCharacter;
 import ca.secondlifestory.models.Race;
 import ca.secondlifestory.utilities.SimpleDialogFragment;
@@ -95,21 +91,6 @@ public class CustomizeActivity extends BaseActivity {
         setupClickListeners();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     private void setupRaceSpinnerItems() {
         raceQueryAdapter =
             new ParseSpinnerQueryAdapter<>(this,
@@ -130,7 +111,7 @@ public class CustomizeActivity extends BaseActivity {
             @Override
             public void done(int count, ParseException e) {
                 if (e == null) {
-                    if (raceQueryAdapter.getCount() == 0) {
+                    if (count == 0) {
                         deleteRaceSpacer.setVisibility(View.GONE);
                         deleteRaceLabel.setVisibility(View.GONE);
                         raceSpinner.setVisibility(View.GONE);
@@ -166,16 +147,16 @@ public class CustomizeActivity extends BaseActivity {
             @Override
             public void done(int count, ParseException e) {
                 if (e == null) {
-                    if (count > 0) {
-                        deleteClassSpacer.setVisibility(View.VISIBLE);
-                        deleteClassLabel.setVisibility(View.VISIBLE);
-                        classSpinner.setVisibility(View.VISIBLE);
-                        deleteClassButton.setVisibility(View.VISIBLE);
-                    } else {
+                    if (count == 0) {
                         deleteClassSpacer.setVisibility(View.GONE);
                         deleteClassLabel.setVisibility(View.GONE);
                         classSpinner.setVisibility(View.GONE);
                         deleteClassButton.setVisibility(View.GONE);
+                    } else {
+                        deleteClassSpacer.setVisibility(View.VISIBLE);
+                        deleteClassLabel.setVisibility(View.VISIBLE);
+                        classSpinner.setVisibility(View.VISIBLE);
+                        deleteClassButton.setVisibility(View.VISIBLE);
                     }
                 }
             }

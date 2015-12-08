@@ -73,8 +73,11 @@ public class CharacterUpsertFragment extends BaseFragment {
     private static final String STATE_RACE_SPINNER = "CharacterUpsertFragment.raceSpinnerState";
     private static final String STATE_NAME = "CharacterUpsertFragment.name";
     private static final String STATE_DETAILS = "CharacterUpsertFragment.details";
+    private static final String RESUMING_TAG = "restoringActivity";
 
     private Callbacks mListener;
+
+    private boolean resuming = false;
 
     private boolean inEditMode;
     private String characterId;
@@ -140,6 +143,15 @@ public class CharacterUpsertFragment extends BaseFragment {
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement Callbacks");
+        }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            resuming = savedInstanceState.getBoolean(RESUMING_TAG, false);
         }
     }
 
@@ -253,6 +265,18 @@ public class CharacterUpsertFragment extends BaseFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        if (resuming) {
+            classQueryAdapter.loadObjects();
+            raceQueryAdapter.loadObjects();
+
+            resuming = false;
+        }
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
@@ -270,6 +294,8 @@ public class CharacterUpsertFragment extends BaseFragment {
 
         outState.putString(STATE_NAME, nameText.getText().toString());
         outState.putString(STATE_DETAILS, detailsText.getText().toString());
+
+        outState.putBoolean(RESUMING_TAG, true);
     }
 
     /**

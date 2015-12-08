@@ -54,12 +54,10 @@
             tools:layout="@android:layout/list_content" />
     </RelativeLayout>
 
-    <fragment
+    <FrameLayout
         android:id="@+id/event_detail"
-        android:name="ca.secondlifestory.activities.event.EventDetailFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="3"
-        tools:layout="@layout/fragment_event_detail" />
+        android:layout_weight="3" />
 
 </LinearLayout>

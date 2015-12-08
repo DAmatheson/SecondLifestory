@@ -53,11 +53,9 @@
             android:layout_below="@id/create_character_button" />
     </RelativeLayout>
 
-    <fragment
+    <FrameLayout
         android:id="@+id/character_detail"
-        android:name="ca.secondlifestory.activities.character.CharacterDetailFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="3"
-        tools:layout="@layout/fragment_character_detail" />
+        android:layout_weight="3" />
 </LinearLayout>

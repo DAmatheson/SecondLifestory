@@ -42,7 +42,16 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
                                                            EventDetailFragment.Callbacks,
                                                            EventUpsertFragment.Callbacks {
 
+    /**
+     * The intent Bundle keys
+     */
     public static final String ARG_CHARACTER_ID = "characterObjectId";
+
+    /**
+     * The serialization (saved instance state) Bundle keys
+     */
+    private static final String ARG_IN_UPSERT_MODE = "EventActivity.inUpsertMode";
+
     /**
      * Whether or not the activity is in two-pane mode, i.exception. running on a tablet
      * device.
@@ -51,7 +60,7 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
 
     private int previouslySelectedListIndex = ListView.INVALID_POSITION;
 
-    private boolean inEditOrCreateMode = false;
+    private boolean inUpsertMode = false;
 
     private String characterId;
 
@@ -62,11 +71,20 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.event_layout);
-        //setContentView(R.layout.event_twopane); // Note: Uncomment this to use two-pane
+        //setContentView(R.layout.event_layout);
+        setContentView(R.layout.event_twopane); // Note: Uncomment this to use two-pane
 
         listFragment = (EventListFragment) getFragmentManager().findFragmentById(R.id.event_list);
-        detailFragment = (EventDetailFragment) getFragmentManager().findFragmentById(R.id.event_detail);
+        if (savedInstanceState != null) {
+            inUpsertMode = savedInstanceState.getBoolean(ARG_IN_UPSERT_MODE);
+        } else if (findViewById(R.id.event_detail) != null) {
+            detailFragment = new EventDetailFragment();
+
+            getFragmentManager()
+                .beginTransaction()
+                .add(R.id.event_detail, detailFragment)
+                .commit();
+        }
 
         if (detailFragment != null) {
             // The detail container view will be present only in the
@@ -88,7 +106,7 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
             public void onClick(View v) {
                 EventUpsertFragment upsertFragment = EventUpsertFragment.newInstance(characterId);
 
-                inEditOrCreateMode = true;
+                inUpsertMode = true;
 
                 if (mTwoPane) {
                     getFragmentManager()
@@ -160,13 +178,20 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
         super.onBackPressed();
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putBoolean(ARG_IN_UPSERT_MODE, inUpsertMode);
+    }
+
     /**
      * Callback method from {@link EventListFragment.Callbacks}
      * indicating that the item with the given ID was selected.
      */
     @Override
     public void onItemSelected(String id) {
-        if (inEditOrCreateMode) {
+        if (inUpsertMode) {
             // Return to the details fragment
             getFragmentManager().popBackStack();
         }
@@ -229,7 +254,7 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
         EventUpsertFragment upsertFragment =
                 EventUpsertFragment.newInstance(characterId, eventId);
 
-        inEditOrCreateMode = true;
+        inUpsertMode = true;
 
         if (mTwoPane) {
             getFragmentManager()
@@ -270,7 +295,7 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
     @Override
     public void onEventCreated(Event event) {
         // This will re-show the detail fragment in two-pane or the list in one-pane
-        inEditOrCreateMode = false;
+        inUpsertMode = false;
 
         getFragmentManager().popBackStack();
 
@@ -282,7 +307,7 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
 
     @Override
     public void onEventModified(Event event) {
-        inEditOrCreateMode = false;
+        inUpsertMode = false;
 
         if (mTwoPane) {
             detailFragment.notifyEventChanged();

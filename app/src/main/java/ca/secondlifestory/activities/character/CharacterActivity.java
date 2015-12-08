@@ -47,6 +47,11 @@ public class CharacterActivity extends BaseActivity implements CharacterListFrag
                                                                     CharacterUpsertFragment.Callbacks {
 
     /**
+     * The serialization (saved instance state) Bundle keys
+     */
+    private static final String ARG_IN_UPSERT_MODE = "CharacterActivity.inUpsertMode";
+
+    /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
@@ -54,7 +59,7 @@ public class CharacterActivity extends BaseActivity implements CharacterListFrag
 
     private int previouslySelectedListIndex = ListView.INVALID_POSITION;
 
-    private boolean inEditOrCreateMode = false;
+    private boolean inUpsertMode = false;
 
     private CharacterListFragment listFragment;
     private CharacterDetailFragment detailFragment;
@@ -63,11 +68,24 @@ public class CharacterActivity extends BaseActivity implements CharacterListFrag
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.character_layout);
-        //setContentView(R.layout.character_twopane); // Note: Uncomment this to use two-pane
+        //setContentView(R.layout.character_layout);
+        setContentView(R.layout.character_twopane); // Note: Uncomment this to use two-pane
 
         listFragment = (CharacterListFragment) getFragmentManager().findFragmentById(R.id.character_list);
-        detailFragment = (CharacterDetailFragment) getFragmentManager().findFragmentById(R.id.character_detail);
+
+        if (savedInstanceState != null) {
+            // Restore the flag. Fragments are automatically restored
+            inUpsertMode = savedInstanceState.getBoolean(ARG_IN_UPSERT_MODE);
+        } else if (findViewById(R.id.character_detail) != null) {
+            // Create the detail fragment if in two-pane mode
+
+            detailFragment = new CharacterDetailFragment();
+
+            getFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.character_detail, detailFragment)
+                    .commit();
+        }
 
         if (detailFragment != null) {
             // The detail container view will be present only in the
@@ -170,13 +188,20 @@ public class CharacterActivity extends BaseActivity implements CharacterListFrag
         super.onBackPressed();
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putBoolean(ARG_IN_UPSERT_MODE, inUpsertMode);
+    }
+
     /**
      * Callback method from {@link CharacterListFragment.Callbacks}
      * indicating that the item with the given ID was selected.
      */
     @Override
     public void onItemSelected(String id) {
-        if (inEditOrCreateMode) {
+        if (inUpsertMode) {
             // Return to the details fragment
             getFragmentManager().popBackStack();
         }
@@ -249,7 +274,7 @@ public class CharacterActivity extends BaseActivity implements CharacterListFrag
     @Override
     public void onCharacterCreated(PlayerCharacter character) {
         // This will re-show the detail fragment in two-pane or the list in one-pane
-        inEditOrCreateMode = false;
+        inUpsertMode = false;
 
         getFragmentManager().popBackStack();
 
@@ -261,7 +286,7 @@ public class CharacterActivity extends BaseActivity implements CharacterListFrag
 
     @Override
     public void onCharacterModified(PlayerCharacter character) {
-        inEditOrCreateMode = false;
+        inUpsertMode = false;
 
         if (mTwoPane) {
             detailFragment.notifyCharacterChanged();
@@ -274,7 +299,7 @@ public class CharacterActivity extends BaseActivity implements CharacterListFrag
 
     @Override
     public void onUpsertCancelPressed() {
-        inEditOrCreateMode = false;
+        inUpsertMode = false;
 
         if (mTwoPane) {
             getFragmentManager()
@@ -291,7 +316,7 @@ public class CharacterActivity extends BaseActivity implements CharacterListFrag
         CharacterUpsertFragment upsertFragment =
                 CharacterUpsertFragment.newInstance(characterObjectId);
 
-        inEditOrCreateMode = true;
+        inUpsertMode = true;
 
         if (mTwoPane) {
             getFragmentManager()

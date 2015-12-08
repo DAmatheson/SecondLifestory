@@ -48,24 +48,50 @@
         android:layout_below="@id/upsert_character_name"
         android:text="@string/race"/>
 
-    <Spinner
-        android:id="@+id/upsert_character_race"
+    <LinearLayout
+        android:id="@+id/upsert_race_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/upsert_character_race_label"/>
+        android:orientation="horizontal"
+        android:layout_below="@id/upsert_character_race_label">
+        <Spinner
+            android:id="@+id/upsert_character_race"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <TextView
+            style="@style/emptyListViewItem"
+            android:id="@+id/empty_race_item"
+            android:text="@string/empty_race_spinner" />
+    </LinearLayout>
+
 
     <TextView
         android:id="@+id/upsert_character_class_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/upsert_character_race"
+        android:layout_below="@id/upsert_race_container"
         android:text="@string/class_label"/>
 
-    <Spinner
-        android:id="@+id/upsert_character_class"
+    <LinearLayout
+        android:id="@+id/upsert_character_class_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/upsert_character_class_label" />
+        android:layout_below="@id/upsert_character_class_label"
+        android:orientation="horizontal">
+        <Spinner
+            android:id="@+id/upsert_character_class"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             />
+
+        <TextView
+            style="@style/emptyListViewItem"
+            android:id="@+id/empty_class_item"
+            android:text="@string/empty_character_class_spinner" />
+    </LinearLayout>
+
 
     <EditText
         android:id="@+id/upsert_character_details"
@@ -75,7 +101,7 @@
         android:minLines="2"
         android:maxLines="8"
         android:singleLine="false"
-        android:layout_below="@id/upsert_character_class"
+        android:layout_below="@id/upsert_character_class_container"
         android:inputType="text|textCapSentences|textMultiLine|textLongMessage"/>
 
     <Button

@@ -156,16 +156,10 @@ public class CharacterUpsertFragment extends BaseFragment {
         detailsText = (EditText) v.findViewById(R.id.upsert_character_details);
 
         raceSpinner = (Spinner) v.findViewById(R.id.upsert_character_race);
-        // TODO: This empty view doesn't do what I want.
-        TextView racePlaceholder = new TextView(getActivity());
-        racePlaceholder.setText("Create a Race first.");
-        raceSpinner.setEmptyView(racePlaceholder);
+        raceSpinner.setEmptyView(v.findViewById(R.id.empty_race_item));
 
         classSpinner = (Spinner) v.findViewById(R.id.upsert_character_class);
-        // TODO: This empty view doesn't do what I want.
-        TextView classPlaceholder = new TextView(getActivity());
-        classPlaceholder.setText("Create a Class first.");
-        classSpinner.setEmptyView(classPlaceholder);
+        classSpinner.setEmptyView(v.findViewById(R.id.empty_class_item));
 
         saveButton = (Button) v.findViewById(R.id.upsert_save);
         saveButton.setEnabled(false);

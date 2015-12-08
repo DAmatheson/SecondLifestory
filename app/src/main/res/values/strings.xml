@@ -42,6 +42,8 @@
     <string name="load_classes_failed_error_message">Failed to load classes.</string>
     <string name="load_races_failed_error_message">Failed to load races.</string>
     <string name="class_label">Class</string>
+    <string name="empty_character_class_spinner">Create a Class first.</string>
+    <string name="empty_race_spinner">Create a Race first.</string>
 
     <!-- Event Activity -->
     <string name="events_title_prefix">"Events for "</string>

@@ -111,7 +111,6 @@
         android:layout_height="fill_parent"
         android:layout_below="@id/xp_gained_label"
         android:layout_toRightOf="@id/event_description_label"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:background="@color/background_floating_material_dark"
         android:padding="2sp">

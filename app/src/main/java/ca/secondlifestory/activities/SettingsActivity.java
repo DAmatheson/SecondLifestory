@@ -6,6 +6,8 @@
 
 package ca.secondlifestory.activities;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -27,6 +29,9 @@ import ca.secondlifestory.utilities.SimpleDialogFragment;
 
 public class SettingsActivity extends BaseActivity {
 
+    private final String TUTORIALS_URL = "http://www.isaac-west.ca/SecondLifestory/FAQ";
+
+    private Button tutorialsLinkButton;
     private Button deleteCharactersButton;
     private Button clearDatabaseButton;
 
@@ -35,11 +40,27 @@ public class SettingsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        tutorialsLinkButton = (Button) findViewById(R.id.tutorials);
         deleteCharactersButton = (Button) findViewById(R.id.delete_all_characters_button);
         clearDatabaseButton = (Button) findViewById(R.id.delete_all_data_button);
 
+        setupTutorialsLinkButton();
         setupDeleteCharactersButton();
         setupClearDatabaseButton();
+    }
+
+    /**
+     * Sets up the click handler for the tutorials button
+     */
+    private void setupTutorialsLinkButton() {
+        tutorialsLinkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse(TUTORIALS_URL);
+                Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(launchBrowser);
+            }
+        });
     }
 
     /**

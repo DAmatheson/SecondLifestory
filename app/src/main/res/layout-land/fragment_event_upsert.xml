@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- fragment_event_upsert.xml
-    Purpose: Create/Edit fragment layout for EventUpsertFragment
+<!-- land\fragment_event_upsert.xml
+Purpose: Landscape Create/Edit fragment layout for EventUpsertFragment
 
-    Drew Matheson, 2015.11.23: Created
+Drew Matheson, 2015.12.08: Created
 -->
 
 <RelativeLayout
@@ -29,7 +29,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/create_event"
-        style="@style/pageHeader"/>
+        style="@style/pageHeader"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:layout_marginBottom="0dp" />
 
     <EditText
         android:id="@+id/upsert_event_title"
@@ -50,86 +53,91 @@
     <Spinner
         android:id="@+id/upsert_event_type"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="@dimen/spinner_single_line_height"
         android:layout_below="@id/upsert_event_type_label"/>
 
     <TextView
         android:id="@+id/upsert_event_character_count_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/characters_present"
         android:layout_below="@id/upsert_event_type"
-        android:layout_marginTop="12dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:paddingRight="8dp"
         android:paddingEnd="8dp"
-        android:text="@string/characters_present"/>
+        android:layout_marginTop="14dp"/>
     <EditText
         android:id="@+id/upsert_event_character_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_toRightOf="@id/upsert_event_character_count_label"
-        android:layout_toEndOf="@id/upsert_event_character_count_label"
-        android:layout_alignBaseline="@id/upsert_event_character_count_label"
         android:hint="@string/character_count_hint"
         android:inputType="number"
         android:singleLine="true"
-        android:maxLength="9"/>
+        android:layout_below="@id/upsert_event_type"
+        android:layout_toRightOf="@id/upsert_event_character_count_label"
+        android:layout_toEndOf="@id/upsert_event_character_count_label"
+        android:maxLength="9"
+        android:ems="10"/>
 
-    <TextView
-        android:id="@+id/upsert_event_experience_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/upsert_event_character_count_label"
-        android:layout_marginTop="24dp"
-        android:paddingRight="8dp"
-        android:paddingEnd="8dp"
-        android:text="@string/total_xp" />
     <EditText
         android:id="@+id/upsert_event_experience"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignLeft="@id/upsert_event_character_count"
-        android:layout_alignStart="@id/upsert_event_character_count"
-        android:layout_toRightOf="@id/upsert_event_experience_label"
-        android:layout_toEndOf="@id/upsert_event_experience_label"
-        android:layout_alignBaseline="@id/upsert_event_experience_label"
         android:hint="@string/xp_amount_hint"
         android:inputType="numberSigned"
         android:singleLine="true"
+        android:layout_alignBaseline="@id/upsert_event_character_count"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:maxLength="9"
-        android:ems="10" />
-
-    <Button
-        android:id="@+id/upsert_cancel"
-        style="@style/secondaryButton"
-        android:text="@string/cancel"
-        android:layout_alignParentBottom="true"/>
-
-    <Button
-        android:id="@+id/upsert_save"
-        style="@style/primaryButton"
-        android:layout_alignTop="@id/upsert_cancel"
-        android:text="@string/save" />
-
+        android:ems="10"/>
     <TextView
-        android:id="@+id/upsert_event_description_label"
-        android:layout_width="match_parent"
+        android:id="@+id/upsert_event_experience_label"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/upsert_event_experience_label"
-        android:layout_marginTop="16dp"
-        android:text="@string/description"/>
+        android:text="@string/total_xp"
+        android:layout_below="@id/upsert_event_type"
+        android:layout_toLeftOf="@id/upsert_event_experience"
+        android:layout_toStartOf="@id/upsert_event_experience"
+        android:layout_alignBaseline="@id/upsert_event_experience"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"/>
+
+    <LinearLayout
+        android:id="@+id/button_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+        <Button
+            android:id="@+id/upsert_cancel"
+            style="@style/secondaryButton"
+            android:text="@string/cancel" />
+
+        <Button
+            android:id="@+id/upsert_save"
+            style="@style/primaryButton"
+            android:text="@string/save"
+            android:paddingRight="0dp"
+            android:paddingLeft="0dp"
+            android:layout_marginTop="@dimen/standard_padding"/>
+    </LinearLayout>
+
     <EditText
         android:id="@+id/upsert_event_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/upsert_cancel"
         android:hint="@string/event_description_hint"
         android:inputType="text|textCapSentences|textMultiLine|textLongMessage"
         android:minLines="2"
         android:maxLines="8"
-        android:layout_below="@id/upsert_event_description_label"/>
-
+        android:layout_below="@id/upsert_event_character_count"
+        android:layout_toLeftOf="@id/button_container"
+        android:layout_toStartOf="@id/button_container"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="@dimen/standard_padding"
+        android:layout_marginEnd="@dimen/standard_padding"/>
 </RelativeLayout>

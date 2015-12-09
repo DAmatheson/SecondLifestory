@@ -35,12 +35,14 @@
         style="@style/detailTextViewLabel"
         android:text="@string/race"
         android:layout_below="@id/character_name"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"/>
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"/>
     <TextView
         android:id="@+id/character_race"
         style="@style/detailTextView"
         android:ems="12"
         android:layout_toRightOf="@id/character_race_label"
+        android:layout_toEndOf="@id/character_race_label"
         android:layout_alignBaseline="@id/character_race_label"
         android:singleLine="true" />
 
@@ -49,14 +51,18 @@
         style="@style/detailTextViewLabel"
         android:text="@string/character_class"
         android:layout_toRightOf="@id/character_race"
+        android:layout_toEndOf="@id/character_race"
         android:layout_alignBaseline="@id/character_race"
         android:layout_marginLeft="@dimen/standard_padding"
-        android:layout_marginRight="@dimen/activity_horizontal_margin" />
+        android:layout_marginStart="@dimen/standard_padding"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"/>
     <TextView
         android:id="@+id/character_class"
         style="@style/detailTextView"
         android:ems="12"
         android:layout_toRightOf="@id/character_class_label"
+        android:layout_toEndOf="@id/character_class_label"
         android:layout_alignBaseline="@id/character_class_label"
         android:singleLine="true" />
 
@@ -65,11 +71,13 @@
         style="@style/detailTextViewLabel"
         android:text="@string/total_xp"
         android:layout_below="@id/character_race_label"
-        android:layout_marginRight="@dimen/activity_horizontal_margin" />
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"/>
     <TextView
         android:id="@+id/character_xp"
         style="@style/detailTextView"
         android:layout_toRightOf="@id/total_xp_label"
+        android:layout_toEndOf="@id/total_xp_label"
         android:layout_alignBaseline="@id/total_xp_label" />
 
     <TextView
@@ -77,13 +85,17 @@
         style="@style/detailTextViewLabel"
         android:text="@string/status"
         android:layout_toRightOf="@id/character_xp"
+        android:layout_toEndOf="@id/character_xp"
         android:layout_alignBaseline="@id/character_xp"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_alignLeft="@id/character_class_label"/>
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_alignLeft="@id/character_class_label"
+        android:layout_alignStart="@id/character_class_label"/>
     <TextView
         android:id="@+id/character_status"
         style="@style/detailTextView"
         android:layout_toRightOf="@id/character_status_label"
+        android:layout_toEndOf="@id/character_status_label"
         android:layout_alignBaseline="@id/character_status_label" />
 
     <TextView
@@ -109,11 +121,14 @@
             style="@style/primaryButton"
             android:layout_below="@id/delete_character_button"
             android:layout_alignParentRight="false"
+            android:layout_alignParentEnd="false"
             android:layout_alignLeft="@id/delete_character_button"
+            android:layout_alignStart="@id/delete_character_button"
             android:layout_alignRight="@id/delete_character_button"
+            android:layout_alignEnd="@id/delete_character_button"
             android:paddingRight="0dp"
             android:paddingLeft="0dp"
-            android:layout_marginTop="@dimen/standard_padding"/>
+            android:layout_marginTop="@dimen/standard_padding" />
     </RelativeLayout>
 
     <ScrollView
@@ -122,13 +137,14 @@
         android:layout_height="fill_parent"
         android:layout_below="@id/total_xp_label"
         android:layout_toRightOf="@id/character_description_label"
+        android:layout_toEndOf="@id/character_description_label"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:background="@color/background_floating_material_dark"
-        android:padding="2sp">
+        android:padding="@dimen/multiline_text_padding" >
         <TextView
             android:id="@+id/character_description"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            style="@style/detailTextView"/>
+            style="@style/detailTextView" />
     </ScrollView>
 </RelativeLayout>

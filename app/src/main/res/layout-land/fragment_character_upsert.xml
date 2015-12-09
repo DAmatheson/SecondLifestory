@@ -73,7 +73,8 @@ Drew Matheson, 2015.12.08: Created
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingRight="4dp"/>
+            android:paddingRight="4dp"
+            android:paddingEnd="4dp"/>
         <TextView
             style="@style/emptyListViewItem"
             android:layout_width="0dp"
@@ -86,7 +87,8 @@ Drew Matheson, 2015.12.08: Created
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingLeft="4dp"/>
+            android:paddingLeft="4dp"
+            android:paddingStart="4dp"/>
         <TextView
             style="@style/emptyListViewItem"
             android:layout_width="0dp"
@@ -101,7 +103,8 @@ Drew Matheson, 2015.12.08: Created
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true">
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
         <Button
             android:id="@+id/upsert_cancel"
             style="@style/secondaryButton"
@@ -116,17 +119,25 @@ Drew Matheson, 2015.12.08: Created
             android:layout_marginTop="@dimen/standard_padding"/>
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/upsert_character_details_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/description"
+        android:layout_below="@id/spinner_container"
+        android:layout_marginTop="5dp" />
     <EditText
         android:id="@+id/upsert_character_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/characterDetailsPlaceholder"
         android:minLines="3"
-        android:maxLines="8"
         android:singleLine="false"
-        android:layout_below="@id/spinner_container"
+        android:layout_below="@id/upsert_character_details_label"
         android:inputType="text|textCapSentences|textMultiLine|textLongMessage"
         android:layout_toLeftOf="@id/button_container"
+        android:layout_toStartOf="@id/button_container"
         android:layout_alignParentBottom="true"
-        android:layout_marginRight="@dimen/standard_padding" />
+        android:layout_marginRight="@dimen/standard_padding"
+        android:layout_marginEnd="@dimen/standard_padding"/>
 </RelativeLayout>

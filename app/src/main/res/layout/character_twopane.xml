@@ -32,6 +32,7 @@
             android:layout_gravity="end"
             android:background="@drawable/button_background_roundedcorner"
             android:src="@drawable/ic_add_circle_outline_white_36dp_states"
+            android:contentDescription="@string/create_character"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:layout_alignParentTop="true" />
 
@@ -39,7 +40,7 @@
             android:id="@+id/filter_show_deceased"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Show Deceased"
+            android:text="@string/show_deceased"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"/>
 

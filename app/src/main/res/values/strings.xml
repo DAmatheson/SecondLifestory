@@ -19,6 +19,8 @@
     <string name="cancel">@android:string/cancel</string>
     <string name="ok">@android:string/ok</string>
     <string name="no">@android:string/no</string>
+    <string name="alive">Alive</string>
+    <string name="dead">Dead</string>
 
     <!-- Empty list item text -->
     <string name="eventsEmptyEntry">No Events</string>
@@ -28,6 +30,9 @@
     <string name="login_activity_internet_connection_required">You must have an internet connection available when starting Second Lifestory</string>
     <string name="login_activity_invalid_credentials">Invalid login credentials.</string>
 
+    <!-- Character List -->
+    <string name="show_deceased">Show Deceased</string>
+
     <!-- Character Details -->
     <string name="character_name">Character Name</string>
     <string name="race">Race</string>
@@ -35,8 +40,6 @@
     <string name="total_xp">Total XP</string>
     <string name="status">Status</string>
     <string name="delete_character_message">Delete This Character?</string>
-    <string name="alive">Alive</string>
-    <string name="dead">Dead</string>
 
     <!-- Create/Edit Character -->
     <string name="create_character">Create Character</string>
@@ -101,7 +104,7 @@
     <string name="delete_all_data">Delete All Data</string>
     <string name="copyright">&#169; 2015 - Drew Matheson &amp; Isaac West</string>
     <string name="characterNamePlaceholder">Name</string>
-    <string name="characterDetailsPlaceholder">Details</string>
+    <string name="characterDetailsPlaceholder">Description</string>
     <string name="delete_all_characters_dialog_message">All character information will be delete permanently. This can not be undone.</string>
     <string name="delete_all_data_dialog_message">All app data will be deleted permanently. This can not be undone.</string>
     <string name="delete_all_characters_dialog_title">Delete character data?</string>

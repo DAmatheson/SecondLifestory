@@ -47,7 +47,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/upsert_character_name"
         android:text="@string/race"/>
-
     <LinearLayout
         android:id="@+id/upsert_race_container"
         android:layout_width="match_parent"
@@ -73,7 +72,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/upsert_race_container"
         android:text="@string/class_label"/>
-
     <LinearLayout
         android:id="@+id/upsert_character_class_container"
         android:layout_width="match_parent"
@@ -92,18 +90,6 @@
             android:text="@string/empty_character_class_spinner" />
     </LinearLayout>
 
-
-    <EditText
-        android:id="@+id/upsert_character_details"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/characterDetailsPlaceholder"
-        android:minLines="2"
-        android:maxLines="8"
-        android:singleLine="false"
-        android:layout_below="@id/upsert_character_class_container"
-        android:inputType="text|textCapSentences|textMultiLine|textLongMessage"/>
-
     <Button
         android:id="@+id/upsert_cancel"
         style="@style/secondaryButton"
@@ -115,4 +101,21 @@
         style="@style/primaryButton"
         android:layout_alignTop="@id/upsert_cancel"
         android:text="@string/save" />
+
+    <TextView
+        android:id="@+id/upsert_character_details_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/description"
+        android:layout_below="@id/upsert_character_class_container"/>
+    <EditText
+        android:id="@+id/upsert_character_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/upsert_cancel"
+        android:layout_below="@id/upsert_character_details_label"
+        android:hint="@string/characterDetailsPlaceholder"
+        android:minLines="2"
+        android:singleLine="false"
+        android:inputType="text|textCapSentences|textMultiLine|textLongMessage"/>
 </RelativeLayout>

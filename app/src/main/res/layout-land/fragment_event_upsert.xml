@@ -133,7 +133,6 @@ Drew Matheson, 2015.12.08: Created
         android:hint="@string/event_description_hint"
         android:inputType="text|textCapSentences|textMultiLine|textLongMessage"
         android:minLines="2"
-        android:maxLines="8"
         android:layout_below="@id/upsert_event_character_count"
         android:layout_toLeftOf="@id/button_container"
         android:layout_toStartOf="@id/button_container"

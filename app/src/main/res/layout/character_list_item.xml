@@ -13,6 +13,7 @@
     android:layout_height="match_parent"
     android:minHeight="?android:attr/listPreferredItemHeightSmall"
     android:paddingLeft="4dp"
+    android:paddingStart="4dp"
     android:descendantFocusability="blocksDescendants"
     android:background="@drawable/list_item_background" >
 
@@ -72,6 +73,7 @@
         android:singleLine="true"
         android:ellipsize="end"
         android:paddingRight="2dp"
+        android:paddingEnd="2dp"
         android:layout_below="@id/character_name" />
 </RelativeLayout>
 

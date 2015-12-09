@@ -132,16 +132,8 @@ public class PlayerCharacter extends ParseObject {
      * Gets the amount of experience the PlayerCharacter has accumulated
      * @return The PlayerCharacter's experience amount
      */
-    public int getExperience() {
-        return getInt(KEY_EXPERIENCE);
-    }
-
-    /**
-     * Sets the amount of experience the PlayerCharacter has accumulate
-     * @param experience amount for the PlayerCharacter
-     */
-    public void setExperience(int experience) {
-        put(KEY_EXPERIENCE, experience);
+    public long getExperience() {
+        return getLong(KEY_EXPERIENCE);
     }
 
     /**
@@ -149,7 +141,7 @@ public class PlayerCharacter extends ParseObject {
      * @param experienceToAdd amount of experience to add
      */
     public void addExperience(int experienceToAdd) {
-        increment(KEY_EXPERIENCE, experienceToAdd);
+        increment(KEY_EXPERIENCE, (long)experienceToAdd);
     }
 
     /**
@@ -157,7 +149,7 @@ public class PlayerCharacter extends ParseObject {
      * @param experienceToSubtract positive integer to be subtracted
      */
     public void subtractExperience(int experienceToSubtract) {
-        increment(KEY_EXPERIENCE, -experienceToSubtract);
+        increment(KEY_EXPERIENCE, (long)-experienceToSubtract);
     }
 
     /**

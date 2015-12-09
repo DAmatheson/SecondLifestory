@@ -216,7 +216,7 @@ public class CharacterDetailFragment extends BaseFragment {
                     name.setText(mItem.getName());
                     race.setText(mItem.getRace().getName());
                     characterClass.setText(mItem.getCharacterClass().getName());
-                    totalXp.setText(Integer.toString(mItem.getExperience()));
+                    totalXp.setText(Long.toString(mItem.getExperience()));
                     status.setText(mItem.isLiving() ? "Alive" : "Dead");
                     description.setText(mItem.getDetails());
                 } else {

@@ -59,6 +59,7 @@
     <string name="description">Description</string>
     <string name="died">Died</string>
     <string name="resurrect">Resurrect</string>
+    <string name="resurrected">Resurrected</string>
     <string name="delete_event_message">Delete This Event?</string>
 
     <!-- Create/Edit Event -->
@@ -70,6 +71,8 @@
     <string name="xp_amount_hint">XP Gained</string>
     <string name="event_description_hint">Description</string>
     <string name="event_title_hint">Event Title</string>
+    <string name="what_killed_you">What killed you?</string>
+    <string name="what_resurrected_you">What brought you back?</string>
 
     <!-- Customize Activity -->
     <string name="custom_races_and_classes">Custom Races &amp; Classes</string>

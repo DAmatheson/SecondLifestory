@@ -43,7 +43,7 @@ public class EventQueryAdapter extends ParseQueryAdapter<Event> {
                 query.whereEqualTo(Event.KEY_CHARACTER,
                         ParseObject.createWithoutData(PlayerCharacter.class, characterObjectId));
 
-                query.orderByAscending("createdAt");
+                query.orderByDescending(Event.KEY_DATE);
 
                 return query;
             }

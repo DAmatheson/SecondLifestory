@@ -90,6 +90,8 @@ public class CustomizeActivity extends BaseActivity {
         setupRaceSpinnerItems();
         setupClassSpinnerItems();
         setupClickListeners();
+
+        //TODO: Save and restore stuff for rotation
     }
 
     private void setupRaceSpinnerItems() {

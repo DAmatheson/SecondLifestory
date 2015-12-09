@@ -30,6 +30,7 @@ import java.util.Locale;
 import ca.secondlifestory.BaseFragment;
 import ca.secondlifestory.R;
 import ca.secondlifestory.models.Event;
+import ca.secondlifestory.models.EventTypes;
 import ca.secondlifestory.utilities.SimpleDialogFragment;
 
 /**
@@ -41,7 +42,7 @@ import ca.secondlifestory.utilities.SimpleDialogFragment;
 public class EventDetailFragment extends BaseFragment {
     public interface Callbacks {
         void onEditClicked(String eventId);
-        void onEventDeleted(String eventId);
+        void onEventDeleted(String eventId, boolean deathOrResurrection);
     }
 
     /**
@@ -65,6 +66,9 @@ public class EventDetailFragment extends BaseFragment {
     private TextView experience;
     private TextView characterCount;
     private TextView description;
+
+    private TextView experienceLabel;
+    private TextView characterCountLabel;
 
     private Button editButton;
     private Button deleteButton;
@@ -104,7 +108,11 @@ public class EventDetailFragment extends BaseFragment {
         characterCount = (TextView) rootView.findViewById(R.id.event_characters_present);
         description = (TextView) rootView.findViewById(R.id.event_description);
 
+        experienceLabel = (TextView) rootView.findViewById(R.id.xp_gained_label);
+        characterCountLabel = (TextView) rootView.findViewById(R.id.characters_present_label);
+
         editButton = (Button) rootView.findViewById(R.id.edit_event_button);
+        // TODO: Allow editing of death/resurrection events
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,7 +139,10 @@ public class EventDetailFragment extends BaseFragment {
                         mItem.unpinInBackground();
                         mItem.deleteEventually();
 
-                        mListener.onEventDeleted(eventId);
+                        boolean deathOrResurrection = mItem.getEventType() == EventTypes.DEATH ||
+                                mItem.getEventType() == EventTypes.RESURRECT;
+
+                        mListener.onEventDeleted(eventId, deathOrResurrection);
                     }
                 });
             }
@@ -205,8 +216,17 @@ public class EventDetailFragment extends BaseFragment {
 
                     eventTitle.setText(mItem.getTitle());
                     date.setText(dateFormatter.format(mItem.getDate()) + " " + timeFormatter.format(mItem.getDate()));
-                    experience.setText(numberFormatter.format(mItem.getExperience()));
-                    characterCount.setText(numberFormatter.format(mItem.getCharacterCount()));
+                    if (object.getEventType() == EventTypes.DEATH ||
+                            object.getEventType() == EventTypes.RESURRECT) {
+                        experience.setVisibility(View.GONE);
+                        characterCount.setVisibility(View.GONE);
+                        experienceLabel.setVisibility(View.GONE);
+                        characterCountLabel.setVisibility(View.GONE);
+                    }
+                    else {
+                        experience.setText(numberFormatter.format(mItem.getExperience()));
+                        characterCount.setText(numberFormatter.format(mItem.getCharacterCount()));
+                    }
                     description.setText(mItem.getDescription());
                 } else {
                     // TODO: Error handling

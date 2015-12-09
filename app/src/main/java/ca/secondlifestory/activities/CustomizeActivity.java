@@ -7,7 +7,6 @@
 package ca.secondlifestory.activities;
 
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,7 +35,13 @@ import ca.secondlifestory.models.PlayerCharacter;
 import ca.secondlifestory.models.Race;
 import ca.secondlifestory.utilities.SimpleDialogFragment;
 
+/**
+ * Activity which allows the user to customize the races and classes available
+ */
 public class CustomizeActivity extends BaseActivity {
+
+    private static final String STATE_NEW_RACE_TEXT = "CustomizeActivity.newRaceText";
+    private static final String STATE_NEW_CLASS_TEXT = "CustomizeActivity.newClassText";
 
     private EditText newRaceText;
     private EditText newClassText;
@@ -90,6 +95,19 @@ public class CustomizeActivity extends BaseActivity {
         setupRaceSpinnerItems();
         setupClassSpinnerItems();
         setupClickListeners();
+
+        if (savedInstanceState != null) {
+            newRaceText.setText(savedInstanceState.getString(STATE_NEW_RACE_TEXT, ""));
+            newClassText.setText(savedInstanceState.getString(STATE_NEW_CLASS_TEXT, ""));
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putString(STATE_NEW_RACE_TEXT, newRaceText.getText().toString());
+        outState.putString(STATE_NEW_CLASS_TEXT, newClassText.getText().toString());
     }
 
     private void setupRaceSpinnerItems() {

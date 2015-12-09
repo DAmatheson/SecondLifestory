@@ -100,11 +100,12 @@
         android:layout_above="@id/footer"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:background="@color/background_floating_material_dark">
+        android:background="@color/background_floating_material_dark"
+        android:padding="@dimen/multiline_text_padding" >
         <TextView
             android:id="@+id/event_description"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            style="@style/detailTextView"/>
+            style="@style/detailTextView" />
     </ScrollView>
 </RelativeLayout>

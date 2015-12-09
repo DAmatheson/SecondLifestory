@@ -11,4 +11,6 @@
     <dimen name="button_height">40dp</dimen>
 
     <dimen name="spinner_single_line_height">35dp</dimen>
+
+    <dimen name="multiline_text_padding">2dp</dimen>
 </resources>

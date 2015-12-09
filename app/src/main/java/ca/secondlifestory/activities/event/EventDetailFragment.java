@@ -112,7 +112,6 @@ public class EventDetailFragment extends BaseFragment {
         characterCountLabel = (TextView) rootView.findViewById(R.id.characters_present_label);
 
         editButton = (Button) rootView.findViewById(R.id.edit_event_button);
-        // TODO: Allow editing of death/resurrection events
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

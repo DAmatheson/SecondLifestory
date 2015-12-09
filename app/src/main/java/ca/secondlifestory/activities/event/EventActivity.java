@@ -9,18 +9,28 @@ package ca.secondlifestory.activities.event;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.SaveCallback;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 import ca.secondlifestory.BaseActivity;
 import ca.secondlifestory.R;
 import ca.secondlifestory.models.Event;
+import ca.secondlifestory.models.EventTypes;
 import ca.secondlifestory.models.PlayerCharacter;
+import ca.secondlifestory.utilities.TextEntryDialogFragment;
 
 /**
  * An activity representing a list of PlayerCharacter Events. This activity
@@ -40,7 +50,8 @@ import ca.secondlifestory.models.PlayerCharacter;
  */
 public class EventActivity extends BaseActivity implements EventListFragment.Callbacks,
                                                            EventDetailFragment.Callbacks,
-                                                           EventUpsertFragment.Callbacks {
+                                                           EventUpsertFragment.Callbacks,
+                                                TextEntryDialogFragment.OnPositiveCloseListener {
 
     /**
      * The intent Bundle keys
@@ -63,9 +74,12 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
     private boolean inUpsertMode = false;
 
     private String characterId;
+    private boolean characterIsAlive;
 
     private EventListFragment listFragment;
     private EventDetailFragment detailFragment;
+
+    private Button deathButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +138,14 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
             }
         });
 
+        deathButton = (Button) findViewById(R.id.death_button);
+        deathButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleLivingDialog();
+            }
+        });
+
         setTitle(getString(R.string.title_activity_event));
     }
 
@@ -132,6 +154,7 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
         characterId = getIntent().getStringExtra(ARG_CHARACTER_ID);
 
         listFragment.setCharacterObjectId(characterId);
+        updateDeathButton();
 
         ParseQuery<PlayerCharacter> query = PlayerCharacter.getQuery();
         query.getInBackground(characterId, new GetCallback<PlayerCharacter>() {
@@ -248,6 +271,118 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
         }
     }
 
+    @Override
+    public void onPositiveClose(final String textInput) {
+        ParseQuery<PlayerCharacter> query = PlayerCharacter.getQuery();
+        query.getInBackground(characterId, new GetCallback<PlayerCharacter>() {
+            @Override
+            public void done(PlayerCharacter object, ParseException e) {
+                if (e == null) {
+                    final PlayerCharacter character = object;
+
+                    if (character.isLiving()) {
+                        characterDied(character, textInput);
+                    } else {
+                        characterResurrected(character, textInput);
+                    }
+                }
+            }
+        });
+    }
+
+    private void toggleLivingDialog() {
+        int dialogText;
+        if (characterIsAlive) {
+            dialogText = R.string.what_killed_you;
+        }
+        else {
+            dialogText = R.string.what_resurrected_you;
+        }
+        TextEntryDialogFragment dialog = TextEntryDialogFragment.newInstance(R.string.ok,
+                dialogText, R.string.no);
+
+        dialog.show(getFragmentManager(), null);
+    }
+
+    private void characterDied(final PlayerCharacter character, String description) {
+        character.setLiving(false);
+        character.pinInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                character.saveEventually();
+            }
+        });
+
+        final Event event = new Event();
+        event.setCharacter(character);
+        event.setTitle(getString(R.string.died));
+        event.setEventType(EventTypes.DEATH);
+        event.setCharacterCount(0);
+        event.setExperience(0);
+        event.setDescription(description);
+        event.setDate(new Date());
+
+        event.pinInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                event.saveEventually();
+                listFragment.notifyListChanged();
+                updateDeathButton(character);
+            }
+        });
+    }
+
+    private void characterResurrected(final PlayerCharacter character, String description) {
+        character.setLiving(true);
+        character.pinInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                character.saveEventually();
+            }
+        });
+
+        final Event event = new Event();
+        event.setCharacter(character);
+        event.setTitle(getString(R.string.resurrected));
+        event.setEventType(EventTypes.RESURRECT);
+        event.setCharacterCount(0);
+        event.setExperience(0);
+        event.setDescription(description);
+        event.setDate(new Date());
+
+        event.pinInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                event.saveEventually();
+                listFragment.notifyListChanged();
+                updateDeathButton(character);
+            }
+        });
+    }
+
+    private void updateDeathButton() {
+        ParseQuery<PlayerCharacter> query = PlayerCharacter.getQuery();
+        query.getInBackground(characterId, new GetCallback<PlayerCharacter>() {
+            @Override
+            public void done(PlayerCharacter object, ParseException e) {
+                if (e == null) {
+                    updateDeathButton(object);
+                }
+            }
+        });
+    }
+
+    private void updateDeathButton(PlayerCharacter character) {
+        characterIsAlive = character.isLiving();
+        if (characterIsAlive) {
+            deathButton.setText(getString(R.string.died));
+        }
+        else {
+            deathButton.setText(getString(R.string.resurrect));
+        }
+        deathButton.setEnabled(true);
+    }
+
     //region EventDetailFragment.Callbacks methods
     @Override
     public void onEditClicked(String eventId) {
@@ -272,7 +407,7 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
     }
 
     @Override
-    public void onEventDeleted(String eventId) {
+    public void onEventDeleted(String eventId, boolean deathOrResurrection) {
         if (mTwoPane) {
             detailFragment = new EventDetailFragment();
 
@@ -288,6 +423,42 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
         previouslySelectedListIndex = listFragment.getListView().getCheckedItemPosition();
 
         listFragment.notifyListChanged();
+
+        if (deathOrResurrection) {
+            deathButton.setEnabled(false);
+            ParseQuery<PlayerCharacter> query = PlayerCharacter.getQuery();
+            query.getInBackground(characterId, new GetCallback<PlayerCharacter>() {
+                @Override
+                public void done(final PlayerCharacter character, ParseException e) {
+                    if (e == null) {
+                        ParseQuery<Event> query = Event.getQuery();
+                        query.whereContainedIn(Event.KEY_EVENT_TYPE,
+                                new ArrayList<String>() {{
+                                    add(EventTypes.DEATH.toString());
+                                    add(EventTypes.RESURRECT.toString());
+                                }});
+                        query.orderByDescending(Event.KEY_DATE);
+                        query.getFirstInBackground(new GetCallback<Event>() {
+                            @Override
+                            public void done(Event event, ParseException e) {
+                                if (e == null && event != null) {
+                                    if (event.getEventType() == EventTypes.DEATH) {
+                                        character.setLiving(false);
+                                    } else {
+                                        character.setLiving(true);
+                                    }
+                                    updateDeathButton(character);
+                                }
+                                else {
+                                    character.setLiving(true);
+                                    updateDeathButton(character);
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        }
     }
     //endregion EventDetailFragment.Callbacks methods
 

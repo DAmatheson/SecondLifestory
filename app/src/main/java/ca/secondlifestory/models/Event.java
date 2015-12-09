@@ -17,14 +17,14 @@ import java.util.Date;
  */
 @ParseClassName("Event")
 public class Event extends ParseObject {
-    private static final String KEY_EVENT_TYPE = "eventType";
     private static final String KEY_CHARACTER_COUNT = "characterCount";
     private static final String KEY_EXPERIENCE = "experience";
     private static final String KEY_DESCRIPTION = "description";
-    private static final String KEY_DATE = "date";
     private static final String KEY_TITLE = "title";
 
     public static final String KEY_CHARACTER = "character";
+    public static final String KEY_EVENT_TYPE = "eventType";
+    public static final String KEY_DATE = "date";
 
     /**
      * Instantiates a new instance of Event

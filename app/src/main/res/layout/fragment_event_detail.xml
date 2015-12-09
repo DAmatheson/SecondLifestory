@@ -47,10 +47,12 @@
                 style="@style/detailTextViewLabel"
                 android:text="@string/date" />
             <TextView
+                android:id="@+id/xp_gained_label"
                 style="@style/detailTextViewLabel"
                 android:text="@string/xp_gained"
                 />
             <TextView
+                android:id="@+id/characters_present_label"
                 style="@style/detailTextViewLabel"
                 android:text="@string/characters_present" />
 

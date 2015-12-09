@@ -21,6 +21,8 @@ import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
 
 import ca.secondlifestory.BaseFragment;
@@ -213,11 +215,18 @@ public class CharacterDetailFragment extends BaseFragment {
                     deleteButton.setEnabled(true);
                     name.setVisibility(View.VISIBLE);
 
+                    NumberFormat numberFormatter = DecimalFormat.getNumberInstance();
+
                     name.setText(mItem.getName());
                     race.setText(mItem.getRace().getName());
                     characterClass.setText(mItem.getCharacterClass().getName());
-                    totalXp.setText(Long.toString(mItem.getExperience()));
-                    status.setText(mItem.isLiving() ? "Alive" : "Dead");
+                    totalXp.setText(numberFormatter.format(mItem.getExperience()));
+
+                    status.setText(CharacterDetailFragment.this.getActivity().getString(
+                            mItem.isLiving()
+                            ? R.string.alive
+                            : R.string.dead));
+
                     description.setText(mItem.getDetails());
                 } else {
                     Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();

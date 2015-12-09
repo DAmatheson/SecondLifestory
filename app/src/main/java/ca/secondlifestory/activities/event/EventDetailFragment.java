@@ -22,6 +22,8 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -55,11 +57,6 @@ public class EventDetailFragment extends BaseFragment {
      */
     private Event mItem;
     private String eventId;
-
-    @SuppressLint("SimpleDateFormat") // We want a fixed format regardless of locality
-    private final DateFormat dateFormatter = new SimpleDateFormat("EEE MMM d, yyyy");
-    private final DateFormat timeFormatter = SimpleDateFormat.getTimeInstance(DateFormat.SHORT,
-                                                                              Locale.getDefault());
 
     private ProgressBar loadingIndicator;
 
@@ -199,10 +196,17 @@ public class EventDetailFragment extends BaseFragment {
                     editButton.setEnabled(true);
                     deleteButton.setEnabled(true);
 
+                    NumberFormat numberFormatter = DecimalFormat.getNumberInstance();
+
+                    @SuppressLint("SimpleDateFormat") // We want a fixed format regardless of locality
+                    DateFormat dateFormatter = new SimpleDateFormat("EEE MMM d, yyyy");
+                    DateFormat timeFormatter = SimpleDateFormat.getTimeInstance(DateFormat.SHORT,
+                            Locale.getDefault());
+
                     eventTitle.setText(mItem.getTitle());
                     date.setText(dateFormatter.format(mItem.getDate()) + " " + timeFormatter.format(mItem.getDate()));
-                    experience.setText(Integer.toString(mItem.getExperience()));
-                    characterCount.setText(Integer.toString(mItem.getCharacterCount()));
+                    experience.setText(numberFormatter.format(mItem.getExperience()));
+                    characterCount.setText(numberFormatter.format(mItem.getCharacterCount()));
                     description.setText(mItem.getDescription());
                 } else {
                     // TODO: Error handling

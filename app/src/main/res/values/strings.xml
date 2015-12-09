@@ -35,6 +35,8 @@
     <string name="total_xp">Total XP</string>
     <string name="status">Status</string>
     <string name="delete_character_message">Delete This Character?</string>
+    <string name="alive">Alive</string>
+    <string name="dead">Dead</string>
 
     <!-- Create/Edit Character -->
     <string name="create_character">Create Character</string>

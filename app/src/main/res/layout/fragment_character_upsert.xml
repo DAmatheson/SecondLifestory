@@ -115,5 +115,4 @@
         style="@style/primaryButton"
         android:layout_alignTop="@id/upsert_cancel"
         android:text="@string/save" />
-
 </RelativeLayout>

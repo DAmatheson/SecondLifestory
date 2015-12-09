@@ -100,7 +100,7 @@ public class CustomizeActivity extends BaseActivity {
                     public ParseQuery<Race> create() {
                         return Race.getQuery();
                     }
-                }, R.layout.dropdown_item_1line);
+                }, R.layout.dropdown_item_1line_withlayout);
         raceQueryAdapter.setTextKey(Race.KEY_NAME);
         raceSpinner.setAdapter(raceQueryAdapter);
 
@@ -136,7 +136,7 @@ public class CustomizeActivity extends BaseActivity {
                     public ParseQuery<CharacterClass> create() {
                         return CharacterClass.getQuery();
                     }
-                }, R.layout.dropdown_item_1line);
+                }, R.layout.dropdown_item_1line_withlayout);
         classQueryAdapter.setTextKey(CharacterClass.KEY_NAME);
         classSpinner.setAdapter(classQueryAdapter);
 

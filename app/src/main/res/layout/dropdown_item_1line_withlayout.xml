@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- dropdown_item_1line.xml
+    Purpose: Spinner item with a single line of text surrounded in a layout
+
+    Drew Matheson, 2015.12.08: Created
+-->
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:baselineAligned="false" >
+
+    <include layout="@layout/dropdown_item_1line"/>
+</LinearLayout>

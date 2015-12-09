@@ -70,20 +70,21 @@ public class EventUpsertFragment extends BaseFragment {
     private static final String STATE_CHARACTER_COUNT = "EventUpsertFragment.characterCountState";
     private static final String STATE_XP_AMOUNT = "EventUpsertFragment.xpAmountState";
     private static final String STATE_DESCRIPTION = "EventUpsertFragment.descriptionState";
+    private static final String STATE_OLD_XP_AMOUNT = "EventUpsertFragment.oldXpAmountState";
 
     private HashMap<String, EventTypes> typeItems;
+    private ArrayAdapter<String> eventTypeAdapter;
+
+    private Callbacks mListener;
 
     // characterId is needed only for restoring purposes
     private String characterId;
     private String eventId;
     private Boolean inEditMode;
 
-    private Callbacks mListener;
-
     private Event event;
 
-    private ProgressBar loadingIndicator;
-    private ArrayAdapter<String> eventTypeAdapter;
+    private int oldXpAmount;
 
     // Inputs
     private EditText titleText;
@@ -94,7 +95,7 @@ public class EventUpsertFragment extends BaseFragment {
 
     private Button saveButton;
     private Button cancelButton;
-
+    private ProgressBar loadingIndicator;
 
     /**
      * Use this factory method to create a new instance of
@@ -199,6 +200,7 @@ public class EventUpsertFragment extends BaseFragment {
 
             if (inEditMode) {
                 event = Event.createWithoutData(eventId);
+                oldXpAmount = savedInstanceState.getInt(STATE_OLD_XP_AMOUNT);
             } else {
                 event = new Event();
             }
@@ -290,39 +292,42 @@ public class EventUpsertFragment extends BaseFragment {
                 event.setExperience(xpAmount);
                 event.setDescription(description);
 
+                if (event.getDate() == null) {
+                    event.setDate(new Date());
+                }
+
                 ParseQuery<PlayerCharacter> query = PlayerCharacter.getQuery();
                 query.getInBackground(characterId, new GetCallback<PlayerCharacter>() {
                     @Override
                     public void done(PlayerCharacter object, ParseException e) {
                         if (e == null) {
-                            if (!inEditMode) {
-                                object.addExperience(xpAmount / characterCount);
+                            if (inEditMode) {
+                                int newXpAmount = (xpAmount / characterCount);
+
+                                object.addExperience(newXpAmount - oldXpAmount);
                             } else {
-                                // TODO: Get the delta between the old and new XP amount.
+                                object.addExperience(xpAmount / characterCount);
                             }
                             object.saveEventually();
+
+                            event.pinInBackground();
+                            event.saveEventually();
+
+                            if (!inEditMode) {
+                                mListener.onEventCreated(event);
+                            } else {
+                                mListener.onEventModified(event);
+                            }
+
                         } else {
                             // TODO: Error handling
                             Toast.makeText(EventUpsertFragment.this.getActivity(),
                                     e.getMessage(),
                                     Toast.LENGTH_LONG)
-                                .show();
+                                    .show();
                         }
                     }
                 });
-
-                if (event.getDate() == null) {
-                    event.setDate(new Date());
-                }
-
-                event.pinInBackground();
-                event.saveEventually();
-
-                if (!inEditMode) {
-                    mListener.onEventCreated(event);
-                } else {
-                    mListener.onEventModified(event);
-                }
             }
         });
 
@@ -350,6 +355,10 @@ public class EventUpsertFragment extends BaseFragment {
         outState.putString(ARG_EVENT_ID, eventId);
         outState.putBoolean(ARG_IN_EDIT_MODE, inEditMode);
 
+        if (inEditMode) {
+            outState.putInt(STATE_OLD_XP_AMOUNT, oldXpAmount);
+        }
+
         outState.putString(STATE_TITLE, titleText.getText().toString());
         outState.putString(STATE_CHARACTER_COUNT, characterCountText.getText().toString());
         outState.putString(STATE_XP_AMOUNT, xpAmountText.getText().toString());
@@ -370,12 +379,12 @@ public class EventUpsertFragment extends BaseFragment {
                 if (e == null) {
                     event = object;
 
-                    // TODO: Consider page titleText
-
                     titleText.setText(event.getTitle());
                     characterCountText.setText(Integer.toString(event.getCharacterCount()));
                     xpAmountText.setText(Integer.toString(event.getExperience()));
                     descriptionText.setText(event.getDescription());
+
+                    oldXpAmount = event.getExperience() / event.getCharacterCount();
 
                     // Select the type for the loaded event
                     for (Map.Entry<String, EventTypes> entry : typeItems.entrySet()) {

@@ -6,20 +6,13 @@
     Drew Matheson, 2015.12.06: Created
 -->
 
-<LinearLayout
+<TextView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/text1"
+    style="?android:attr/dropDownItemStyle"
+    android:textAppearance="?android:attr/textAppearanceLargePopupMenu"
+    android:textColor="@color/primary_text_default_material_dark"
+    android:singleLine="true"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:baselineAligned="false" >
-
-    <TextView
-        android:id="@android:id/text1"
-        style="?android:attr/dropDownItemStyle"
-        android:textAppearance="?android:attr/textAppearanceLargePopupMenu"
-        android:textColor="@color/primary_text_default_material_dark"
-        android:singleLine="true"
-        android:layout_width="match_parent"
-        android:layout_height="?android:attr/listPreferredItemHeightSmall"
-        android:ellipsize="marquee" />
-</LinearLayout>
+    android:layout_height="?android:attr/listPreferredItemHeightSmall"
+    android:ellipsize="marquee" />

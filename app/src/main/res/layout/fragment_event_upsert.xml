@@ -60,7 +60,8 @@
         android:hint="@string/character_count_hint"
         android:inputType="number"
         android:singleLine="true"
-        android:layout_below="@id/upsert_event_type"/>
+        android:layout_below="@id/upsert_event_type"
+        android:maxLength="9"/>
 
     <EditText
         android:id="@+id/upsert_event_experience"
@@ -69,7 +70,8 @@
         android:hint="@string/xp_amount_hint"
         android:inputType="numberSigned"
         android:singleLine="true"
-        android:layout_below="@id/upsert_event_character_count"/>
+        android:layout_below="@id/upsert_event_character_count"
+        android:maxLength="9"/>
 
     <EditText
         android:id="@+id/upsert_event_description"

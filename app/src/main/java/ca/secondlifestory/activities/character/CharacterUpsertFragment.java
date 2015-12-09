@@ -328,7 +328,7 @@ public class CharacterUpsertFragment extends BaseFragment {
                     public ParseQuery<CharacterClass> create() {
                         return CharacterClass.getQuery();
                     }
-                }, R.layout.dropdown_item_1line);
+                }, R.layout.dropdown_item_1line_withlayout);
 
         classQueryAdapter.setTextKey(CharacterClass.KEY_NAME);
         classSpinner.setAdapter(classQueryAdapter);
@@ -387,7 +387,7 @@ public class CharacterUpsertFragment extends BaseFragment {
 
                         return query;
                     }
-                }, R.layout.dropdown_item_1line);
+                }, R.layout.dropdown_item_1line_withlayout);
 
         raceQueryAdapter.setTextKey(Race.KEY_NAME);
         raceSpinner.setAdapter(raceQueryAdapter);

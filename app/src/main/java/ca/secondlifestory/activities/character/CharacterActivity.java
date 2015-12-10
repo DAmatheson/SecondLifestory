@@ -288,8 +288,7 @@ public class CharacterActivity extends BaseActivity implements CharacterListFrag
 
         listFragment.notifyListChanged();
 
-        // TODO: Make the list load method select the new item
-        //       This is going to be hard to do while using the parse query adapter.
+        listFragment.setSelection(0);
     }
 
     @Override

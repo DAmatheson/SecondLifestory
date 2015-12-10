@@ -206,9 +206,9 @@ public class CharacterDetailFragment extends BaseFragment {
         query.getInBackground(characterId, new GetCallback<PlayerCharacter>() {
             @Override
             public void done(PlayerCharacter object, ParseException e) {
-                if (e == null) {
-                    loadingIndicator.setVisibility(View.INVISIBLE);
+                loadingIndicator.setVisibility(View.INVISIBLE);
 
+                if (e == null) {
                     mItem = object;
 
                     editButton.setEnabled(true);

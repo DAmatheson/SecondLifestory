@@ -50,9 +50,7 @@ public class EventListFragment extends BaseListFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_event_list, container);
-
-        return v;
+        return inflater.inflate(R.layout.fragment_event_list, container);
     }
 
     public void setCharacterObjectId(String characterObjectId) {

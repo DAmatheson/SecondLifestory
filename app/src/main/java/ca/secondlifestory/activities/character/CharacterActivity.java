@@ -309,7 +309,7 @@ public class CharacterActivity extends BaseActivity implements CharacterListFrag
     public void onUpsertCancelPressed() {
         inUpsertMode = false;
 
-        getFragmentManager().popBackStack();
+        getFragmentManager().popBackStackImmediate();
     }
 
     @Override

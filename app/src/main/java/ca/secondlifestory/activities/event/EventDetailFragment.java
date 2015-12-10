@@ -57,7 +57,7 @@ public class EventDetailFragment extends BaseFragment {
      * The content this fragment is presenting.
      */
     private Event mItem;
-    private String eventId;
+    private String eventId = null;
 
     private ProgressBar loadingIndicator;
 
@@ -88,6 +88,18 @@ public class EventDetailFragment extends BaseFragment {
      * fragment (exception.g. upon screen orientation changes).
      */
     public EventDetailFragment() {
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        // Activities containing this fragment must implement its callbacks.
+        if (!(activity instanceof Callbacks)) {
+            throw new IllegalStateException("Activity must implement fragment's callbacks.");
+        }
+
+        mListener = (Callbacks) activity;
     }
 
     @Override
@@ -150,25 +162,22 @@ public class EventDetailFragment extends BaseFragment {
         editButton.setEnabled(false);
         deleteButton.setEnabled(false);
 
-        if (getArguments() != null) {
+        if (savedInstanceState != null) {
+            eventId = savedInstanceState.getString(ARG_EVENT_ID);
+        } else  if (getArguments() != null) {
             eventId = getArguments().getString(ARG_EVENT_ID);
-
-            loadEvent(eventId);
         }
 
         return rootView;
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onResume() {
+        super.onResume();
 
-        // Activities containing this fragment must implement its callbacks.
-        if (!(activity instanceof Callbacks)) {
-            throw new IllegalStateException("Activity must implement fragment's callbacks.");
+        if (eventId != null) {
+            loadEvent(eventId);
         }
-
-        mListener = (Callbacks) activity;
     }
 
     @Override
@@ -176,6 +185,13 @@ public class EventDetailFragment extends BaseFragment {
         super.onDetach();
 
         mListener = null;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putString(ARG_EVENT_ID, eventId);
     }
 
     public void notifyEventChanged() {

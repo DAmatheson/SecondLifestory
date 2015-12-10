@@ -62,7 +62,7 @@ public class CharacterDetailFragment extends BaseFragment {
      * The content this fragment is presenting.
      */
     private PlayerCharacter mItem;
-    private String characterId;
+    private String characterId = null;
 
     private ProgressBar loadingIndicator;
 
@@ -172,19 +172,35 @@ public class CharacterDetailFragment extends BaseFragment {
         editButton.setEnabled(false);
         deleteButton.setEnabled(false);
 
-        if (getArguments() != null) {
+        if (savedInstanceState != null) {
+            characterId = savedInstanceState.getString(ARG_CHARACTER_ID);
+        } else if (getArguments() != null) {
             characterId = getArguments().getString(ARG_CHARACTER_ID);
-
-            loadCharacter(characterId);
         }
 
         return rootView;
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        if (characterId != null) {
+            loadCharacter(characterId);
+        }
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putString(ARG_CHARACTER_ID, characterId);
     }
 
     public void setCharacterId(String id) {

@@ -67,9 +67,7 @@ public class CharacterListFragment extends BaseListFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_character_list, container);
-
-        return v;
+        return inflater.inflate(R.layout.fragment_character_list, container);
     }
 
     @Override

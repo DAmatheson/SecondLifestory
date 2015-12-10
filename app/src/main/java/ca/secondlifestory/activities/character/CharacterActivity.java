@@ -288,7 +288,6 @@ public class CharacterActivity extends BaseActivity implements CharacterListFrag
         getFragmentManager().popBackStack();
 
         listFragment.notifyListChanged();
-
         listFragment.setSelection(0);
     }
 

@@ -47,17 +47,6 @@ public class SettingsActivity extends BaseActivity {
         setupTutorialsLinkButton();
         setupDeleteCharactersButton();
         setupClearDatabaseButton();
-
-        Button tutorialButton = (Button) findViewById(R.id.tutorials);
-        tutorialButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent tutorialsLink = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("http://isaacwest.ca/LifeStory/"));
-
-                startActivity(tutorialsLink);
-            }
-        });
     }
 
     /**
@@ -67,8 +56,7 @@ public class SettingsActivity extends BaseActivity {
         tutorialsLinkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri uri = Uri.parse(TUTORIALS_URL);
-                Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uri);
+                Intent launchBrowser = new Intent(Intent.ACTION_VIEW, Uri.parse(TUTORIALS_URL));
                 startActivity(launchBrowser);
             }
         });

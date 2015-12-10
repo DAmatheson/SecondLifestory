@@ -93,9 +93,15 @@ public class EventUpsertFragment extends BaseFragment {
     private EditText xpAmountText;
     private EditText descriptionText;
 
+    private TextView eventTypeLabel;
+    private TextView experienceLabel;
+    private TextView characterCountLabel;
+
     private Button saveButton;
     private Button cancelButton;
     private ProgressBar loadingIndicator;
+
+    private boolean editingDeathOrResurrection;
 
     /**
      * Use this factory method to create a new instance of
@@ -175,6 +181,10 @@ public class EventUpsertFragment extends BaseFragment {
         xpAmountText = (EditText) v.findViewById(R.id.upsert_event_experience);
         descriptionText = (EditText) v.findViewById(R.id.upsert_event_description);
 
+        eventTypeLabel = (TextView) v.findViewById(R.id.upsert_event_type_label);
+        experienceLabel = (TextView) v.findViewById(R.id.upsert_event_experience_label);
+        characterCountLabel = (TextView) v.findViewById(R.id.upsert_event_character_count_label);
+
         saveButton = (Button) v.findViewById(R.id.upsert_save);
         cancelButton = (Button) v.findViewById(R.id.upsert_cancel);
 
@@ -247,19 +257,21 @@ public class EventUpsertFragment extends BaseFragment {
                     titleText.setError("Required");
                 }
 
-                if (xpAmountString.equals("") ||
-                        xpAmountString.equals("-") ||
-                        xpAmountString.equals("+")) {
-                    if (firstErrorMessage == null) firstErrorMessage = "XP Gained is required.";
+                if (!editingDeathOrResurrection) {
+                    if (xpAmountString.equals("") ||
+                            xpAmountString.equals("-") ||
+                            xpAmountString.equals("+")) {
+                        if (firstErrorMessage == null) firstErrorMessage = "XP Gained is required.";
 
-                    xpAmountText.setError("Required.");
-                }
+                        xpAmountText.setError("Required.");
+                    }
 
-                if (characterCountString.equals("")) {
-                    if (firstErrorMessage == null)
-                        firstErrorMessage = "# Characters Present is required.";
+                    if (characterCountString.equals("")) {
+                        if (firstErrorMessage == null)
+                            firstErrorMessage = "# Characters Present is required.";
 
-                    characterCountText.setError("Required.");
+                        characterCountText.setError("Required.");
+                    }
                 }
 
                 if (firstErrorMessage != null) {
@@ -287,9 +299,11 @@ public class EventUpsertFragment extends BaseFragment {
                 final int xpAmount = Integer.parseInt(xpAmountString);
 
                 event.setTitle(title);
-                event.setEventType(value);
-                event.setCharacterCount(characterCount);
-                event.setExperience(xpAmount);
+                if (!editingDeathOrResurrection) {
+                    event.setEventType(value);
+                    event.setCharacterCount(characterCount);
+                    event.setExperience(xpAmount);
+                }
                 event.setDescription(description);
 
                 if (event.getDate() == null) {
@@ -380,10 +394,22 @@ public class EventUpsertFragment extends BaseFragment {
                     event = object;
 
                     titleText.setText(event.getTitle());
-                    characterCountText.setText(Integer.toString(event.getCharacterCount()));
-                    xpAmountText.setText(Integer.toString(event.getExperience()));
                     descriptionText.setText(event.getDescription());
 
+                    editingDeathOrResurrection = event.getEventType() == EventTypes.DEATH ||
+                            event.getEventType() == EventTypes.RESURRECT;
+
+                    if (editingDeathOrResurrection) {
+                        characterCountLabel.setVisibility(View.GONE);
+                        characterCountText.setVisibility(View.GONE);
+                        experienceLabel.setVisibility(View.GONE);
+                        xpAmountText.setVisibility(View.GONE);
+                        eventTypeLabel.setVisibility(View.GONE);
+                        eventTypeSpinner.setVisibility(View.GONE);
+                    }
+
+                    characterCountText.setText(Integer.toString(event.getCharacterCount()));
+                    xpAmountText.setText(Integer.toString(event.getExperience()));
                     oldXpAmount = event.getExperience() / event.getCharacterCount();
 
                     // Select the type for the loaded event

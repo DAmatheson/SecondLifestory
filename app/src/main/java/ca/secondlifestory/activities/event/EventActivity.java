@@ -277,12 +277,12 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
         ParseQuery<PlayerCharacter> query = PlayerCharacter.getQuery();
         query.getInBackground(characterId, new GetCallback<PlayerCharacter>() {
             @Override
-            public void done(PlayerCharacter object, ParseException e) {
+            public void done(final PlayerCharacter character, ParseException e) {
                 if (e == null) {
-                    if (object.isLiving()) {
-                        characterDied(object, textInput);
+                    if (character.isLiving()) {
+                        characterDied(character, textInput);
                     } else {
-                        characterResurrected(object, textInput);
+                        characterResurrected(character, textInput);
                     }
                 } else {
                     // TODO: Parse error handling
@@ -319,7 +319,7 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
         event.setCharacter(character);
         event.setTitle(getString(R.string.died));
         event.setEventType(EventTypes.DEATH);
-        event.setCharacterCount(0);
+        event.setCharacterCount(1);
         event.setExperience(0);
         event.setDescription(description);
         event.setDate(new Date());
@@ -347,7 +347,7 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
         event.setCharacter(character);
         event.setTitle(getString(R.string.resurrected));
         event.setEventType(EventTypes.RESURRECT);
-        event.setCharacterCount(0);
+        event.setCharacterCount(1);
         event.setExperience(0);
         event.setDescription(description);
         event.setDate(new Date());

@@ -97,7 +97,9 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
         if (savedInstanceState != null) {
             inUpsertMode = savedInstanceState.getBoolean(ARG_IN_UPSERT_MODE);
 
-            detailFragment = (EventDetailFragment) getFragmentManager().findFragmentByTag(TAG_DETAIL);
+            if (findViewById(R.id.event_detail) != null) {
+                detailFragment = (EventDetailFragment) getFragmentManager().findFragmentByTag(TAG_DETAIL);
+            }
         } else if (findViewById(R.id.event_detail) != null) {
             detailFragment = new EventDetailFragment();
 
@@ -428,7 +430,7 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
                     .commit();
         } else {
             // Go back to the list fragment
-            getFragmentManager().popBackStack();
+            getFragmentManager().popBackStackImmediate();
         }
 
         previouslySelectedListIndex = listFragment.getListView().getCheckedItemPosition();
@@ -496,11 +498,11 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
     public void onEventModified(Event event) {
         inUpsertMode = false;
 
+        getFragmentManager().popBackStackImmediate();
+
         if (mTwoPane) {
             detailFragment.notifyEventChanged();
         }
-
-        getFragmentManager().popBackStack();
 
         listFragment.notifyListChanged();
     }

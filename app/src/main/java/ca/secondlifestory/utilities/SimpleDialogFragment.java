@@ -216,9 +216,13 @@ public class SimpleDialogFragment extends DialogFragment {
     @Override
     public void show(@NonNull FragmentManager manager, String tag) {
         if (mListener == null) {
+            String activityName = getActivity() != null
+                    ? getActivity().toString()
+                    : "the host activity";
+
             throw new IllegalStateException(
                     "Either "
-                    + getActivity().toString() +
+                    + activityName +
                     " must implement OnPositiveCloseListener or you must use one of the show " +
                     "overloads which takes OnPositiveCloseListener as an argument");
         }

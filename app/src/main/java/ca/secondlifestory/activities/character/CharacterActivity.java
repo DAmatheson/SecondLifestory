@@ -79,9 +79,10 @@ public class CharacterActivity extends BaseActivity implements CharacterListFrag
             // Restore the flag. Fragments are automatically restored
             inUpsertMode = savedInstanceState.getBoolean(ARG_IN_UPSERT_MODE);
 
-            detailFragment = (CharacterDetailFragment) getFragmentManager()
-                    .findFragmentByTag(TAG_DETAIL);
-
+            if (findViewById(R.id.character_detail) != null) {
+                detailFragment = (CharacterDetailFragment) getFragmentManager()
+                        .findFragmentByTag(TAG_DETAIL);
+            }
         } else if (findViewById(R.id.character_detail) != null) {
             // Create the detail fragment if in two-pane mode
 
@@ -295,11 +296,11 @@ public class CharacterActivity extends BaseActivity implements CharacterListFrag
     public void onCharacterModified(PlayerCharacter character) {
         inUpsertMode = false;
 
+        getFragmentManager().popBackStackImmediate();
+
         if (mTwoPane) {
             detailFragment.notifyCharacterChanged();
         }
-
-        getFragmentManager().popBackStack();
 
         listFragment.notifyListChanged();
     }
@@ -344,7 +345,7 @@ public class CharacterActivity extends BaseActivity implements CharacterListFrag
                     .commit();
         } else {
             // Go back to the list fragment
-            getFragmentManager().popBackStack();
+            getFragmentManager().popBackStackImmediate();
         }
 
         previouslySelectedListIndex = listFragment.getListView().getCheckedItemPosition();

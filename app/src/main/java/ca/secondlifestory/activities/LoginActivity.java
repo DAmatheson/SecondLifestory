@@ -30,7 +30,8 @@ import ca.secondlifestory.utilities.SimpleDialogFragment;
  */
 public class LoginActivity extends BaseActivity implements SimpleDialogFragment.OnPositiveCloseListener {
 
-    @Override
+    private static final String LOG_TAG = LoginActivity.class.getName();
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
@@ -97,7 +98,8 @@ public class LoginActivity extends BaseActivity implements SimpleDialogFragment.
      * @param e The ParseException from the failed login
      */
     private void showLoginErrorAndFinish(ParseException e) {
-        getLogger().exception("LoginActivity", "ParseException code: " + e.getCode(), e);
+        getLogger().exception(LOG_TAG, ".showLoginErrorAndFinish. ParseException code: "
+                + e.getCode(), e);
 
         SimpleDialogFragment dialog;
 
@@ -109,7 +111,7 @@ public class LoginActivity extends BaseActivity implements SimpleDialogFragment.
                     getString(R.string.login_activity_internet_connection_required));
         }
 
-        dialog.onAttach(this); // TODO: Need to manually attach. Not sure why
+        dialog.onAttach(this); // Need to manually attach. Not sure why
         dialog.show(getFragmentManager(), null);
     }
 

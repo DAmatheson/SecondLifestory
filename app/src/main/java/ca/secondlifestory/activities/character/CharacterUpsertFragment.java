@@ -327,7 +327,7 @@ public class CharacterUpsertFragment extends BaseFragment {
                 new ParseQueryAdapter.QueryFactory<CharacterClass>() {
                     @Override
                     public ParseQuery<CharacterClass> create() {
-                        return CharacterClass.getQuery();
+                        return CharacterClass.getQuery().orderByAscending(CharacterClass.KEY_NAME);
                     }
                 }, R.layout.dropdown_item_1line_withlayout);
 
@@ -384,7 +384,7 @@ public class CharacterUpsertFragment extends BaseFragment {
                 new ParseQueryAdapter.QueryFactory<Race>() {
                     @Override
                     public ParseQuery<Race> create() {
-                        return Race.getQuery();
+                        return Race.getQuery().orderByAscending(Race.KEY_NAME);
                     }
                 }, R.layout.dropdown_item_1line_withlayout);
 

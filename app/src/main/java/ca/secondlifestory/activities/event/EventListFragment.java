@@ -67,6 +67,8 @@ public class EventListFragment extends BaseListFragment {
             @Override
             public void onLoaded(List<Event> list, Exception e) {
                 if (e == null) {
+                    setSelection(mActivatedPosition);
+
                     mListener.onListLoaded();
                 } else {
                     // TODO: Error handling
@@ -79,6 +81,8 @@ public class EventListFragment extends BaseListFragment {
     @Override
     public void onListItemClick(ListView listView, View view, int position, long id) {
         super.onListItemClick(listView, view, position, id);
+
+        mActivatedPosition = position;
 
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.

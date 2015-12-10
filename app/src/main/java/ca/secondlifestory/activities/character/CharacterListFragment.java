@@ -67,14 +67,14 @@ public class CharacterListFragment extends BaseListFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_character_list, container);
-
-        return v;
+        return inflater.inflate(R.layout.fragment_character_list, container);
     }
 
     @Override
     public void onListItemClick(ListView listView, View view, int position, long id) {
         super.onListItemClick(listView, view, position, id);
+
+        mActivatedPosition = position;
 
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.

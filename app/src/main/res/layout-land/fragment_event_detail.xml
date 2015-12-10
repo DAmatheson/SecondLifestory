@@ -62,22 +62,21 @@
         android:layout_marginEnd="@dimen/standard_padding"/>
 
     <TextView
-        android:id="@+id/event_characters_present"
-        style="@style/detailTextView"
-        android:ems="6"
-        android:singleLine="true"
-        android:layout_alignBaseline="@id/event_xp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-    <TextView
         android:id="@+id/characters_present_label"
         style="@style/detailTextViewLabel"
         android:text="@string/characters_present"
         android:layout_marginRight="@dimen/standard_padding"
         android:layout_marginEnd="@dimen/standard_padding"
-        android:layout_toStartOf="@id/event_characters_present"
-        android:layout_toLeftOf="@id/event_characters_present"
-        android:layout_alignBaseline="@id/event_characters_present" />
+        android:layout_below="@id/xp_gained_label" />
+    <TextView
+        android:id="@+id/event_characters_present"
+        style="@style/detailTextView"
+        android:singleLine="true"
+        android:layout_alignLeft="@id/event_xp"
+        android:layout_alignStart="@id/event_xp"
+        android:layout_toRightOf="@id/characters_present_label"
+        android:layout_toEndOf="@id/characters_present_label"
+        android:layout_alignBaseline="@id/characters_present_label"/>
 
     <TextView
         android:id="@+id/event_description_label"
@@ -85,7 +84,7 @@
         android:text="@string/description"
         android:layout_marginRight="@dimen/standard_padding"
         android:layout_marginEnd="@dimen/standard_padding"
-        android:layout_below="@id/xp_gained_label"/>
+        android:layout_below="@id/characters_present_label" />
 
     <RelativeLayout
         android:id="@+id/footer"
@@ -117,7 +116,7 @@
         android:id="@+id/description_scrollview"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@id/xp_gained_label"
+        android:layout_below="@id/characters_present_label"
         android:layout_toRightOf="@id/event_description_label"
         android:layout_toEndOf="@id/event_description_label"
         android:layout_marginTop="@dimen/activity_vertical_margin"

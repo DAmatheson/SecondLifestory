@@ -272,7 +272,7 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
 
                 listFragment.setSelection(index);
 
-                if (checkedEvent != null) {
+                if (checkedEvent != null && !inUpsertMode) {
                     detailFragment.setEventId(checkedEvent.getObjectId());
                 }
             }
@@ -498,10 +498,6 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
         inUpsertMode = false;
 
         getFragmentManager().popBackStackImmediate();
-
-        if (mTwoPane) {
-            detailFragment.notifyEventChanged();
-        }
 
         listFragment.notifyListChanged();
     }

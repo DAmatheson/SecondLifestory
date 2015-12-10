@@ -31,51 +31,65 @@
         android:ellipsize="start"
         />
 
+    <TextView
+        android:id="@+id/event_date_label"
+        style="@style/detailTextViewLabel"
+        android:text="@string/date"
+        android:layout_below="@id/event_detail_title"
+        android:layout_marginRight="@dimen/detailTextViewLabel_padding"
+        android:layout_marginEnd="@dimen/detailTextViewLabel_padding"/>
+    <TextView
+        android:id="@+id/event_date"
+        style="@style/detailTextView"
+        android:singleLine="true"
+        android:layout_toRightOf="@id/event_date_label"
+        android:layout_toEndOf="@id/event_date_label"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBaseline="@id/event_date_label" />
+
     <LinearLayout
         android:id="@+id/event_details_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@id/event_detail_title">
+        android:layout_below="@id/event_date_label">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin">
-            <TextView
-                style="@style/detailTextViewLabel"
-                android:text="@string/date" />
+            android:layout_marginEnd="@dimen/detailTextViewLabel_padding"
+            android:layout_marginRight="@dimen/detailTextViewLabel_padding">
             <TextView
                 android:id="@+id/xp_gained_label"
                 style="@style/detailTextViewLabel"
-                android:text="@string/xp_gained"
-                />
+                android:text="@string/xp_gained" />
             <TextView
                 android:id="@+id/characters_present_label"
                 style="@style/detailTextViewLabel"
                 android:text="@string/characters_present" />
-
-            <TextView
-                android:id="@+id/event_description_label"
-                style="@style/detailTextViewLabel"
-                android:text="@string/description" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/event_date"
-                style="@style/detailTextView" />
+            android:orientation="vertical"
+            android:paddingTop="1sp">
             <TextView
                 android:id="@+id/event_xp"
-                style="@style/detailTextView" />
+                style="@style/detailTextView"
+                android:singleLine="true"/>
             <TextView
                 android:id="@+id/event_characters_present"
-                style="@style/detailTextView" />
+                style="@style/detailTextView"
+                android:singleLine="true"/>
         </LinearLayout>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/event_description_label"
+        style="@style/detailTextViewLabel"
+        android:text="@string/description"
+        android:layout_below="@id/event_details_layout"/>
 
     <RelativeLayout
         android:id="@+id/footer"
@@ -98,7 +112,7 @@
         android:id="@+id/description_scrollview"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@id/event_details_layout"
+        android:layout_below="@id/event_description_label"
         android:layout_above="@id/footer"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"

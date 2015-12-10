@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- character_twopane.xml
-    Purpose: Two-pane layout for CharacterActivity
+<!-- port\character_twopane.xml
+    Purpose: Portrait two-pane layout for CharacterActivity
 
-    Drew Matheson, 2015.11.17: Created
+    Drew Matheson, 2015.12.09: Created
 -->
 
 <LinearLayout
@@ -24,7 +24,7 @@
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_weight="1.25">
         <ImageButton
             android:id="@+id/create_character_button"
             android:layout_width="fill_parent"
@@ -38,12 +38,11 @@
 
         <CheckBox
             android:id="@+id/filter_show_deceased"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/show_deceased"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:paddingRight="10dp"/>
+            android:layout_centerHorizontal="true"/>
 
         <fragment
             android:id="@+id/character_list"

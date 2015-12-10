@@ -269,6 +269,7 @@ public class CharacterUpsertFragment extends BaseFragment {
         super.onResume();
 
         if (resuming) {
+            // Reload the spinners so they have the newest data
             classQueryAdapter.loadObjects();
             raceQueryAdapter.loadObjects();
 
@@ -383,9 +384,7 @@ public class CharacterUpsertFragment extends BaseFragment {
                 new ParseQueryAdapter.QueryFactory<Race>() {
                     @Override
                     public ParseQuery<Race> create() {
-                        ParseQuery<Race> query = Race.getQuery();
-
-                        return query;
+                        return Race.getQuery();
                     }
                 }, R.layout.dropdown_item_1line_withlayout);
 

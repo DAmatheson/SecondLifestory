@@ -49,6 +49,7 @@ Drew Matheson, 2015.12.08: Created
         android:layout_below="@id/upsert_character_name">
         <TextView
             android:id="@+id/upsert_character_race_label"
+            style="@style/detailTextViewLabel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -56,6 +57,7 @@ Drew Matheson, 2015.12.08: Created
 
         <TextView
             android:id="@+id/upsert_character_class_label"
+            style="@style/detailTextViewLabel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

@@ -14,14 +14,12 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -63,6 +61,8 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
      */
     private static final String ARG_IN_UPSERT_MODE = "EventActivity.inUpsertMode";
 
+    private static final String TAG_DETAIL = "EventActivity.detailFragment";
+
     /**
      * Whether or not the activity is in two-pane mode, i.exception. running on a tablet
      * device.
@@ -91,12 +91,14 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
         listFragment = (EventListFragment) getFragmentManager().findFragmentById(R.id.event_list);
         if (savedInstanceState != null) {
             inUpsertMode = savedInstanceState.getBoolean(ARG_IN_UPSERT_MODE);
+
+            detailFragment = (EventDetailFragment) getFragmentManager().findFragmentByTag(TAG_DETAIL);
         } else if (findViewById(R.id.event_detail) != null) {
             detailFragment = new EventDetailFragment();
 
             getFragmentManager()
                 .beginTransaction()
-                .add(R.id.event_detail, detailFragment)
+                .add(R.id.event_detail, detailFragment, TAG_DETAIL)
                 .commit();
         }
 
@@ -151,6 +153,8 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
 
     @Override
     protected void onResume() {
+        super.onResume();
+
         characterId = getIntent().getStringExtra(ARG_CHARACTER_ID);
 
         listFragment.setCharacterObjectId(characterId);
@@ -168,8 +172,13 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
                 }
             }
         });
+    }
 
-        super.onResume();
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putBoolean(ARG_IN_UPSERT_MODE, inUpsertMode);
     }
 
     @Override
@@ -201,13 +210,6 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
         super.onBackPressed();
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        outState.putBoolean(ARG_IN_UPSERT_MODE, inUpsertMode);
-    }
-
     /**
      * Callback method from {@link EventListFragment.Callbacks}
      * indicating that the item with the given ID was selected.
@@ -216,7 +218,7 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
     public void onItemSelected(String id) {
         if (inUpsertMode) {
             // Return to the details fragment
-            getFragmentManager().popBackStack();
+            getFragmentManager().popBackStackImmediate();
         }
 
         if (mTwoPane) {
@@ -230,7 +232,7 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
 
             getFragmentManager().
                     beginTransaction().
-                    replace(android.R.id.content, detailFragment).
+                    replace(android.R.id.content, detailFragment, TAG_DETAIL).
                     addToBackStack(null).
                     commit();
         }
@@ -284,8 +286,8 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
                         characterResurrected(character, textInput);
                     }
                 } else {
-                    // TODO: Error handling
-                    Toast.makeText(EventActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    // TODO: Parse error handling
+                    Toast.makeText(EventActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -417,7 +419,7 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
 
             getFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.event_detail, detailFragment)
+                    .replace(R.id.event_detail, detailFragment, TAG_DETAIL)
                     .commit();
         } else {
             // Go back to the list fragment
@@ -498,14 +500,9 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
 
     @Override
     public void onUpsertCancelPressed() {
-        if (mTwoPane) {
-            getFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.event_detail, detailFragment)
-                    .commit();
-        } else {
-            getFragmentManager().popBackStack();
-        }
+        inUpsertMode = false;
+
+        getFragmentManager().popBackStack();
     }
     //endregion EventUpsertFragment.Callbacks methods
 }

@@ -56,8 +56,7 @@
         <Spinner
             android:id="@+id/upsert_character_race"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+            android:layout_height="wrap_content" />
 
         <TextView
             style="@style/emptyListViewItem"
@@ -81,8 +80,7 @@
         <Spinner
             android:id="@+id/upsert_character_class"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-             />
+            android:layout_height="wrap_content" />
 
         <TextView
             style="@style/emptyListViewItem"

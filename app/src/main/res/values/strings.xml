@@ -58,7 +58,7 @@
     <string name="event_title">Event Title</string>
     <string name="date">Date</string>
     <string name="xp_gained">XP Gained</string>
-    <string name="xp_gained_postfix">xp</string>
+    <string name="xp_gained_postfix">&#160;xp</string>
     <string name="characters_present">Shared By</string>
     <string name="characters_present_postfix">&#160;characters</string>
     <string name="description">Description</string>

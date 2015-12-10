@@ -231,6 +231,7 @@ public class EventDetailFragment extends BaseFragment {
 
                     eventTitle.setText(mItem.getTitle());
                     date.setText(dateFormatter.format(mItem.getDate()) + " " + timeFormatter.format(mItem.getDate()));
+
                     if (object.getEventType() == EventTypes.DEATH ||
                             object.getEventType() == EventTypes.RESURRECT) {
                         experience.setVisibility(View.GONE);

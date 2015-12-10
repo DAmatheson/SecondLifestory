@@ -116,7 +116,7 @@ public class CustomizeActivity extends BaseActivity {
                 new ParseQueryAdapter.QueryFactory<Race>() {
                     @Override
                     public ParseQuery<Race> create() {
-                        return Race.getQuery();
+                        return Race.getQuery().orderByAscending(Race.KEY_NAME);
                     }
                 }, R.layout.dropdown_item_1line_withlayout);
         raceQueryAdapter.setTextKey(Race.KEY_NAME);
@@ -152,7 +152,7 @@ public class CustomizeActivity extends BaseActivity {
                 new ParseQueryAdapter.QueryFactory<CharacterClass>() {
                     @Override
                     public ParseQuery<CharacterClass> create() {
-                        return CharacterClass.getQuery();
+                        return CharacterClass.getQuery().orderByAscending(CharacterClass.KEY_NAME);
                     }
                 }, R.layout.dropdown_item_1line_withlayout);
         classQueryAdapter.setTextKey(CharacterClass.KEY_NAME);

@@ -298,10 +298,6 @@ public class CharacterActivity extends BaseActivity implements CharacterListFrag
 
         getFragmentManager().popBackStackImmediate();
 
-        if (mTwoPane) {
-            detailFragment.notifyCharacterChanged();
-        }
-
         listFragment.notifyListChanged();
     }
 

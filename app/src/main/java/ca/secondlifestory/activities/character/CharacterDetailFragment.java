@@ -187,10 +187,6 @@ public class CharacterDetailFragment extends BaseFragment {
         mListener = null;
     }
 
-    public void notifyCharacterChanged() {
-        loadCharacter(characterId);
-    }
-
     public void setCharacterId(String id) {
         characterId = id;
 

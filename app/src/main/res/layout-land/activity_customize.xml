@@ -55,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/button_height"
             android:text="@string/delete_race"
-            android:background="@drawable/button_background_roundedcorner"
+            android:background="@drawable/button_secondary_background_roundedcorner"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"/>
     </LinearLayout>
@@ -79,7 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/button_height"
             android:text="@string/save_new_class"
-            android:background="@drawable/button_secondary_background_roundedcorner"
+            android:background="@drawable/button_background_roundedcorner"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp" />
 

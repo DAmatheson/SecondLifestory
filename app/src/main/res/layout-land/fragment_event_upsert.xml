@@ -34,6 +34,12 @@ Drew Matheson, 2015.12.08: Created
         android:ellipsize="end"
         android:layout_marginBottom="0dp" />
 
+    <TextView
+        android:id="@+id/upsert_event_type_label"
+        style="@style/detailTextViewLabel"
+        android:layout_width="match_parent"
+        android:text="@string/event_type"
+        android:layout_below="@id/upsert_event_title" />
     <EditText
         android:id="@+id/upsert_event_title"
         android:layout_width="match_parent"
@@ -43,66 +49,50 @@ Drew Matheson, 2015.12.08: Created
         android:singleLine="true"
         android:layout_below="@id/upsert_title" />
 
-    <TextView
-        android:id="@+id/upsert_event_type_label"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/event_type"
-        android:layout_below="@id/upsert_event_title" />
-
     <Spinner
         android:id="@+id/upsert_event_type"
         android:layout_width="match_parent"
         android:layout_height="@dimen/spinner_single_line_height"
         android:layout_below="@id/upsert_event_type_label"/>
 
-    <TextView
-        android:id="@+id/upsert_event_character_count_label"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/character_count_xp_amount_container"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/characters_present"
-        android:layout_below="@id/upsert_event_type"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:paddingRight="8dp"
-        android:paddingEnd="8dp"
-        android:layout_marginTop="14dp"/>
-    <EditText
-        android:id="@+id/upsert_event_character_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/character_count_hint"
-        android:inputType="number"
-        android:singleLine="true"
-        android:layout_below="@id/upsert_event_type"
-        android:layout_toRightOf="@id/upsert_event_character_count_label"
-        android:layout_toEndOf="@id/upsert_event_character_count_label"
-        android:maxLength="9"
-        android:ems="10"/>
+        android:orientation="horizontal"
+        android:layout_below="@id/upsert_event_type">
+        <TextView
+            android:id="@+id/upsert_event_character_count_label"
+            style="@style/detailTextViewLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/characters_present" />
+        <EditText
+            android:id="@+id/upsert_event_character_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:hint="@string/character_count_hint"
+            android:inputType="number"
+            android:singleLine="true"
+            android:maxLength="9" />
 
-    <EditText
-        android:id="@+id/upsert_event_experience"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/xp_amount_hint"
-        android:inputType="numberSigned"
-        android:singleLine="true"
-        android:layout_alignBaseline="@id/upsert_event_character_count"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:maxLength="9"
-        android:ems="10"/>
-    <TextView
-        android:id="@+id/upsert_event_experience_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/total_xp"
-        android:layout_below="@id/upsert_event_type"
-        android:layout_toLeftOf="@id/upsert_event_experience"
-        android:layout_toStartOf="@id/upsert_event_experience"
-        android:layout_alignBaseline="@id/upsert_event_experience"
-        android:layout_marginRight="8dp"
-        android:layout_marginEnd="8dp"/>
+        <TextView
+            android:id="@+id/upsert_event_experience_label"
+            style="@style/detailTextViewLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/total_xp" />
+        <EditText
+            android:id="@+id/upsert_event_experience"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2.5"
+            android:hint="@string/xp_amount_hint"
+            android:inputType="numberSigned"
+            android:singleLine="true"
+            android:maxLength="9" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/button_container"
@@ -133,7 +123,7 @@ Drew Matheson, 2015.12.08: Created
         android:hint="@string/event_description_hint"
         android:inputType="text|textCapSentences|textMultiLine|textLongMessage"
         android:minLines="2"
-        android:layout_below="@id/upsert_event_character_count"
+        android:layout_below="@id/character_count_xp_amount_container"
         android:layout_toLeftOf="@id/button_container"
         android:layout_toStartOf="@id/button_container"
         android:layout_alignParentBottom="true"

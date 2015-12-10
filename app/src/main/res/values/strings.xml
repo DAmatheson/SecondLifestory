@@ -70,7 +70,7 @@
     <string name="edit_event">Edit Event</string>
     <string name="event_type">Event Type</string>
     <string name="create_event">Create Event</string>
-    <string name="character_count_hint"># Characters Present</string>
+    <string name="character_count_hint"># Characters</string>
     <string name="xp_amount_hint">XP Gained</string>
     <string name="event_description_hint">Description</string>
     <string name="event_title_hint">Event Title</string>

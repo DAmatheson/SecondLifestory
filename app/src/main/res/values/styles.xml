@@ -59,6 +59,7 @@
 
     <style name="detailTextViewLabel" parent="detailTextView">
         <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginRight">@dimen/detailTextViewLabel_padding</item>
     </style>
 
     <style name="eventListAddEventButton">

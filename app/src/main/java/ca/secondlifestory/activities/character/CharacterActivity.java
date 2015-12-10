@@ -51,6 +51,8 @@ public class CharacterActivity extends BaseActivity implements CharacterListFrag
      */
     private static final String ARG_IN_UPSERT_MODE = "CharacterActivity.inUpsertMode";
 
+    private static final String TAG_DETAIL = "CharacterActivity.detailFragment";
+
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
@@ -76,6 +78,10 @@ public class CharacterActivity extends BaseActivity implements CharacterListFrag
         if (savedInstanceState != null) {
             // Restore the flag. Fragments are automatically restored
             inUpsertMode = savedInstanceState.getBoolean(ARG_IN_UPSERT_MODE);
+
+            detailFragment = (CharacterDetailFragment) getFragmentManager()
+                    .findFragmentByTag(TAG_DETAIL);
+
         } else if (findViewById(R.id.character_detail) != null) {
             // Create the detail fragment if in two-pane mode
 
@@ -83,7 +89,7 @@ public class CharacterActivity extends BaseActivity implements CharacterListFrag
 
             getFragmentManager()
                     .beginTransaction()
-                    .add(R.id.character_detail, detailFragment)
+                    .add(R.id.character_detail, detailFragment, TAG_DETAIL)
                     .commit();
         }
 
@@ -106,6 +112,8 @@ public class CharacterActivity extends BaseActivity implements CharacterListFrag
             @Override
             public void onClick(View v) {
                 CharacterUpsertFragment createFragment = CharacterUpsertFragment.newInstance();
+
+                inUpsertMode = true;
 
                 if (mTwoPane) {
                     getFragmentManager()
@@ -203,7 +211,7 @@ public class CharacterActivity extends BaseActivity implements CharacterListFrag
     public void onItemSelected(String id) {
         if (inUpsertMode) {
             // Return to the details fragment
-            getFragmentManager().popBackStack();
+            getFragmentManager().popBackStackImmediate();
         }
 
         if (mTwoPane) {
@@ -217,7 +225,7 @@ public class CharacterActivity extends BaseActivity implements CharacterListFrag
 
             getFragmentManager()
                     .beginTransaction()
-                    .replace(android.R.id.content, detailFragment)
+                    .replace(android.R.id.content, detailFragment, TAG_DETAIL)
                     .addToBackStack(null)
                     .commit();
         }
@@ -252,7 +260,7 @@ public class CharacterActivity extends BaseActivity implements CharacterListFrag
 
                 listFragment.setSelection(index);
 
-                if (checkedCharacter != null) {
+                if (checkedCharacter != null && !inUpsertMode) {
                     detailFragment.setCharacterId(checkedCharacter.getObjectId());
                 }
             }
@@ -301,14 +309,7 @@ public class CharacterActivity extends BaseActivity implements CharacterListFrag
     public void onUpsertCancelPressed() {
         inUpsertMode = false;
 
-        if (mTwoPane) {
-            getFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.character_detail, detailFragment)
-                    .commit();
-        } else {
-            getFragmentManager().popBackStack();
-        }
+        getFragmentManager().popBackStack();
     }
 
     @Override
@@ -340,7 +341,7 @@ public class CharacterActivity extends BaseActivity implements CharacterListFrag
 
             getFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.character_detail, detailFragment)
+                    .replace(R.id.character_detail, detailFragment, TAG_DETAIL)
                     .commit();
         } else {
             // Go back to the list fragment

@@ -13,4 +13,6 @@
     <dimen name="spinner_single_line_height">35dp</dimen>
 
     <dimen name="multiline_text_padding">2dp</dimen>
+
+    <dimen name="detailTextViewLabel_padding">6dp</dimen>
 </resources>

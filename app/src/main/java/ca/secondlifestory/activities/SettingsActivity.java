@@ -6,6 +6,8 @@
 
 package ca.secondlifestory.activities;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -40,6 +42,17 @@ public class SettingsActivity extends BaseActivity {
 
         setupDeleteCharactersButton();
         setupClearDatabaseButton();
+
+        Button tutorialButton = (Button) findViewById(R.id.tutorials);
+        tutorialButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent tutorialsLink = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("http://isaacwest.ca/LifeStory/"));
+
+                startActivity(tutorialsLink);
+            }
+        });
     }
 
     /**

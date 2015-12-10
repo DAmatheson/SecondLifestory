@@ -486,8 +486,10 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
 
         listFragment.notifyListChanged();
 
-        // TODO: Make the list load method select the new item
-        //       This is going to be hard to do while using the parse query adapter.
+        if (mTwoPane) {
+            // Make the new event the selected one
+            listFragment.setSelection(0);
+        }
     }
 
     @Override

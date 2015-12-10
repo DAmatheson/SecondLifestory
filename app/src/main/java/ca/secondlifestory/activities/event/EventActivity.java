@@ -50,6 +50,8 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
                                                            EventUpsertFragment.Callbacks,
                                                 TextEntryDialogFragment.OnPositiveCloseListener {
 
+    private static final String LOG_TAG = EventActivity.class.getName();
+
     /**
      * The intent Bundle keys
      */
@@ -60,6 +62,9 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
      */
     private static final String ARG_IN_UPSERT_MODE = "EventActivity.inUpsertMode";
 
+    /**
+     * Fragment tags
+     */
     private static final String TAG_DETAIL = "EventActivity.detailFragment";
 
     /**
@@ -166,8 +171,8 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
                 if (e == null) {
                     setTitle(getString(R.string.events_title_prefix) + object.getName());
                 } else {
-                    // TODO: Error handling
-                    Toast.makeText(EventActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    // Note: The title is set to "Events" by default which is an okay fallback
+                    getLogger().exception(LOG_TAG, ".onResume: Failed to load character.", e);
                 }
             }
         });

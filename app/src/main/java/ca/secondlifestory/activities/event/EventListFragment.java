@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.parse.ParseQueryAdapter;
 
@@ -69,6 +70,9 @@ public class EventListFragment extends BaseListFragment {
             public void onLoaded(List<Event> list, Exception e) {
                 if (e == null) {
                     mListener.onListLoaded();
+                } else {
+                    // TODO: Error handling
+                    Toast.makeText(EventListFragment.this.getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
         });

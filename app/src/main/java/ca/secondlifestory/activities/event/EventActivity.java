@@ -21,6 +21,7 @@ import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import ca.secondlifestory.BaseActivity;
 import ca.secondlifestory.R;
@@ -374,6 +375,9 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
             public void done(PlayerCharacter object, ParseException e) {
                 if (e == null) {
                     updateDeathButton(object);
+                } else {
+                    // TODO: Error handling
+                    Toast.makeText(EventActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -462,6 +466,9 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
                                 }
                             }
                         });
+                    } else {
+                        // TODO: Error handling
+                        Toast.makeText(EventActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
             });

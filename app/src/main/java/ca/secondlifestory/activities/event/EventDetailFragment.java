@@ -223,8 +223,10 @@ public class EventDetailFragment extends BaseFragment {
                         characterCountLabel.setVisibility(View.GONE);
                     }
                     else {
-                        experience.setText(numberFormatter.format(mItem.getExperience()));
-                        characterCount.setText(numberFormatter.format(mItem.getCharacterCount()));
+                        experience.setText(numberFormatter.format(mItem.getExperience()) +
+                                getString(R.string.xp_gained_postfix));
+                        characterCount.setText(numberFormatter.format(mItem.getCharacterCount()) +
+                                getString(R.string.characters_present_postfix));
                     }
                     description.setText(mItem.getDescription());
                 } else {

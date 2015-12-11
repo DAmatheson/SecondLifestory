@@ -84,13 +84,19 @@ public class CharacterDetailFragment extends BaseFragment {
      * @return The setup new instance of PlayerStatsDetailFragment
      */
     public static CharacterDetailFragment newInstance(String characterObjectId) {
-        Bundle args = new Bundle();
-        args.putString(ARG_CHARACTER_ID, characterObjectId);
+        try {
+            Bundle args = new Bundle();
+            args.putString(ARG_CHARACTER_ID, characterObjectId);
 
-        CharacterDetailFragment fragment = new CharacterDetailFragment();
-        fragment.setArguments(args);
+            CharacterDetailFragment fragment = new CharacterDetailFragment();
+            fragment.setArguments(args);
 
-        return fragment;
+            return fragment;
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".newInstance: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     /**
@@ -102,6 +108,7 @@ public class CharacterDetailFragment extends BaseFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+
         try {
             mListener = (Callbacks) activity;
         } catch (ClassCastException e) {
@@ -113,87 +120,126 @@ public class CharacterDetailFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_character_detail, container, false);
+        try {
+            View rootView = inflater.inflate(R.layout.fragment_character_detail, container, false);
 
-        loadingIndicator = (ProgressBar)rootView.findViewById(R.id.loadingIndicator);
+            loadingIndicator = (ProgressBar) rootView.findViewById(R.id.loadingIndicator);
 
-        name = (TextView)rootView.findViewById(R.id.character_name);
-        name.setVisibility(View.INVISIBLE); // Hide the placeholder name
+            name = (TextView) rootView.findViewById(R.id.character_name);
+            name.setVisibility(View.INVISIBLE); // Hide the placeholder name
 
-        race = (TextView)rootView.findViewById(R.id.character_race);
-        characterClass = (TextView)rootView.findViewById(R.id.character_class);
-        totalXp = (TextView)rootView.findViewById(R.id.character_xp);
-        status = (TextView)rootView.findViewById(R.id.character_status);
-        description = (TextView)rootView.findViewById(R.id.character_description);
+            race = (TextView) rootView.findViewById(R.id.character_race);
+            characterClass = (TextView) rootView.findViewById(R.id.character_class);
+            totalXp = (TextView) rootView.findViewById(R.id.character_xp);
+            status = (TextView) rootView.findViewById(R.id.character_status);
+            description = (TextView) rootView.findViewById(R.id.character_description);
 
-        editButton = (Button)rootView.findViewById(R.id.edit_character_button);
-        editButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onEditClicked(mItem.getObjectId());
-            }
-        });
+            editButton = (Button) rootView.findViewById(R.id.edit_character_button);
+            editButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        mListener.onEditClicked(mItem.getObjectId());
+                    } catch (Exception ex) {
+                        getLogger().exception(LOG_TAG, "editButton.onClick: " + ex.getMessage(), ex);
 
-        deleteButton = (Button)rootView.findViewById(R.id.delete_character_button);
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SimpleDialogFragment deleteDialog = SimpleDialogFragment.newInstance(R.string.ok,
-                        R.string.delete_character_message,
-                        R.string.no);
-
-                deleteDialog.show(getFragmentManager(), null, new SimpleDialogFragment.OnPositiveCloseListener() {
-                    @Override
-                    public void onPositiveClose() {
-                        ParseQuery<Event> events = Event.getQuery();
-                        events.whereEqualTo(Event.KEY_CHARACTER, mItem);
-                        events.findInBackground(new FindCallback<Event>() {
-                            @Override
-                            public void done(List<Event> objects, ParseException e) {
-                                if (e == null) {
-                                    Event.unpinAllInBackground(objects);
-                                    Event.deleteAllInBackground(objects);
-                                } else {
-                                    getLogger().exception(LOG_TAG,
-                                            ".deleteDialog.onPositiveClose query: " +
-                                                    e.getMessage(),
-                                            e);
-
-                                    Toast.makeText(CharacterDetailFragment.this.getActivity(),
-                                            R.string.delete_character_error_message,
-                                            Toast.LENGTH_LONG)
-                                            .show();
-                                }
-                            }
-                        });
-
-                        mItem.unpinInBackground();
-                        mItem.deleteEventually();
-
-                        mListener.onCharacterDeleted(characterId);
+                        throw ex;
                     }
-                });
+                }
+            });
+
+            deleteButton = (Button) rootView.findViewById(R.id.delete_character_button);
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SimpleDialogFragment deleteDialog = SimpleDialogFragment.newInstance(R.string.ok,
+                            R.string.delete_character_message,
+                            R.string.no);
+
+                    deleteDialog.show(getFragmentManager(), null, new SimpleDialogFragment.OnPositiveCloseListener() {
+                        @Override
+                        public void onPositiveClose() {
+                            try {
+                                ParseQuery<Event> events = Event.getQuery();
+                                events.whereEqualTo(Event.KEY_CHARACTER, mItem);
+                                events.findInBackground(new FindCallback<Event>() {
+                                    @Override
+                                    public void done(List<Event> objects, ParseException e) {
+                                        if (e == null) {
+                                            try {
+                                                Event.unpinAllInBackground(objects);
+                                                Event.deleteAllInBackground(objects);
+                                            } catch (Exception ex) {
+                                                getLogger().exception(LOG_TAG,
+                                                        "deleteButton.onClick.onPositiveClose.findInBackground: " +
+                                                                ex.getMessage(),
+                                                        ex);
+
+                                                Toast.makeText(CharacterDetailFragment.this.getActivity(),
+                                                        R.string.delete_character_error_message,
+                                                        Toast.LENGTH_LONG)
+                                                        .show();
+                                            }
+                                        } else {
+                                            getLogger().exception(LOG_TAG,
+                                                    ".deleteDialog.onPositiveClose query: " +
+                                                            e.getMessage(),
+                                                    e);
+
+                                            Toast.makeText(CharacterDetailFragment.this.getActivity(),
+                                                    R.string.delete_character_error_message,
+                                                    Toast.LENGTH_LONG)
+                                                    .show();
+                                        }
+                                    }
+                                });
+
+                                mItem.unpinInBackground();
+                                mItem.deleteEventually();
+
+                                mListener.onCharacterDeleted(characterId);
+                            } catch (Exception ex) {
+                                getLogger().exception(LOG_TAG, "deleteButton.onClick: " + ex.getMessage(), ex);
+
+                                Toast.makeText(CharacterDetailFragment.this.getActivity(),
+                                        R.string.delete_character_error_message,
+                                        Toast.LENGTH_LONG)
+                                        .show();
+                            }
+                        }
+                    });
+                }
+            });
+
+            editButton.setEnabled(false);
+            deleteButton.setEnabled(false);
+
+            if (savedInstanceState != null) {
+                characterId = savedInstanceState.getString(ARG_CHARACTER_ID);
+            } else if (getArguments() != null) {
+                characterId = getArguments().getString(ARG_CHARACTER_ID);
             }
-        });
 
-        editButton.setEnabled(false);
-        deleteButton.setEnabled(false);
+            return rootView;
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".onCreateView: " + ex.getMessage(), ex);
 
-        if (savedInstanceState != null) {
-            characterId = savedInstanceState.getString(ARG_CHARACTER_ID);
-        } else if (getArguments() != null) {
-            characterId = getArguments().getString(ARG_CHARACTER_ID);
+            throw ex;
         }
-
-        return rootView;
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        if (characterId != null) {
-            loadCharacter(characterId);
+        try {
+            if (characterId != null) {
+                loadCharacter(characterId);
+            }
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".onResume: " + ex.getMessage(), ex);
+
+            throw ex;
         }
     }
 
@@ -207,58 +253,95 @@ public class CharacterDetailFragment extends BaseFragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putString(ARG_CHARACTER_ID, characterId);
+        try {
+            outState.putString(ARG_CHARACTER_ID, characterId);
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".onSaveInstanceState: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     public void setCharacterId(String id) {
         characterId = id;
 
-        loadCharacter(id);
+        try {
+            loadCharacter(id);
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".setCharacterId: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     private void loadCharacter(String characterId) {
-        loadingIndicator.setVisibility(View.VISIBLE);
-        editButton.setEnabled(false);
-        deleteButton.setEnabled(false);
+        try {
+            loadingIndicator.setVisibility(View.VISIBLE);
+            editButton.setEnabled(false);
+            deleteButton.setEnabled(false);
 
-        ParseQuery<PlayerCharacter> query = PlayerCharacter.getQuery();
-        query.getInBackground(characterId, new GetCallback<PlayerCharacter>() {
-            @Override
-            public void done(PlayerCharacter object, ParseException e) {
-                loadingIndicator.setVisibility(View.INVISIBLE);
+            ParseQuery<PlayerCharacter> query = PlayerCharacter.getQuery();
+            query.getInBackground(characterId, new GetCallback<PlayerCharacter>() {
+                @Override
+                public void done(PlayerCharacter object, ParseException e) {
+                    try {
+                        loadingIndicator.setVisibility(View.INVISIBLE);
+                    } catch (Exception ex) {
+                        getLogger().exception(LOG_TAG,
+                            ".loadCharacter.getInBackground hide loadingIndicator: " + ex.getMessage(),
+                            ex);
 
-                if (e == null) {
-                    mItem = object;
+                        throw ex;
+                    }
 
-                    editButton.setEnabled(true);
-                    deleteButton.setEnabled(true);
-                    name.setVisibility(View.VISIBLE);
+                    if (e == null) {
+                        mItem = object;
 
-                    NumberFormat numberFormatter = DecimalFormat.getNumberInstance();
+                        try {
+                            editButton.setEnabled(true);
+                            deleteButton.setEnabled(true);
+                            name.setVisibility(View.VISIBLE);
 
-                    name.setText(mItem.getName());
-                    race.setText(mItem.getRace().getName());
-                    characterClass.setText(mItem.getCharacterClass().getName());
-                    totalXp.setText(numberFormatter.format(mItem.getExperience()));
+                            NumberFormat numberFormatter = DecimalFormat.getNumberInstance();
 
-                    status.setText(CharacterDetailFragment.this.getActivity().getString(
-                            mItem.isLiving()
-                            ? R.string.alive
-                            : R.string.dead));
+                            name.setText(mItem.getName());
+                            race.setText(mItem.getRace().getName());
+                            characterClass.setText(mItem.getCharacterClass().getName());
+                            totalXp.setText(numberFormatter.format(mItem.getExperience()));
 
-                    description.setText(mItem.getDetails());
-                } else {
-                    getLogger().exception(LOG_TAG,
-                            ".loadCharacter query: " +
-                                    e.getMessage(),
-                            e);
+                            status.setText(CharacterDetailFragment.this.getActivity().getString(
+                                    mItem.isLiving()
+                                            ? R.string.alive
+                                            : R.string.dead));
 
-                    Toast.makeText(CharacterDetailFragment.this.getActivity(),
-                            R.string.load_character_failed_error_message,
-                            Toast.LENGTH_LONG)
-                            .show();
+                            description.setText(mItem.getDetails());
+                        } catch (Exception ex) {
+                            getLogger().exception(LOG_TAG,
+                                ".loadCharacter.getInBackground: " + ex.getMessage(),
+                                ex);
+
+                            Toast.makeText(CharacterDetailFragment.this.getActivity(),
+                                    R.string.load_character_failed_error_message,
+                                    Toast.LENGTH_LONG)
+                                    .show();
+                        }
+                    } else {
+                        getLogger().exception(LOG_TAG,
+                                ".loadCharacter query: " +
+                                        e.getMessage(),
+                                e);
+
+                        Toast.makeText(CharacterDetailFragment.this.getActivity(),
+                                R.string.load_character_failed_error_message,
+                                Toast.LENGTH_LONG)
+                                .show();
+                    }
                 }
-            }
-        });
+            });
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".loadCharacter: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 }

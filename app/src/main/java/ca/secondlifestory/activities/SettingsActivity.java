@@ -40,190 +40,311 @@ public class SettingsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
 
-        tutorialsLinkButton = (Button) findViewById(R.id.tutorials);
-        deleteCharactersButton = (Button) findViewById(R.id.delete_all_characters_button);
-        clearDatabaseButton = (Button) findViewById(R.id.delete_all_data_button);
+        try {
+            setContentView(R.layout.activity_settings);
 
-        setupTutorialsLinkButton();
-        setupDeleteCharactersButton();
-        setupClearDatabaseButton();
+            tutorialsLinkButton = (Button) findViewById(R.id.tutorials);
+            deleteCharactersButton = (Button) findViewById(R.id.delete_all_characters_button);
+            clearDatabaseButton = (Button) findViewById(R.id.delete_all_data_button);
+
+            setupTutorialsLinkButton();
+            setupDeleteCharactersButton();
+            setupClearDatabaseButton();
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".onCreate: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     /**
      * Sets up the click handler for the tutorials button
      */
     private void setupTutorialsLinkButton() {
-        tutorialsLinkButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent launchBrowser = new Intent(Intent.ACTION_VIEW, Uri.parse(TUTORIALS_URL));
-                startActivity(launchBrowser);
-            }
-        });
+        try {
+            tutorialsLinkButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        Intent launchBrowser = new Intent(Intent.ACTION_VIEW, Uri.parse(TUTORIALS_URL));
+                        startActivity(launchBrowser);
+                    } catch (Exception ex) {
+                        getLogger().exception(LOG_TAG,
+                            "tutorialsLinkButton.onClick: " + ex.getMessage(),
+                            ex);
+
+                        throw ex;
+                    }
+                }
+            });
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".setupTutorialsLinkButton: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     /**
      * Sets up the click handler for the delete all characters button
      */
     private void setupDeleteCharactersButton() {
-        deleteCharactersButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SimpleDialogFragment deleteConfirmationDialog = SimpleDialogFragment.newInstance(
-                        R.string.ok,
-                        R.string.delete_all_characters_dialog_title,
-                        R.string.no,
-                        R.string.delete_all_characters_dialog_message);
+        try {
+            deleteCharactersButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        SimpleDialogFragment deleteConfirmationDialog = SimpleDialogFragment.newInstance(
+                                R.string.ok,
+                                R.string.delete_all_characters_dialog_title,
+                                R.string.no,
+                                R.string.delete_all_characters_dialog_message);
 
-                deleteConfirmationDialog.show(getFragmentManager(), null,
-                        new SimpleDialogFragment.OnPositiveCloseListener() {
-                            @Override
-                            public void onPositiveClose() {
-                                deleteCharacters();
+                        deleteConfirmationDialog.show(getFragmentManager(), null,
+                                new SimpleDialogFragment.OnPositiveCloseListener() {
+                                    @Override
+                                    public void onPositiveClose() {
+                                        try {
+                                            deleteCharacters();
 
-                                Toast.makeText(SettingsActivity.this,
-                                        R.string.delete_all_characters_success,
-                                        Toast.LENGTH_SHORT)
-                                        .show();
-                            }
-                        }
-                );
-            }
-        });
+                                            Toast.makeText(SettingsActivity.this,
+                                                    R.string.delete_all_characters_success,
+                                                    Toast.LENGTH_SHORT)
+                                                    .show();
+                                        } catch (Exception ex) {
+                                            getLogger().exception(LOG_TAG,
+                                                "setupDeleteCharactersButton.onClick.onPositiveClose: " +
+                                                        ex.getMessage(),
+                                                ex);
+
+                                            // Toasts for error messages are shown by deleteCharacters
+                                        }
+                                    }
+                                }
+                        );
+                    } catch (Exception ex) {
+                        getLogger().exception(LOG_TAG,
+                            "deleteCharactersButton.onClick: " + ex.getMessage(),
+                            ex);
+
+                        throw ex;
+                    }
+                }
+            });
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".setupDeleteCharactersButton: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     /**
      * Sets up the click handler for the clear database button
      */
     private void setupClearDatabaseButton() {
-        clearDatabaseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SimpleDialogFragment deleteConfirmationDialog = SimpleDialogFragment.newInstance(
-                        R.string.ok,
-                        R.string.delete_all_data_dialog_title,
-                        R.string.no,
-                        R.string.delete_all_data_dialog_message);
+        try {
+            clearDatabaseButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        SimpleDialogFragment deleteConfirmationDialog = SimpleDialogFragment.newInstance(
+                                R.string.ok,
+                                R.string.delete_all_data_dialog_title,
+                                R.string.no,
+                                R.string.delete_all_data_dialog_message);
 
-                deleteConfirmationDialog.show(getFragmentManager(), null,
-                        new SimpleDialogFragment.OnPositiveCloseListener() {
-                            @Override
-                            public void onPositiveClose() {
-                                deleteAllData();
+                        deleteConfirmationDialog.show(getFragmentManager(), null,
+                                new SimpleDialogFragment.OnPositiveCloseListener() {
+                                    @Override
+                                    public void onPositiveClose() {
+                                        try {
+                                            deleteAllData();
 
-                                Toast.makeText(SettingsActivity.this,
-                                        R.string.delete_all_data_success,
-                                        Toast.LENGTH_SHORT)
-                                        .show();
-                            }
-                        }
-                );
-            }
-        });
+                                            Toast.makeText(SettingsActivity.this,
+                                                    R.string.delete_all_data_success,
+                                                    Toast.LENGTH_SHORT)
+                                                    .show();
+                                        } catch (Exception ex) {
+                                            getLogger().exception(LOG_TAG,
+                                                    "clearDatabaseButton.onClick.onPositiveClose: " +
+                                                            ex.getMessage(),
+                                                    ex);
+
+                                            // Toasts for error messages are shown by deleteAllData
+                                        }
+                                    }
+                                }
+                        );
+                    } catch (Exception ex) {
+                        getLogger().exception(LOG_TAG,
+                                "clearDatabaseButton.onClick: " + ex.getMessage(),
+                                ex);
+
+                        throw ex;
+                    }
+                }
+            });
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".setupClearDataButton: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     /**
      * Asynchronously deletes all characters, races, and character classes
      */
     private void deleteAllData() {
-        deleteCharacters();
+        try {
+            deleteCharacters();
 
-        ParseQuery<Race> raceQuery = Race.getQuery();
-        raceQuery.findInBackground(new FindCallback<Race>() {
-            @Override
-            public void done(List<Race> objects, ParseException e) {
-                if (e == null) {
+            ParseQuery<Race> raceQuery = Race.getQuery();
+            raceQuery.findInBackground(new FindCallback<Race>() {
+                @Override
+                public void done(List<Race> objects, ParseException e) {
+                    if (e == null) {
+                        try {
+                            Race.deleteAllInBackground(objects);
 
-                    Race.deleteAllInBackground(objects);
+                            Race.setupDefaultRaces(
+                                    SettingsActivity.this.getResources()
+                                            .getStringArray(R.array.defaultRaceNames));
+                        } catch (Exception ex) {
+                            getLogger().exception(LOG_TAG,
+                                ".deleteAllData.raceFindInBackground: " +
+                                        ex.getMessage(),
+                                ex);
 
-                    Race.setupDefaultRaces(
-                            SettingsActivity.this.getResources()
-                                    .getStringArray(R.array.defaultRaceNames));
-                } else {
-                    getLogger().exception(LOG_TAG,
-                            ".deleteAllData Race query: " +
-                                    e.getMessage(),
-                            e);
+                            Toast.makeText(SettingsActivity.this,
+                                    R.string.delete_all_races_error_message,
+                                    Toast.LENGTH_LONG)
+                                    .show();
+                        }
+                    } else {
+                        getLogger().exception(LOG_TAG,
+                                ".deleteAllData Race query: " +
+                                        e.getMessage(),
+                                e);
 
-                    Toast.makeText(SettingsActivity.this,
-                            R.string.delete_all_races_error_message,
-                            Toast.LENGTH_LONG)
-                        .show();
+                        Toast.makeText(SettingsActivity.this,
+                                R.string.delete_all_races_error_message,
+                                Toast.LENGTH_LONG)
+                                .show();
+                    }
                 }
-            }
-        });
+            });
 
-        ParseQuery<CharacterClass> classQuery = CharacterClass.getQuery();
-        classQuery.findInBackground(new FindCallback<CharacterClass>() {
-            @Override
-            public void done(List<CharacterClass> objects, ParseException e) {
-                if (e == null) {
-                    CharacterClass.deleteAllInBackground(objects);
+            ParseQuery<CharacterClass> classQuery = CharacterClass.getQuery();
+            classQuery.findInBackground(new FindCallback<CharacterClass>() {
+                @Override
+                public void done(List<CharacterClass> objects, ParseException e) {
+                    if (e == null) {
+                        try {
+                            CharacterClass.deleteAllInBackground(objects);
 
-                    CharacterClass.setupDefaultClasses(
-                            SettingsActivity.this.getResources()
-                                    .getStringArray(R.array.defaultCharacterClassNames));
-                } else {
-                    getLogger().exception(LOG_TAG,
-                            ".deleteAllData CharacterClass query: " +
-                                    e.getMessage(),
-                            e);
+                            CharacterClass.setupDefaultClasses(
+                                    SettingsActivity.this.getResources()
+                                            .getStringArray(R.array.defaultCharacterClassNames));
+                        } catch (Exception ex) {
+                            getLogger().exception(LOG_TAG,
+                                ".deleteAllData.classFindInBackground: " + ex.getMessage(),
+                                ex);
 
-                    Toast.makeText(SettingsActivity.this,
-                            R.string.delete_all_classes_error_message,
-                            Toast.LENGTH_LONG)
-                            .show();
+                            Toast.makeText(SettingsActivity.this,
+                                    R.string.delete_all_classes_error_message,
+                                    Toast.LENGTH_LONG)
+                                    .show();
+                        }
+                    } else {
+                        getLogger().exception(LOG_TAG,
+                                ".deleteAllData CharacterClass query: " +
+                                        e.getMessage(),
+                                e);
+
+                        Toast.makeText(SettingsActivity.this,
+                                R.string.delete_all_classes_error_message,
+                                Toast.LENGTH_LONG)
+                                .show();
+                    }
                 }
-            }
-        });
+            });
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".deleteAllData: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     /**
      * Asynchronously deletes all characters
      */
     private void deleteCharacters() {
-        ParseQuery<PlayerCharacter> query = PlayerCharacter.getQuery();
+        try {
+            ParseQuery<PlayerCharacter> query = PlayerCharacter.getQuery();
 
-        query.findInBackground(new FindCallback<PlayerCharacter>() {
-            @Override
-            public void done(List<PlayerCharacter> objects, ParseException e) {
-                if (e == null) {
-                    for (PlayerCharacter character : objects) {
-                        ParseQuery<Event> eventsQuery = Event.getQuery();
-                        eventsQuery.whereEqualTo(Event.KEY_CHARACTER, character);
+            query.findInBackground(new FindCallback<PlayerCharacter>() {
+                @Override
+                public void done(List<PlayerCharacter> objects, ParseException e) {
+                    if (e == null) {
+                        try {
+                            for (PlayerCharacter character : objects) {
+                                ParseQuery<Event> eventsQuery = Event.getQuery();
+                                eventsQuery.whereEqualTo(Event.KEY_CHARACTER, character);
 
-                        eventsQuery.findInBackground(new FindCallback<Event>() {
-                            @Override
-                            public void done(List<Event> objects, ParseException e) {
-                                if (e == null) {
-                                    Event.unpinAllInBackground(objects);
-                                    Event.deleteAllInBackground(objects);
-                                } else {
-                                    getLogger().exception(LOG_TAG,
-                                            ".deleteCharacters event deletion loop: " +
-                                                e.getMessage(),
-                                            e);
-                                }
+                                eventsQuery.findInBackground(new FindCallback<Event>() {
+                                    @Override
+                                    public void done(List<Event> objects, ParseException e) {
+                                        if (e == null) {
+                                            try {
+                                                Event.unpinAllInBackground(objects);
+                                                Event.deleteAllInBackground(objects);
+                                            } catch (Exception ex) {
+                                                getLogger().exception(LOG_TAG,
+                                                    ".deleteCharacters.eventsQuery.findInBackground: " +
+                                                            ex.getMessage(),
+                                                    ex);
+
+                                                throw ex;
+                                            }
+                                        } else {
+                                            getLogger().exception(LOG_TAG,
+                                                    ".deleteCharacters event deletion loop: " +
+                                                            e.getMessage(),
+                                                    e);
+                                        }
+                                    }
+                                });
                             }
-                        });
+
+                            PlayerCharacter.unpinAllInBackground(objects);
+                            PlayerCharacter.deleteAllInBackground(objects);
+                        } catch (Exception ex) {
+                            getLogger().exception(LOG_TAG,
+                                ".deleteCharacters.findInBackground: " + ex.getMessage(),
+                                ex);
+
+                            Toast.makeText(SettingsActivity.this,
+                                    R.string.delete_all_characters_error_message,
+                                    Toast.LENGTH_LONG)
+                                    .show();
+                        }
+                    } else {
+                        getLogger().exception(LOG_TAG,
+                                ".deleteCharacters query: " +
+                                        e.getMessage(),
+                                e);
+
+                        Toast.makeText(SettingsActivity.this,
+                                R.string.delete_all_characters_error_message,
+                                Toast.LENGTH_LONG)
+                                .show();
                     }
-
-                    PlayerCharacter.unpinAllInBackground(objects);
-                    PlayerCharacter.deleteAllInBackground(objects);
-                } else {
-                    getLogger().exception(LOG_TAG,
-                            ".deleteCharacters query: " +
-                                e.getMessage(),
-                            e);
-
-                    Toast.makeText(SettingsActivity.this,
-                            R.string.delete_all_characters_error_message,
-                            Toast.LENGTH_LONG)
-                            .show();
                 }
-            }
-        });
+            });
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".deleteCharacters: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 }

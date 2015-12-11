@@ -87,131 +87,173 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.event_layout);
-        //setContentView(R.layout.event_twopane); // Note: Uncomment this to use two-pane
+        try {
+            setContentView(R.layout.event_layout);
+            //setContentView(R.layout.event_twopane); // Note: Uncomment this to use two-pane
 
-        listFragment = (EventListFragment) getFragmentManager().findFragmentById(R.id.event_list);
-        if (savedInstanceState != null) {
-            inUpsertMode = savedInstanceState.getBoolean(ARG_IN_UPSERT_MODE);
+            listFragment = (EventListFragment) getFragmentManager().findFragmentById(R.id.event_list);
+            if (savedInstanceState != null) {
+                inUpsertMode = savedInstanceState.getBoolean(ARG_IN_UPSERT_MODE);
 
-            if (findViewById(R.id.event_detail) != null) {
-                detailFragment = (EventDetailFragment) getFragmentManager().findFragmentByTag(TAG_DETAIL);
-            }
-        } else if (findViewById(R.id.event_detail) != null) {
-            detailFragment = new EventDetailFragment();
-
-            getFragmentManager()
-                .beginTransaction()
-                .add(R.id.event_detail, detailFragment, TAG_DETAIL)
-                .commit();
-        }
-
-        if (detailFragment != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-large and
-            // res/values-sw600dp). If this view is present, then the
-            // activity should be in two-pane mode.
-            mTwoPane = true;
-
-            // In two-pane mode, list items should be given the
-            // 'activated' state when touched.
-            listFragment.setActivateOnItemClick(true);
-        } else {
-            listFragment.setActivateOnItemClick(false);
-        }
-
-        ImageButton addEventButton = (ImageButton) findViewById(R.id.add_event_button);
-        addEventButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EventUpsertFragment upsertFragment = EventUpsertFragment.newInstance(characterId);
-
-                inUpsertMode = true;
-
-                if (mTwoPane) {
-                    getFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.event_detail, upsertFragment)
-                            .addToBackStack(null)
-                            .commit();
-                } else {
-                    EventActivity.this.getFragmentManager()
-                            .beginTransaction()
-                            .replace(android.R.id.content, upsertFragment)
-                            .addToBackStack(null)
-                            .commit();
+                if (findViewById(R.id.event_detail) != null) {
+                    detailFragment = (EventDetailFragment) getFragmentManager().findFragmentByTag(TAG_DETAIL);
                 }
-            }
-        });
+            } else if (findViewById(R.id.event_detail) != null) {
+                detailFragment = new EventDetailFragment();
 
-        deathButton = (Button) findViewById(R.id.death_button);
-        deathButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toggleLivingDialog();
+                getFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.event_detail, detailFragment, TAG_DETAIL)
+                        .commit();
             }
-        });
 
-        setTitle(getString(R.string.title_activity_event));
+            if (detailFragment != null) {
+                // The detail container view will be present only in the
+                // large-screen layouts (res/values-large and
+                // res/values-sw600dp). If this view is present, then the
+                // activity should be in two-pane mode.
+                mTwoPane = true;
+
+                // In two-pane mode, list items should be given the
+                // 'activated' state when touched.
+                listFragment.setActivateOnItemClick(true);
+            } else {
+                listFragment.setActivateOnItemClick(false);
+            }
+
+            ImageButton addEventButton = (ImageButton) findViewById(R.id.add_event_button);
+            addEventButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        EventUpsertFragment upsertFragment = EventUpsertFragment.newInstance(characterId);
+
+                        inUpsertMode = true;
+
+                        if (mTwoPane) {
+                            getFragmentManager()
+                                    .beginTransaction()
+                                    .replace(R.id.event_detail, upsertFragment)
+                                    .addToBackStack(null)
+                                    .commit();
+                        } else {
+                            EventActivity.this.getFragmentManager()
+                                    .beginTransaction()
+                                    .replace(android.R.id.content, upsertFragment)
+                                    .addToBackStack(null)
+                                    .commit();
+                        }
+                    } catch (Exception ex) {
+                        getLogger().exception(LOG_TAG, "addEventButton.onClick: " + ex.getMessage(), ex);
+
+                        throw ex;
+                    }
+                }
+            });
+
+            deathButton = (Button) findViewById(R.id.death_button);
+            deathButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toggleLivingDialog();
+                }
+            });
+
+            setTitle(getString(R.string.title_activity_event));
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".onCreate: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        characterId = getIntent().getStringExtra(ARG_CHARACTER_ID);
+        try {
+            characterId = getIntent().getStringExtra(ARG_CHARACTER_ID);
 
-        listFragment.setCharacterObjectId(characterId);
-        updateDeathButton();
+            listFragment.setCharacterObjectId(characterId);
+            updateDeathButton();
 
-        ParseQuery<PlayerCharacter> query = PlayerCharacter.getQuery();
-        query.getInBackground(characterId, new GetCallback<PlayerCharacter>() {
-            @Override
-            public void done(PlayerCharacter object, ParseException e) {
-                if (e == null) {
-                    setTitle(getString(R.string.events_title_prefix) + object.getName());
-                } else {
-                    // Note: The title is set to "Events" by default which is an okay fallback
-                    getLogger().exception(LOG_TAG, ".onResume: Failed to load character.", e);
+            ParseQuery<PlayerCharacter> query = PlayerCharacter.getQuery();
+            query.getInBackground(characterId, new GetCallback<PlayerCharacter>() {
+                @Override
+                public void done(PlayerCharacter object, ParseException e) {
+                    if (e == null) {
+                        try {
+                            setTitle(getString(R.string.events_title_prefix) + object.getName());
+                        } catch (Exception ex) {
+                            getLogger().exception(LOG_TAG,
+                                    "onResume.getInBackground: " + ex.getMessage(),
+                                    ex);
+                        }
+                    } else {
+                        // Note: The title is set to "Events" by default which is an okay fallback
+                        getLogger().exception(LOG_TAG, ".onResume: Failed to load character.", e);
+                    }
                 }
-            }
-        });
+            });
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".onResume: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putBoolean(ARG_IN_UPSERT_MODE, inUpsertMode);
+        try {
+            outState.putBoolean(ARG_IN_UPSERT_MODE, inUpsertMode);
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".onSaveInstanceState: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // If the Home / Up button was pressed and an item is in the backstack, pop the backstack
-        if (item.getItemId() == android.R.id.home &&
-                getFragmentManager().getBackStackEntryCount() > 0) {
+        try {
+            // If the Home / Up button was pressed and an item is in the backstack, pop the backstack
+            if (item.getItemId() == android.R.id.home &&
+                    getFragmentManager().getBackStackEntryCount() > 0) {
 
-            getFragmentManager().popBackStack();
+                getFragmentManager().popBackStack();
 
-            if (mTwoPane) {
-                detailFragment = null;
+                if (mTwoPane) {
+                    detailFragment = null;
+                }
+
+                return true;
             }
 
-            return true;
-        }
+            return super.onOptionsItemSelected(item);
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".onOptionsItemSelected: " + ex.getMessage(), ex);
 
-        return super.onOptionsItemSelected(item);
+            throw ex;
+        }
     }
 
     @Override
     public void onBackPressed() {
-        if (getFragmentManager().getBackStackEntryCount() > 0) {
-            getFragmentManager().popBackStack();
+        try {
+            if (getFragmentManager().getBackStackEntryCount() > 0) {
+                getFragmentManager().popBackStack();
 
-            return;
+                return;
+            }
+
+            super.onBackPressed();
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".onBackPressed: " + ex.getMessage(), ex);
+
+            throw ex;
         }
-
-        super.onBackPressed();
     }
 
     /**
@@ -220,60 +262,72 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
      */
     @Override
     public void onItemSelected(String id) {
-        if (inUpsertMode) {
-            // Return to the details fragment
-            getFragmentManager().popBackStackImmediate();
-        }
+        try {
+            if (inUpsertMode) {
+                // Return to the details fragment
+                getFragmentManager().popBackStackImmediate();
+            }
 
-        if (mTwoPane) {
-            // Update the detail fragment for the new id
-            detailFragment.setEventId(id);
-        } else {
-            // In single-pane mode, simply start the detail activity
-            // for the selected item ID.
+            if (mTwoPane) {
+                // Update the detail fragment for the new id
+                detailFragment.setEventId(id);
+            } else {
+                // In single-pane mode, simply start the detail activity
+                // for the selected item ID.
 
-            detailFragment = EventDetailFragment.newInstance(id);
+                detailFragment = EventDetailFragment.newInstance(id);
 
-            getFragmentManager().
-                    beginTransaction().
-                    replace(android.R.id.content, detailFragment, TAG_DETAIL).
-                    addToBackStack(null).
-                    commit();
+                getFragmentManager().
+                        beginTransaction().
+                        replace(android.R.id.content, detailFragment, TAG_DETAIL).
+                        addToBackStack(null).
+                        commit();
+            }
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".onItemSelected: " + ex.getMessage(), ex);
+
+            throw ex;
         }
     }
 
     @Override
     public void onListLoaded() {
-        if (mTwoPane) {
-            int index;
+        try {
+            if (mTwoPane) {
+                int index;
 
-            if (previouslySelectedListIndex != ListView.INVALID_POSITION) {
-                if (previouslySelectedListIndex == 0) {
-                    // Select the first item again
-                    index = previouslySelectedListIndex < listFragment.getListAdapter().getCount()
-                            ? previouslySelectedListIndex
-                            : ListView.INVALID_POSITION;
-                } else if (previouslySelectedListIndex - 1 < listFragment.getListAdapter().getCount()) {
-                    // Select the item before the previously selected item
-                    index = previouslySelectedListIndex - 1;
+                if (previouslySelectedListIndex != ListView.INVALID_POSITION) {
+                    if (previouslySelectedListIndex == 0) {
+                        // Select the first item again
+                        index = previouslySelectedListIndex < listFragment.getListAdapter().getCount()
+                                ? previouslySelectedListIndex
+                                : ListView.INVALID_POSITION;
+                    } else if (previouslySelectedListIndex - 1 < listFragment.getListAdapter().getCount()) {
+                        // Select the item before the previously selected item
+                        index = previouslySelectedListIndex - 1;
+                    } else {
+                        index = ListView.INVALID_POSITION;
+                    }
+
+                    previouslySelectedListIndex = ListView.INVALID_POSITION;
                 } else {
-                    index = ListView.INVALID_POSITION;
+                    index = listFragment.getListView().getCheckedItemPosition();
                 }
 
-                previouslySelectedListIndex = ListView.INVALID_POSITION;
-            } else {
-                index = listFragment.getListView().getCheckedItemPosition();
-            }
+                if (listFragment.getListAdapter().getCount() > 0 && index != ListView.INVALID_POSITION) {
+                    Event checkedEvent = (Event) listFragment.getListAdapter().getItem(index);
 
-            if (listFragment.getListAdapter().getCount() > 0 && index != ListView.INVALID_POSITION) {
-                Event checkedEvent = (Event) listFragment.getListAdapter().getItem(index);
+                    listFragment.setSelection(index);
 
-                listFragment.setSelection(index);
-
-                if (checkedEvent != null && !inUpsertMode) {
-                    detailFragment.setEventId(checkedEvent.getObjectId());
+                    if (checkedEvent != null && !inUpsertMode) {
+                        detailFragment.setEventId(checkedEvent.getObjectId());
+                    }
                 }
             }
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".onListLoaded: " + ex.getMessage(), ex);
+
+            throw ex;
         }
     }
 
@@ -285,202 +339,292 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
         else {
             dialogText = R.string.what_resurrected_you;
         }
-        TextEntryDialogFragment dialog = TextEntryDialogFragment.newInstance(R.string.ok,
-                dialogText, R.string.no);
 
-        dialog.show(getFragmentManager(), null, new TextEntryDialogFragment.OnPositiveCloseListener() {
-            @Override
-            public void onPositiveClose(final String textInput) {
-                ParseQuery<PlayerCharacter> query = PlayerCharacter.getQuery();
-                query.getInBackground(characterId, new GetCallback<PlayerCharacter>() {
-                    @Override
-                    public void done(final PlayerCharacter character, ParseException e) {
-                        if (e == null) {
-                            if (character.isLiving()) {
-                                characterDied(character, textInput);
-                            } else {
-                                characterResurrected(character, textInput);
+        try {
+            TextEntryDialogFragment dialog = TextEntryDialogFragment.newInstance(R.string.ok,
+                    dialogText, R.string.no);
+
+            dialog.show(getFragmentManager(), null, new TextEntryDialogFragment.OnPositiveCloseListener() {
+                @Override
+                public void onPositiveClose(final String textInput) {
+                    try {
+                        ParseQuery<PlayerCharacter> query = PlayerCharacter.getQuery();
+                        query.getInBackground(characterId, new GetCallback<PlayerCharacter>() {
+                            @Override
+                            public void done(final PlayerCharacter character, ParseException e) {
+                                if (e == null) {
+                                    try {
+                                        if (character.isLiving()) {
+                                            characterDied(character, textInput);
+                                        } else {
+                                            characterResurrected(character, textInput);
+                                        }
+                                    } catch (Exception ex) {
+                                        getLogger().exception(LOG_TAG,
+                                            ".toggleLivingDialog.onPositiveClose.getInBackground: " + ex.getMessage(),
+                                            ex);
+
+                                        Toast.makeText(EventActivity.this,
+                                                R.string.create_res_death_event_error_message,
+                                                Toast.LENGTH_SHORT)
+                                                .show();
+                                    }
+                                } else {
+                                    getLogger().exception(LOG_TAG,
+                                            ".toggleLivingDialog onPositiveClose query: " +
+                                                    e.getMessage(),
+                                            e);
+
+                                    Toast.makeText(EventActivity.this,
+                                            R.string.create_res_death_event_error_message,
+                                            Toast.LENGTH_SHORT)
+                                            .show();
+                                }
                             }
-                        } else {
-                            getLogger().exception(LOG_TAG,
-                                    ".toggleLivingDialog onPositiveClose query: " +
-                                            e.getMessage(),
-                                    e);
+                        });
+                    } catch (Exception ex) {
+                        getLogger().exception(LOG_TAG,
+                            ".toggleLivingDialog.onPositiveClose: " + ex.getMessage(),
+                            ex);
 
-                            Toast.makeText(EventActivity.this,
-                                    R.string.create_res_death_event_error_message,
-                                    Toast.LENGTH_SHORT)
-                                .show();
-                        }
+                        throw ex;
                     }
-                });
-            }
-        });
+                }
+            });
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".toggleLivingDialog: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     private void characterDied(PlayerCharacter character, String description) {
-        character.setLiving(false);
-        character.pinInBackground();
-        character.saveEventually();
+        try {
+            character.setLiving(false);
+            character.pinInBackground();
+            character.saveEventually();
 
-        Event event = new Event();
-        event.setCharacter(character);
-        event.setTitle(getString(R.string.died));
-        event.setEventType(EventTypes.DEATH);
-        event.setCharacterCount(1);
-        event.setExperience(0);
-        event.setDescription(description);
-        event.setDate(new Date());
+            Event event = new Event();
+            event.setCharacter(character);
+            event.setTitle(getString(R.string.died));
+            event.setEventType(EventTypes.DEATH);
+            event.setCharacterCount(1);
+            event.setExperience(0);
+            event.setDescription(description);
+            event.setDate(new Date());
 
-        event.pinInBackground();
-        event.saveEventually();
+            event.pinInBackground();
+            event.saveEventually();
 
-        listFragment.notifyListChanged();
-        updateDeathButton(character);
+            listFragment.notifyListChanged();
+            updateDeathButton(character);
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".characterDied: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     private void characterResurrected(PlayerCharacter character, String description) {
-        character.setLiving(true);
-        character.pinInBackground();
-        character.saveEventually();
+        try {
+            character.setLiving(true);
+            character.pinInBackground();
+            character.saveEventually();
 
-        final Event event = new Event();
-        event.setCharacter(character);
-        event.setTitle(getString(R.string.resurrected));
-        event.setEventType(EventTypes.RESURRECT);
-        event.setCharacterCount(1);
-        event.setExperience(0);
-        event.setDescription(description);
-        event.setDate(new Date());
+            final Event event = new Event();
+            event.setCharacter(character);
+            event.setTitle(getString(R.string.resurrected));
+            event.setEventType(EventTypes.RESURRECT);
+            event.setCharacterCount(1);
+            event.setExperience(0);
+            event.setDescription(description);
+            event.setDate(new Date());
 
-        event.pinInBackground();
-        event.saveEventually();
+            event.pinInBackground();
+            event.saveEventually();
 
-        listFragment.notifyListChanged();
-        updateDeathButton(character);
+            listFragment.notifyListChanged();
+            updateDeathButton(character);
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".characterResurrected: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     private void updateDeathButton() {
-        ParseQuery<PlayerCharacter> query = PlayerCharacter.getQuery();
-        query.getInBackground(characterId, new GetCallback<PlayerCharacter>() {
-            @Override
-            public void done(PlayerCharacter object, ParseException e) {
-                if (e == null) {
-                    updateDeathButton(object);
-                } else {
-                    getLogger().exception(LOG_TAG,
-                            ".updateDeathButton query: " +
-                                    e.getMessage(),
-                            e);
+        try {
+            ParseQuery<PlayerCharacter> query = PlayerCharacter.getQuery();
+            query.getInBackground(characterId, new GetCallback<PlayerCharacter>() {
+                @Override
+                public void done(PlayerCharacter object, ParseException e) {
+                    if (e == null) {
+                        try {
+                            updateDeathButton(object);
+                        } catch (Exception ex) {
+                            getLogger().exception(LOG_TAG,
+                                ".updateDeathButton.getInBackground: " + ex.getMessage(),
+                                ex);
 
-                    // Informing the user of this issue doesn't really help them
+                            throw ex;
+                        }
+                    } else {
+                        getLogger().exception(LOG_TAG,
+                                ".updateDeathButton query: " +
+                                        e.getMessage(),
+                                e);
+
+                        // Informing the user of this issue doesn't really help them
+                    }
                 }
-            }
-        });
+            });
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".updateDeathButton: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     private void updateDeathButton(PlayerCharacter character) {
-        characterIsAlive = character.isLiving();
-        if (characterIsAlive) {
-            deathButton.setText(getString(R.string.died));
+        try {
+            characterIsAlive = character.isLiving();
+            if (characterIsAlive) {
+                deathButton.setText(getString(R.string.died));
+            } else {
+                deathButton.setText(getString(R.string.resurrect));
+            }
+            deathButton.setEnabled(true);
+        }  catch (Exception ex) {
+            getLogger().exception(LOG_TAG,
+                ".updateDeathButton(PlayerCharacter): " + ex.getMessage(),
+                ex);
+
+            throw ex;
         }
-        else {
-            deathButton.setText(getString(R.string.resurrect));
-        }
-        deathButton.setEnabled(true);
     }
 
     //region EventDetailFragment.Callbacks methods
     @Override
     public void onEditClicked(String eventId) {
-        EventUpsertFragment upsertFragment =
-                EventUpsertFragment.newInstance(characterId, eventId);
+        try {
+            EventUpsertFragment upsertFragment =
+                    EventUpsertFragment.newInstance(characterId, eventId);
 
-        inUpsertMode = true;
+            inUpsertMode = true;
 
-        if (mTwoPane) {
-            getFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.event_detail, upsertFragment)
-                    .addToBackStack(null)
-                    .commit();
-        } else {
-            getFragmentManager()
-                    .beginTransaction()
-                    .replace(android.R.id.content, upsertFragment)
-                    .addToBackStack(null)
-                    .commit();
+            if (mTwoPane) {
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.event_detail, upsertFragment)
+                        .addToBackStack(null)
+                        .commit();
+            } else {
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(android.R.id.content, upsertFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".onEditClicked: " + ex.getMessage(), ex);
+
+            throw ex;
         }
     }
 
     @Override
     public void onEventDeleted(String eventId, boolean deathOrResurrection) {
-        if (mTwoPane) {
-            detailFragment = new EventDetailFragment();
+        try {
+            if (mTwoPane) {
+                detailFragment = new EventDetailFragment();
 
-            getFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.event_detail, detailFragment, TAG_DETAIL)
-                    .commit();
-        } else {
-            // Go back to the list fragment
-            getFragmentManager().popBackStackImmediate();
-        }
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.event_detail, detailFragment, TAG_DETAIL)
+                        .commit();
+            } else {
+                // Go back to the list fragment
+                getFragmentManager().popBackStackImmediate();
+            }
 
-        previouslySelectedListIndex = listFragment.getListView().getCheckedItemPosition();
+            previouslySelectedListIndex = listFragment.getListView().getCheckedItemPosition();
 
-        listFragment.notifyListChanged();
+            listFragment.notifyListChanged();
 
-        if (deathOrResurrection) {
-            deathButton.setEnabled(false);
-            ParseQuery<PlayerCharacter> query = PlayerCharacter.getQuery();
-            query.getInBackground(characterId, new GetCallback<PlayerCharacter>() {
-                @Override
-                public void done(final PlayerCharacter character, ParseException e) {
-                    if (e == null) {
-                        ParseQuery<Event> query = Event.getQuery();
+            if (deathOrResurrection) {
+                deathButton.setEnabled(false);
+                ParseQuery<PlayerCharacter> query = PlayerCharacter.getQuery();
+                query.getInBackground(characterId, new GetCallback<PlayerCharacter>() {
+                    @Override
+                    public void done(final PlayerCharacter character, ParseException e) {
+                        if (e == null) {
+                            try {
+                                ParseQuery<Event> query = Event.getQuery();
 
-                        query.whereContainedIn(Event.KEY_EVENT_TYPE,
-                                new ArrayList<String>() {{
-                                    add(EventTypes.DEATH.toString());
-                                    add(EventTypes.RESURRECT.toString());
-                                }});
+                                query.whereContainedIn(Event.KEY_EVENT_TYPE,
+                                        new ArrayList<String>() {{
+                                            add(EventTypes.DEATH.toString());
+                                            add(EventTypes.RESURRECT.toString());
+                                        }});
 
-                        query.orderByDescending(Event.KEY_DATE);
+                                query.orderByDescending(Event.KEY_DATE);
 
-                        query.getFirstInBackground(new GetCallback<Event>() {
-                            @Override
-                            public void done(Event event, ParseException e) {
-                                if (e == null && event != null) {
-                                    if (event.getEventType() == EventTypes.DEATH) {
-                                        character.setLiving(false);
-                                    } else {
-                                        character.setLiving(true);
+                                query.getFirstInBackground(new GetCallback<Event>() {
+                                    @Override
+                                    public void done(Event event, ParseException e) {
+                                        try {
+                                            if (e == null && event != null) {
+                                                if (event.getEventType() == EventTypes.DEATH) {
+                                                    character.setLiving(false);
+                                                } else {
+                                                    character.setLiving(true);
+                                                }
+                                                updateDeathButton(character);
+                                            } else {
+                                                // Assume no death/resurrect event exists and
+                                                // therefore they are alive
+
+                                                character.setLiving(true);
+                                                updateDeathButton(character);
+                                            }
+                                        }  catch (Exception ex) {
+                                            getLogger().exception(LOG_TAG,
+                                                ".onEventDeleted.getInBackground.getFirstInBackground: " + ex.getMessage(),
+                                                ex);
+
+                                            Toast.makeText(EventActivity.this,
+                                                    R.string.death_resurrect_deleted_error_message,
+                                                    Toast.LENGTH_LONG)
+                                                    .show();
+                                        }
                                     }
-                                    updateDeathButton(character);
-                                }
-                                else {
-                                    // Assume no death/resurrect event exists and
-                                    // therefore they are alive
+                                });
+                            } catch (Exception ex) {
+                                getLogger().exception(LOG_TAG, ".onEventDeleted.getInBackground: " + ex.getMessage(), ex);
 
-                                    character.setLiving(true);
-                                    updateDeathButton(character);
-                                }
+                                Toast.makeText(EventActivity.this,
+                                        R.string.death_resurrect_deleted_error_message,
+                                        Toast.LENGTH_LONG)
+                                        .show();
                             }
-                        });
-                    } else {
-                        getLogger().exception(LOG_TAG,
-                                ".onEventDeleted deathOrResurrection query: " +
-                                        e.getMessage(),
-                                e);
+                        } else {
+                            getLogger().exception(LOG_TAG,
+                                    ".onEventDeleted deathOrResurrection query: " +
+                                            e.getMessage(),
+                                    e);
 
-                        Toast.makeText(EventActivity.this,
-                                R.string.death_resurrect_deleted_error_message,
-                                Toast.LENGTH_LONG)
-                            .show();
+                            Toast.makeText(EventActivity.this,
+                                    R.string.death_resurrect_deleted_error_message,
+                                    Toast.LENGTH_LONG)
+                                    .show();
+                        }
                     }
-                }
-            });
+                });
+            }
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".onEventDeleted: " + ex.getMessage(), ex);
+
+            throw ex;
         }
     }
     //endregion EventDetailFragment.Callbacks methods
@@ -491,13 +635,19 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
         // This will re-show the detail fragment in two-pane or the list in one-pane
         inUpsertMode = false;
 
-        getFragmentManager().popBackStack();
+        try {
+            getFragmentManager().popBackStack();
 
-        listFragment.notifyListChanged();
+            listFragment.notifyListChanged();
 
-        if (mTwoPane) {
-            // Make the new event the selected one
-            listFragment.setSelection(0);
+            if (mTwoPane) {
+                // Make the new event the selected one
+                listFragment.setSelection(0);
+            }
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".onEventCreated: " + ex.getMessage(), ex);
+
+            throw ex;
         }
     }
 
@@ -505,16 +655,28 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
     public void onEventModified(Event event) {
         inUpsertMode = false;
 
-        getFragmentManager().popBackStackImmediate();
+        try {
+            getFragmentManager().popBackStackImmediate();
 
-        listFragment.notifyListChanged();
+            listFragment.notifyListChanged();
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".onEventModified: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     @Override
     public void onUpsertCancelPressed() {
         inUpsertMode = false;
 
-        getFragmentManager().popBackStack();
+        try {
+            getFragmentManager().popBackStack();
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".onUpsertCancelPressed: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
     //endregion EventUpsertFragment.Callbacks methods
 }

@@ -114,15 +114,21 @@ public class EventUpsertFragment extends BaseFragment {
      * @return A new instance of fragment EventUpsertFragment setup for create.
      */
     public static EventUpsertFragment newInstance(String characterId) {
-        EventUpsertFragment fragment = new EventUpsertFragment();
+        try {
+            EventUpsertFragment fragment = new EventUpsertFragment();
 
-        Bundle args = new Bundle();
-        args.putString(ARG_CHARACTER_ID, characterId);
-        args.putBoolean(ARG_IN_EDIT_MODE, false);
+            Bundle args = new Bundle();
+            args.putString(ARG_CHARACTER_ID, characterId);
+            args.putBoolean(ARG_IN_EDIT_MODE, false);
 
-        fragment.setArguments(args);
+            fragment.setArguments(args);
 
-        return fragment;
+            return fragment;
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".newInstance(String): " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     /**
@@ -134,16 +140,22 @@ public class EventUpsertFragment extends BaseFragment {
      * @return A new instance of fragment EventUpsertFragment setup for edit.
      */
     public static EventUpsertFragment newInstance(String characterId, String eventId) {
-        EventUpsertFragment fragment = new EventUpsertFragment();
+        try {
+            EventUpsertFragment fragment = new EventUpsertFragment();
 
-        Bundle args = new Bundle();
-        args.putString(ARG_CHARACTER_ID, characterId);
-        args.putString(ARG_EVENT_ID, eventId);
-        args.putBoolean(ARG_IN_EDIT_MODE, true);
+            Bundle args = new Bundle();
+            args.putString(ARG_CHARACTER_ID, characterId);
+            args.putString(ARG_EVENT_ID, eventId);
+            args.putBoolean(ARG_IN_EDIT_MODE, true);
 
-        fragment.setArguments(args);
+            fragment.setArguments(args);
 
-        return fragment;
+            return fragment;
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".newInstance(String, String): " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     public EventUpsertFragment() {
@@ -153,6 +165,7 @@ public class EventUpsertFragment extends BaseFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+
         try {
             mListener = (Callbacks) activity;
         } catch (ClassCastException e) {
@@ -165,209 +178,260 @@ public class EventUpsertFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        typeItems = new HashMap<>();
-        typeItems.put(getString(R.string.event_type_combat), EventTypes.COMBAT);
-        typeItems.put(getString(R.string.event_type_event), EventTypes.EVENT);
+        try {
+            typeItems = new HashMap<>();
+            typeItems.put(getString(R.string.event_type_combat), EventTypes.COMBAT);
+            typeItems.put(getString(R.string.event_type_event), EventTypes.EVENT);
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".onCreate: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_event_upsert, container, false);
+        try {
+            // Inflate the layout for this fragment
+            View v = inflater.inflate(R.layout.fragment_event_upsert, container, false);
 
-        loadingIndicator = (ProgressBar)v.findViewById(R.id.loadingIndicator);
+            loadingIndicator = (ProgressBar) v.findViewById(R.id.loadingIndicator);
 
-        titleText = (EditText) v.findViewById(R.id.upsert_event_title);
-        eventTypeSpinner = (Spinner) v.findViewById(R.id.upsert_event_type);
-        characterCountText = (EditText) v.findViewById(R.id.upsert_event_character_count);
-        xpAmountText = (EditText) v.findViewById(R.id.upsert_event_experience);
-        descriptionText = (EditText) v.findViewById(R.id.upsert_event_description);
+            titleText = (EditText) v.findViewById(R.id.upsert_event_title);
+            eventTypeSpinner = (Spinner) v.findViewById(R.id.upsert_event_type);
+            characterCountText = (EditText) v.findViewById(R.id.upsert_event_character_count);
+            xpAmountText = (EditText) v.findViewById(R.id.upsert_event_experience);
+            descriptionText = (EditText) v.findViewById(R.id.upsert_event_description);
 
-        eventTypeLabel = (TextView) v.findViewById(R.id.upsert_event_type_label);
-        experienceLabel = (TextView) v.findViewById(R.id.upsert_event_experience_label);
-        characterCountLabel = (TextView) v.findViewById(R.id.upsert_event_character_count_label);
+            eventTypeLabel = (TextView) v.findViewById(R.id.upsert_event_type_label);
+            experienceLabel = (TextView) v.findViewById(R.id.upsert_event_experience_label);
+            characterCountLabel = (TextView) v.findViewById(R.id.upsert_event_character_count_label);
 
-        saveButton = (Button) v.findViewById(R.id.upsert_save);
-        cancelButton = (Button) v.findViewById(R.id.upsert_cancel);
+            saveButton = (Button) v.findViewById(R.id.upsert_save);
+            cancelButton = (Button) v.findViewById(R.id.upsert_cancel);
 
-        return v;
+            return v;
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".onCreateView: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        eventTypeAdapter = new ArrayAdapter<>(getActivity(),
-                R.layout.dropdown_item_1line,
-                typeItems.keySet().toArray(new String[typeItems.size()]));
+        try {
+            eventTypeAdapter = new ArrayAdapter<>(getActivity(),
+                    R.layout.dropdown_item_1line,
+                    typeItems.keySet().toArray(new String[typeItems.size()]));
 
-        eventTypeSpinner.setAdapter(eventTypeAdapter);
+            eventTypeSpinner.setAdapter(eventTypeAdapter);
 
-        if (savedInstanceState != null) {
-            // Restore the saved state
+            if (savedInstanceState != null) {
+                // Restore the saved state
 
-            inEditMode = savedInstanceState.getBoolean(ARG_IN_EDIT_MODE);
-            characterId = savedInstanceState.getString(ARG_CHARACTER_ID);
-            eventId = savedInstanceState.getString(ARG_EVENT_ID);
+                inEditMode = savedInstanceState.getBoolean(ARG_IN_EDIT_MODE);
+                characterId = savedInstanceState.getString(ARG_CHARACTER_ID);
+                eventId = savedInstanceState.getString(ARG_EVENT_ID);
 
-            if (inEditMode) {
-                event = Event.createWithoutData(eventId);
-                oldXpAmount = savedInstanceState.getInt(STATE_OLD_XP_AMOUNT);
-            } else {
-                event = new Event();
-            }
+                if (inEditMode) {
+                    event = Event.createWithoutData(eventId);
+                    oldXpAmount = savedInstanceState.getInt(STATE_OLD_XP_AMOUNT);
+                } else {
+                    event = new Event();
+                }
 
-            event.setCharacter(PlayerCharacter.createWithoutData(characterId));
-
-            titleText.setText(savedInstanceState.getString(STATE_TITLE));
-            characterCountText.setText(savedInstanceState.getString(STATE_CHARACTER_COUNT));
-            xpAmountText.setText(savedInstanceState.getString(STATE_XP_AMOUNT));
-            descriptionText.setText(savedInstanceState.getString(STATE_DESCRIPTION));
-
-            eventTypeSpinner.onRestoreInstanceState(
-                    savedInstanceState.getParcelable(STATE_EVENT_TYPE_SPINNER));
-
-        } else if (getArguments() != null) {
-            characterId = getArguments().getString(ARG_CHARACTER_ID);
-
-            inEditMode = getArguments().getBoolean(ARG_IN_EDIT_MODE);
-
-            if (inEditMode) {
-                eventId = getArguments().getString(ARG_EVENT_ID);
-
-                setupForExistingEvent(eventId);
-            } else {
-                event = new Event();
                 event.setCharacter(PlayerCharacter.createWithoutData(characterId));
+
+                titleText.setText(savedInstanceState.getString(STATE_TITLE));
+                characterCountText.setText(savedInstanceState.getString(STATE_CHARACTER_COUNT));
+                xpAmountText.setText(savedInstanceState.getString(STATE_XP_AMOUNT));
+                descriptionText.setText(savedInstanceState.getString(STATE_DESCRIPTION));
+
+                eventTypeSpinner.onRestoreInstanceState(
+                        savedInstanceState.getParcelable(STATE_EVENT_TYPE_SPINNER));
+
+            } else if (getArguments() != null) {
+                characterId = getArguments().getString(ARG_CHARACTER_ID);
+
+                inEditMode = getArguments().getBoolean(ARG_IN_EDIT_MODE);
+
+                if (inEditMode) {
+                    eventId = getArguments().getString(ARG_EVENT_ID);
+
+                    setupForExistingEvent(eventId);
+                } else {
+                    event = new Event();
+                    event.setCharacter(PlayerCharacter.createWithoutData(characterId));
+                }
             }
+
+            saveButton.setOnClickListener(setupSaveButtonOnClickListener());
+
+            cancelButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        mListener.onUpsertCancelPressed();
+                    } catch (Exception ex) {
+                        getLogger().exception(LOG_TAG,
+                                "cancelButton.onClick: " + ex.getMessage(),
+                                ex);
+
+                        throw ex;
+                    }
+                }
+            });
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".onViewCreated: " + ex.getMessage(), ex);
+
+            throw ex;
         }
-
-        saveButton.setOnClickListener(setupSaveButtonOnClickListener());
-
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onUpsertCancelPressed();
-            }
-        });
     }
 
     @NonNull
     private View.OnClickListener setupSaveButtonOnClickListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EventTypes value = typeItems.get(eventTypeSpinner.getSelectedItem().toString());
-                String title = titleText.getText().toString().trim();
-                String description = descriptionText.getText().toString().trim();
-                String xpAmountString = xpAmountText.getText().toString().trim();
-                String characterCountString = characterCountText.getText().toString().trim();
+        try {
+            return new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        EventTypes value = typeItems.get(eventTypeSpinner.getSelectedItem().toString());
+                        String title = titleText.getText().toString().trim();
+                        String description = descriptionText.getText().toString().trim();
+                        String xpAmountString = xpAmountText.getText().toString().trim();
+                        String characterCountString = characterCountText.getText().toString().trim();
 
-                String firstErrorMessage = null;
+                        String firstErrorMessage = null;
 
-                if (title.equals("")) {
-                    firstErrorMessage = EventUpsertFragment.this.getString(
-                            R.string.event_title_required_error_message);
-
-                    titleText.setError(EventUpsertFragment.this.getString(R.string.required));
-                }
-
-                if (!editingDeathOrResurrection) {
-                    if (xpAmountString.equals("") ||
-                            xpAmountString.equals("-") ||
-                            xpAmountString.equals("+")) {
-                        if (firstErrorMessage == null) firstErrorMessage =
-                                EventUpsertFragment.this.getString(R.string.event_xp_gained_required_error_message);
-
-                        xpAmountText.setError(EventUpsertFragment.this.getString(R.string.required));
-                    }
-
-                    if (characterCountString.equals("")) {
-                        if (firstErrorMessage == null)
+                        if (title.equals("")) {
                             firstErrorMessage = EventUpsertFragment.this.getString(
-                                    R.string.event_shared_by_required_error_message);
+                                    R.string.event_title_required_error_message);
 
-                        characterCountText.setError(
-                                EventUpsertFragment.this.getString(R.string.required));
-                    }
-                }
-
-                if (firstErrorMessage != null) {
-                    Toast.makeText(EventUpsertFragment.this.getActivity(),
-                            firstErrorMessage,
-                            Toast.LENGTH_SHORT)
-                            .show();
-
-                    return;
-                }
-
-                final int characterCount = Integer.parseInt(characterCountString);
-
-                if (characterCount < 1) {
-                    Toast.makeText(EventUpsertFragment.this.getActivity(),
-                            R.string.event_shared_by_greater_than_zero_error_message,
-                            Toast.LENGTH_SHORT).
-                            show();
-
-                    characterCountText.setError(
-                            EventUpsertFragment.this.getString(R.string.must_be_greater_than_zero));
-
-                    return;
-                }
-
-                final int xpAmount = Integer.parseInt(xpAmountString);
-
-                event.setTitle(title);
-                if (!editingDeathOrResurrection) {
-                    event.setEventType(value);
-                    event.setCharacterCount(characterCount);
-                    event.setExperience(xpAmount);
-                }
-                event.setDescription(description);
-
-                if (event.getDate() == null) {
-                    event.setDate(new Date());
-                }
-
-                ParseQuery<PlayerCharacter> query = PlayerCharacter.getQuery();
-                query.getInBackground(characterId, new GetCallback<PlayerCharacter>() {
-                    @Override
-                    public void done(PlayerCharacter object, ParseException e) {
-                        if (e == null) {
-                            if (inEditMode) {
-                                int newXpAmount = (xpAmount / characterCount);
-
-                                object.addExperience(newXpAmount - oldXpAmount);
-                            } else {
-                                object.addExperience(xpAmount / characterCount);
-                            }
-                            object.saveEventually();
-
-                            event.pinInBackground();
-                            event.saveEventually();
-
-                            if (!inEditMode) {
-                                mListener.onEventCreated(event);
-                            } else {
-                                mListener.onEventModified(event);
-                            }
-
-                        } else {
-                            getLogger().exception(LOG_TAG,
-                                "saveButton.onClick.getInBackground: " +
-                                        e.getMessage(),
-                                e);
-
-                            Toast.makeText(EventUpsertFragment.this.getActivity(),
-                                R.string.save_event_error_message,
-                                Toast.LENGTH_LONG)
-                                .show();
+                            titleText.setError(EventUpsertFragment.this.getString(R.string.required));
                         }
+
+                        if (!editingDeathOrResurrection) {
+                            if (xpAmountString.equals("") ||
+                                    xpAmountString.equals("-") ||
+                                    xpAmountString.equals("+")) {
+                                if (firstErrorMessage == null) firstErrorMessage =
+                                        EventUpsertFragment.this.getString(R.string.event_xp_gained_required_error_message);
+
+                                xpAmountText.setError(EventUpsertFragment.this.getString(R.string.required));
+                            }
+
+                            if (characterCountString.equals("")) {
+                                if (firstErrorMessage == null)
+                                    firstErrorMessage = EventUpsertFragment.this.getString(
+                                            R.string.event_shared_by_required_error_message);
+
+                                characterCountText.setError(
+                                        EventUpsertFragment.this.getString(R.string.required));
+                            }
+                        }
+
+                        if (firstErrorMessage != null) {
+                            Toast.makeText(EventUpsertFragment.this.getActivity(),
+                                    firstErrorMessage,
+                                    Toast.LENGTH_SHORT)
+                                    .show();
+
+                            return;
+                        }
+
+                        final int characterCount = Integer.parseInt(characterCountString);
+
+                        if (characterCount < 1) {
+                            Toast.makeText(EventUpsertFragment.this.getActivity(),
+                                    R.string.event_shared_by_greater_than_zero_error_message,
+                                    Toast.LENGTH_SHORT).
+                                    show();
+
+                            characterCountText.setError(
+                                    EventUpsertFragment.this.getString(R.string.must_be_greater_than_zero));
+
+                            return;
+                        }
+
+                        final int xpAmount = Integer.parseInt(xpAmountString);
+
+                        event.setTitle(title);
+                        if (!editingDeathOrResurrection) {
+                            event.setEventType(value);
+                            event.setCharacterCount(characterCount);
+                            event.setExperience(xpAmount);
+                        }
+                        event.setDescription(description);
+
+                        if (event.getDate() == null) {
+                            event.setDate(new Date());
+                        }
+
+                        ParseQuery<PlayerCharacter> query = PlayerCharacter.getQuery();
+                        query.getInBackground(characterId, new GetCallback<PlayerCharacter>() {
+                            @Override
+                            public void done(PlayerCharacter object, ParseException e) {
+                                if (e == null) {
+                                    try {
+                                        if (inEditMode) {
+                                            int newXpAmount = (xpAmount / characterCount);
+
+                                            object.addExperience(newXpAmount - oldXpAmount);
+                                        } else {
+                                            object.addExperience(xpAmount / characterCount);
+                                        }
+                                        object.saveEventually();
+
+                                        event.pinInBackground();
+                                        event.saveEventually();
+
+                                        if (!inEditMode) {
+                                            mListener.onEventCreated(event);
+                                        } else {
+                                            mListener.onEventModified(event);
+                                        }
+
+                                    } catch (Exception ex) {
+                                        getLogger().exception(LOG_TAG,
+                                            "saveButton.onClick.getInBackground: " + ex.getMessage(),
+                                            ex);
+
+                                        Toast.makeText(EventUpsertFragment.this.getActivity(),
+                                                R.string.save_event_error_message,
+                                                Toast.LENGTH_LONG)
+                                                .show();
+                                    }
+                                } else {
+                                    getLogger().exception(LOG_TAG,
+                                            "saveButton.onClick.getInBackground: " +
+                                                    e.getMessage(),
+                                            e);
+
+                                    Toast.makeText(EventUpsertFragment.this.getActivity(),
+                                            R.string.save_event_error_message,
+                                            Toast.LENGTH_LONG)
+                                            .show();
+                                }
+                            }
+                        });
+                    } catch (Exception ex) {
+                        getLogger().exception(LOG_TAG, "saveButton.onClick: " + ex.getMessage(), ex);
+
+                        throw ex;
                     }
-                });
-            }
-        };
+                }
+            };
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG,
+                ".setupSaveButtonOnClickListener: " + ex.getMessage(),
+                ex);
+
+            throw ex;
+        }
     }
 
     @Override
@@ -380,77 +444,108 @@ public class EventUpsertFragment extends BaseFragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putParcelable(STATE_EVENT_TYPE_SPINNER, eventTypeSpinner.onSaveInstanceState());
+        try {
+            outState.putParcelable(STATE_EVENT_TYPE_SPINNER, eventTypeSpinner.onSaveInstanceState());
 
-        outState.putString(ARG_CHARACTER_ID, characterId);
-        outState.putString(ARG_EVENT_ID, eventId);
-        outState.putBoolean(ARG_IN_EDIT_MODE, inEditMode);
+            outState.putString(ARG_CHARACTER_ID, characterId);
+            outState.putString(ARG_EVENT_ID, eventId);
+            outState.putBoolean(ARG_IN_EDIT_MODE, inEditMode);
 
-        if (inEditMode) {
-            outState.putInt(STATE_OLD_XP_AMOUNT, oldXpAmount);
+            if (inEditMode) {
+                outState.putInt(STATE_OLD_XP_AMOUNT, oldXpAmount);
+            }
+
+            outState.putString(STATE_TITLE, titleText.getText().toString());
+            outState.putString(STATE_CHARACTER_COUNT, characterCountText.getText().toString());
+            outState.putString(STATE_XP_AMOUNT, xpAmountText.getText().toString());
+            outState.putString(STATE_DESCRIPTION, descriptionText.getText().toString());
+        }  catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".onSaveInstanceState: " + ex.getMessage(), ex);
+
+            throw ex;
         }
-
-        outState.putString(STATE_TITLE, titleText.getText().toString());
-        outState.putString(STATE_CHARACTER_COUNT, characterCountText.getText().toString());
-        outState.putString(STATE_XP_AMOUNT, xpAmountText.getText().toString());
-        outState.putString(STATE_DESCRIPTION, descriptionText.getText().toString());
     }
 
     private void setupForExistingEvent(String eventId) {
-        loadingIndicator.setVisibility(View.VISIBLE);
+        try {
+            loadingIndicator.setVisibility(View.VISIBLE);
 
-        View rootView = getView();
+            View rootView = getView();
 
-        if (rootView != null) {
-            ((TextView) rootView.findViewById(R.id.upsert_title)).setText(R.string.edit_event);
-        }
-
-        ParseQuery<Event> query = Event.getQuery();
-        query.getInBackground(eventId, new GetCallback<Event>() {
-            @Override
-            public void done(Event object, ParseException e) {
-                loadingIndicator.setVisibility(View.GONE);
-
-                if (e == null) {
-                    event = object;
-
-                    titleText.setText(event.getTitle());
-                    descriptionText.setText(event.getDescription());
-
-                    editingDeathOrResurrection = event.getEventType() == EventTypes.DEATH ||
-                            event.getEventType() == EventTypes.RESURRECT;
-
-                    if (editingDeathOrResurrection) {
-                        characterCountLabel.setVisibility(View.GONE);
-                        characterCountText.setVisibility(View.GONE);
-                        experienceLabel.setVisibility(View.GONE);
-                        xpAmountText.setVisibility(View.GONE);
-                        eventTypeLabel.setVisibility(View.GONE);
-                        eventTypeSpinner.setVisibility(View.GONE);
-                    }
-
-                    characterCountText.setText(Integer.toString(event.getCharacterCount()));
-                    xpAmountText.setText(Integer.toString(event.getExperience()));
-                    oldXpAmount = event.getExperience() / event.getCharacterCount();
-
-                    // Select the type for the loaded event
-                    for (Map.Entry<String, EventTypes> entry : typeItems.entrySet()) {
-                        if (entry.getValue() == event.getEventType()) {
-                            eventTypeSpinner.setSelection(eventTypeAdapter.getPosition(entry.getKey()));
-                        }
-                    }
-                } else {
-                    getLogger().exception(LOG_TAG,
-                            ".setupForExistingEvent query: " +
-                                    e.getMessage(),
-                            e);
-
-                    Toast.makeText(EventUpsertFragment.this.getActivity(),
-                            R.string.edit_event_load_error_message,
-                            Toast.LENGTH_LONG)
-                            .show();
-                }
+            if (rootView != null) {
+                ((TextView) rootView.findViewById(R.id.upsert_title)).setText(R.string.edit_event);
             }
-        });
+
+            ParseQuery<Event> query = Event.getQuery();
+            query.getInBackground(eventId, new GetCallback<Event>() {
+                @Override
+                public void done(Event object, ParseException e) {
+                    try {
+                        loadingIndicator.setVisibility(View.GONE);
+                    }  catch (Exception ex) {
+                        getLogger().exception(LOG_TAG,
+                            ".setupForExistingEvent.getInBackground hide loadingIndicator: " + ex.getMessage(),
+                            ex);
+
+                        throw ex;
+                    }
+
+                    if (e == null) {
+                        event = object;
+
+                        try {
+                            titleText.setText(event.getTitle());
+                            descriptionText.setText(event.getDescription());
+
+                            editingDeathOrResurrection = event.getEventType() == EventTypes.DEATH ||
+                                    event.getEventType() == EventTypes.RESURRECT;
+
+                            if (editingDeathOrResurrection) {
+                                characterCountLabel.setVisibility(View.GONE);
+                                characterCountText.setVisibility(View.GONE);
+                                experienceLabel.setVisibility(View.GONE);
+                                xpAmountText.setVisibility(View.GONE);
+                                eventTypeLabel.setVisibility(View.GONE);
+                                eventTypeSpinner.setVisibility(View.GONE);
+                            }
+
+                            characterCountText.setText(Integer.toString(event.getCharacterCount()));
+                            xpAmountText.setText(Integer.toString(event.getExperience()));
+                            oldXpAmount = event.getExperience() / event.getCharacterCount();
+
+                            // Select the type for the loaded event
+                            for (Map.Entry<String, EventTypes> entry : typeItems.entrySet()) {
+                                if (entry.getValue() == event.getEventType()) {
+                                    eventTypeSpinner.setSelection(eventTypeAdapter.getPosition(entry.getKey()));
+                                }
+                            }
+                        }  catch (Exception ex) {
+                            getLogger().exception(LOG_TAG,
+                                ".setupForExistingEvent.getInBackground: " + ex.getMessage(),
+                                ex);
+
+                            Toast.makeText(EventUpsertFragment.this.getActivity(),
+                                    R.string.edit_event_load_error_message,
+                                    Toast.LENGTH_LONG)
+                                    .show();
+                        }
+                    } else {
+                        getLogger().exception(LOG_TAG,
+                                ".setupForExistingEvent query: " +
+                                        e.getMessage(),
+                                e);
+
+                        Toast.makeText(EventUpsertFragment.this.getActivity(),
+                                R.string.edit_event_load_error_message,
+                                Toast.LENGTH_LONG)
+                                .show();
+                    }
+                }
+            });
+        }  catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".setupForExistingEvent: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 }

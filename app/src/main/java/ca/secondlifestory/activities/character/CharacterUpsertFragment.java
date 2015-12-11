@@ -104,13 +104,19 @@ public class CharacterUpsertFragment extends BaseFragment {
      * @return A new instance of CharacterUpsertFragment setup for create.
      */
     public static CharacterUpsertFragment newInstance() {
-        CharacterUpsertFragment fragment = new CharacterUpsertFragment();
+        try {
+            CharacterUpsertFragment fragment = new CharacterUpsertFragment();
 
-        Bundle args = new Bundle();
-        args.putBoolean(ARG_IN_EDIT_MODE, false);
-        fragment.setArguments(args);
+            Bundle args = new Bundle();
+            args.putBoolean(ARG_IN_EDIT_MODE, false);
+            fragment.setArguments(args);
 
-        return fragment;
+            return fragment;
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".newInstance: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     /**
@@ -121,14 +127,20 @@ public class CharacterUpsertFragment extends BaseFragment {
      * @return A new instance of CharacterUpsertFragment setup for edit.
      */
     public static CharacterUpsertFragment newInstance(String characterId) {
-        CharacterUpsertFragment fragment = new CharacterUpsertFragment();
+        try {
+            CharacterUpsertFragment fragment = new CharacterUpsertFragment();
 
-        Bundle args = new Bundle();
-        args.putString(ARG_CHARACTER_ID, characterId);
-        args.putBoolean(ARG_IN_EDIT_MODE, true);
-        fragment.setArguments(args);
+            Bundle args = new Bundle();
+            args.putString(ARG_CHARACTER_ID, characterId);
+            args.putBoolean(ARG_IN_EDIT_MODE, true);
+            fragment.setArguments(args);
 
-        return fragment;
+            return fragment;
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".newInstance(String): " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     public CharacterUpsertFragment() {
@@ -150,118 +162,148 @@ public class CharacterUpsertFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (savedInstanceState != null) {
-            resuming = savedInstanceState.getBoolean(RESUMING_TAG, false);
+        try {
+            if (savedInstanceState != null) {
+                resuming = savedInstanceState.getBoolean(RESUMING_TAG, false);
+            }
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".onCreate: " + ex.getMessage(), ex);
+
+            throw ex;
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_character_upsert, container, false);
+        try {
+            // Inflate the layout for this fragment
+            View v = inflater.inflate(R.layout.fragment_character_upsert, container, false);
 
-        loadingIndicator = (ProgressBar)v.findViewById(R.id.loadingIndicator);
+            loadingIndicator = (ProgressBar) v.findViewById(R.id.loadingIndicator);
 
-        title = (TextView) v.findViewById(R.id.upsert_title);
-        nameText = (EditText) v.findViewById(R.id.upsert_character_name);
-        detailsText = (EditText) v.findViewById(R.id.upsert_character_details);
+            title = (TextView) v.findViewById(R.id.upsert_title);
+            nameText = (EditText) v.findViewById(R.id.upsert_character_name);
+            detailsText = (EditText) v.findViewById(R.id.upsert_character_details);
 
-        raceSpinner = (Spinner) v.findViewById(R.id.upsert_character_race);
-        raceSpinner.setEmptyView(v.findViewById(R.id.empty_race_item));
+            raceSpinner = (Spinner) v.findViewById(R.id.upsert_character_race);
+            raceSpinner.setEmptyView(v.findViewById(R.id.empty_race_item));
 
-        classSpinner = (Spinner) v.findViewById(R.id.upsert_character_class);
-        classSpinner.setEmptyView(v.findViewById(R.id.empty_class_item));
+            classSpinner = (Spinner) v.findViewById(R.id.upsert_character_class);
+            classSpinner.setEmptyView(v.findViewById(R.id.empty_class_item));
 
-        saveButton = (Button) v.findViewById(R.id.upsert_save);
-        saveButton.setEnabled(false);
+            saveButton = (Button) v.findViewById(R.id.upsert_save);
+            saveButton.setEnabled(false);
 
-        cancelButton = (Button) v.findViewById(R.id.upsert_cancel);
+            cancelButton = (Button) v.findViewById(R.id.upsert_cancel);
 
-        return v;
+            return v;
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".onCreateView: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (savedInstanceState != null) {
-            // Restore the saved state
+        try {
+            if (savedInstanceState != null) {
+                // Restore the saved state
 
-            inEditMode = savedInstanceState.getBoolean(ARG_IN_EDIT_MODE);
-            characterId = savedInstanceState.getString(ARG_CHARACTER_ID);
+                inEditMode = savedInstanceState.getBoolean(ARG_IN_EDIT_MODE);
+                characterId = savedInstanceState.getString(ARG_CHARACTER_ID);
 
-            if (inEditMode) {
-                // Load character
-                character = PlayerCharacter.createWithoutData(characterId);
-            } else {
-                character = new PlayerCharacter();
-            }
-
-            character.setUser(ParseUser.getCurrentUser());
-
-            nameText.setText(savedInstanceState.getString(STATE_NAME));
-            detailsText.setText(savedInstanceState.getString(STATE_DETAILS));
-
-            setupRaceSpinnerItems(savedInstanceState.getParcelable(STATE_RACE_SPINNER));
-            setupClassSpinnerItems(savedInstanceState.getParcelable(STATE_CLASS_SPINNER));
-        } else if (getArguments() != null) {
-            inEditMode = getArguments().getBoolean(ARG_IN_EDIT_MODE);
-            characterId = getArguments().getString(ARG_CHARACTER_ID);
-
-            if (inEditMode) {
-                characterId = getArguments().getString(ARG_CHARACTER_ID);
-
-                setupForExistingCharacter(characterId);
-            } else {
-                character = new PlayerCharacter();
-
-                setupRaceSpinnerItems(null);
-                setupClassSpinnerItems(null);
-            }
-        }
-
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String name = nameText.getText().toString().trim();
-                Race race = (Race)raceSpinner.getSelectedItem();
-                CharacterClass characterClass = (CharacterClass)classSpinner.getSelectedItem();
-
-                if (name.equals("")) {
-                    Toast.makeText(getActivity(),
-                            R.string.empty_character_name_error_message,
-                            Toast.LENGTH_LONG)
-                            .show();
-
-                    return;
+                if (inEditMode) {
+                    // Load character
+                    character = PlayerCharacter.createWithoutData(characterId);
+                } else {
+                    character = new PlayerCharacter();
                 }
-
-                character.setName(name);
-                character.setRace(race);
-                character.setCharacterClass(characterClass);
-                character.setDetails(detailsText.getText().toString());
-                character.setLiving(true);
 
                 character.setUser(ParseUser.getCurrentUser());
 
-                character.pinInBackground();
-                character.saveEventually();
+                nameText.setText(savedInstanceState.getString(STATE_NAME));
+                detailsText.setText(savedInstanceState.getString(STATE_DETAILS));
 
-                if (!inEditMode) {
-                    mListener.onCharacterCreated(character);
+                setupRaceSpinnerItems(savedInstanceState.getParcelable(STATE_RACE_SPINNER));
+                setupClassSpinnerItems(savedInstanceState.getParcelable(STATE_CLASS_SPINNER));
+            } else if (getArguments() != null) {
+                inEditMode = getArguments().getBoolean(ARG_IN_EDIT_MODE);
+                characterId = getArguments().getString(ARG_CHARACTER_ID);
+
+                if (inEditMode) {
+                    characterId = getArguments().getString(ARG_CHARACTER_ID);
+
+                    setupForExistingCharacter(characterId);
                 } else {
-                    mListener.onCharacterModified(character);
+                    character = new PlayerCharacter();
+
+                    setupRaceSpinnerItems(null);
+                    setupClassSpinnerItems(null);
                 }
             }
-        });
 
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onUpsertCancelPressed();
-            }
-        });
+            saveButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        String name = nameText.getText().toString().trim();
+                        Race race = (Race) raceSpinner.getSelectedItem();
+                        CharacterClass characterClass = (CharacterClass) classSpinner.getSelectedItem();
+
+                        if (name.equals("")) {
+                            Toast.makeText(getActivity(),
+                                    R.string.empty_character_name_error_message,
+                                    Toast.LENGTH_LONG)
+                                    .show();
+
+                            return;
+                        }
+
+                        character.setName(name);
+                        character.setRace(race);
+                        character.setCharacterClass(characterClass);
+                        character.setDetails(detailsText.getText().toString());
+                        character.setLiving(true);
+
+                        character.setUser(ParseUser.getCurrentUser());
+
+                        character.pinInBackground();
+                        character.saveEventually();
+
+                        if (!inEditMode) {
+                            mListener.onCharacterCreated(character);
+                        } else {
+                            mListener.onCharacterModified(character);
+                        }
+                    } catch (Exception ex) {
+                        getLogger().exception(LOG_TAG, "saveButton.onClick: " + ex.getMessage(), ex);
+
+                        throw ex;
+                    }
+                }
+            });
+
+            cancelButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        mListener.onUpsertCancelPressed();
+                    } catch (Exception ex) {
+                        getLogger().exception(LOG_TAG, ".cancelButton.onClick: " + ex.getMessage(), ex);
+
+                        throw ex;
+                    }
+                }
+            });
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".onViewCreated: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     @Override
@@ -270,8 +312,14 @@ public class CharacterUpsertFragment extends BaseFragment {
 
         if (resuming) {
             // Reload the spinners so they have the newest data
-            classQueryAdapter.loadObjects();
-            raceQueryAdapter.loadObjects();
+            try {
+                classQueryAdapter.loadObjects();
+                raceQueryAdapter.loadObjects();
+            } catch (Exception ex) {
+                getLogger().exception(LOG_TAG, ".onResume: " + ex.getMessage(), ex);
+
+                throw ex;
+            }
 
             resuming = false;
         }
@@ -287,16 +335,22 @@ public class CharacterUpsertFragment extends BaseFragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putParcelable(STATE_RACE_SPINNER, raceSpinner.onSaveInstanceState());
-        outState.putParcelable(STATE_CLASS_SPINNER, classSpinner.onSaveInstanceState());
+        try {
+            outState.putParcelable(STATE_RACE_SPINNER, raceSpinner.onSaveInstanceState());
+            outState.putParcelable(STATE_CLASS_SPINNER, classSpinner.onSaveInstanceState());
 
-        outState.putString(ARG_CHARACTER_ID, characterId);
-        outState.putBoolean(ARG_IN_EDIT_MODE, inEditMode);
+            outState.putString(ARG_CHARACTER_ID, characterId);
+            outState.putBoolean(ARG_IN_EDIT_MODE, inEditMode);
 
-        outState.putString(STATE_NAME, nameText.getText().toString());
-        outState.putString(STATE_DETAILS, detailsText.getText().toString());
+            outState.putString(STATE_NAME, nameText.getText().toString());
+            outState.putString(STATE_DETAILS, detailsText.getText().toString());
 
-        outState.putBoolean(RESUMING_TAG, true);
+            outState.putBoolean(RESUMING_TAG, true);
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".onSaveInstanceState: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     /**
@@ -304,12 +358,10 @@ public class CharacterUpsertFragment extends BaseFragment {
      */
     private void updateSaveButtonState() {
         try {
-
             Object race = raceSpinner.getSelectedItem();
             Object characterClass = classSpinner.getSelectedItem();
 
-            if (race != null
-                    && characterClass != null) {
+            if (race != null && characterClass != null) {
                 saveButton.setEnabled(true);
             } else {
                 saveButton.setEnabled(false);
@@ -322,161 +374,266 @@ public class CharacterUpsertFragment extends BaseFragment {
     }
 
     private void setupClassSpinnerItems(@Nullable final Parcelable restoreParcelable) {
-        classQueryAdapter =
-            new ParseSpinnerQueryAdapter<>(getActivity(),
-                new ParseQueryAdapter.QueryFactory<CharacterClass>() {
-                    @Override
-                    public ParseQuery<CharacterClass> create() {
-                        return CharacterClass.getQuery().orderByAscending(CharacterClass.KEY_NAME);
-                    }
-                }, R.layout.dropdown_item_1line_withlayout);
+        try {
+            classQueryAdapter =
+                new ParseSpinnerQueryAdapter<>(getActivity(),
+                    new ParseQueryAdapter.QueryFactory<CharacterClass>() {
+                        @Override
+                        public ParseQuery<CharacterClass> create() {
+                            try {
+                                return CharacterClass.getQuery().orderByAscending(CharacterClass.KEY_NAME);
+                            } catch (Exception ex) {
+                                getLogger().exception(LOG_TAG,
+                                    "classQueryAdapter.QueryFactory.create: " + ex.getMessage(),
+                                    ex);
 
-        classQueryAdapter.setTextKey(CharacterClass.KEY_NAME);
-        classSpinner.setAdapter(classQueryAdapter);
+                                throw ex;
+                            }
+                        }
+                    }, R.layout.dropdown_item_1line_withlayout);
 
-        classSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                updateSaveButtonState();
-            }
+            classQueryAdapter.setTextKey(CharacterClass.KEY_NAME);
+            classSpinner.setAdapter(classQueryAdapter);
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                updateSaveButtonState();
-            }
-        });
-
-        if (inEditMode || restoreParcelable != null) {
-            classQueryAdapter.addOnQueryLoadListener(new ParseQueryAdapter.OnQueryLoadListener<CharacterClass>() {
+            classSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
-                public void onLoading() {
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    try {
+                        updateSaveButtonState();
+                    } catch (Exception ex) {
+                        getLogger().exception(LOG_TAG,
+                            "classSpinner.onItemSelected: " + ex.getMessage(),
+                            ex);
+
+                        throw ex;
+                    }
                 }
 
                 @Override
-                public void onLoaded(List<CharacterClass> list, Exception e) {
-                    if (e == null) {
-                        if (restoreParcelable != null) {
-                            classSpinner.onRestoreInstanceState(restoreParcelable);
-                        } else {
-                            CharacterClass characterClass = character.getCharacterClass();
-
-                            for (int position = 0; position < classQueryAdapter.getCount(); position++) {
-                                if (classQueryAdapter.getItem(position) == characterClass) {
-                                    classSpinner.setSelection(position);
-                                    return;
-                                }
-                            }
-                        }
-                    } else {
+                public void onNothingSelected(AdapterView<?> parent) {
+                    try {
+                        updateSaveButtonState();
+                    } catch (Exception ex) {
                         getLogger().exception(LOG_TAG,
-                                ".setupClassSpinnerItems onLoaded:" +
-                                        e.getMessage(),
-                                e);
+                            "classSpinner.onNothingSelected: " + ex.getMessage(),
+                            ex);
 
-                        Toast.makeText(CharacterUpsertFragment.this.getActivity(),
-                                R.string.load_classes_failed_error_message,
-                                Toast.LENGTH_LONG)
-                            .show();
+                        throw ex;
                     }
                 }
             });
+
+            if (inEditMode || restoreParcelable != null) {
+                classQueryAdapter.addOnQueryLoadListener(new ParseQueryAdapter.OnQueryLoadListener<CharacterClass>() {
+                    @Override
+                    public void onLoading() {
+                    }
+
+                    @Override
+                    public void onLoaded(List<CharacterClass> list, Exception e) {
+                        if (e == null) {
+                            try {
+                                if (restoreParcelable != null) {
+                                    classSpinner.onRestoreInstanceState(restoreParcelable);
+                                } else {
+                                    CharacterClass characterClass = character.getCharacterClass();
+
+                                    for (int position = 0; position < classQueryAdapter.getCount(); position++) {
+                                        if (classQueryAdapter.getItem(position) == characterClass) {
+                                            classSpinner.setSelection(position);
+                                            return;
+                                        }
+                                    }
+                                }
+                            } catch (Exception ex) {
+                                getLogger().exception(LOG_TAG,
+                                    "classQueryAdapter.onLoaded: " + ex.getMessage(),
+                                    ex);
+
+                                Toast.makeText(CharacterUpsertFragment.this.getActivity(),
+                                        R.string.load_classes_failed_error_message,
+                                        Toast.LENGTH_LONG)
+                                        .show();
+                            }
+                        } else {
+                            getLogger().exception(LOG_TAG,
+                                    ".setupClassSpinnerItems onLoaded:" +
+                                            e.getMessage(),
+                                    e);
+
+                            Toast.makeText(CharacterUpsertFragment.this.getActivity(),
+                                    R.string.load_classes_failed_error_message,
+                                    Toast.LENGTH_LONG)
+                                    .show();
+                        }
+                    }
+                });
+            }
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".setupClassSpinnerItems: " + ex.getMessage(), ex);
+
+            throw ex;
         }
     }
 
     private void setupRaceSpinnerItems(@Nullable final Parcelable restoreParcelable) {
-        raceQueryAdapter =
-            new ParseSpinnerQueryAdapter<>(getActivity(),
-                new ParseQueryAdapter.QueryFactory<Race>() {
-                    @Override
-                    public ParseQuery<Race> create() {
-                        return Race.getQuery().orderByAscending(Race.KEY_NAME);
-                    }
-                }, R.layout.dropdown_item_1line_withlayout);
+        try {
+            raceQueryAdapter =
+                    new ParseSpinnerQueryAdapter<>(getActivity(),
+                            new ParseQueryAdapter.QueryFactory<Race>() {
+                                @Override
+                                public ParseQuery<Race> create() {
+                                    try {
+                                        return Race.getQuery().orderByAscending(Race.KEY_NAME);
+                                    } catch (Exception ex) {
+                                        getLogger().exception(LOG_TAG,
+                                            "raceQueryAdapter.QueryFactory.create: " + ex.getMessage(),
+                                            ex);
 
-        raceQueryAdapter.setTextKey(Race.KEY_NAME);
-        raceSpinner.setAdapter(raceQueryAdapter);
-
-        raceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                updateSaveButtonState();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                updateSaveButtonState();
-            }
-        });
-
-        if (inEditMode || restoreParcelable != null) {
-            raceQueryAdapter.addOnQueryLoadListener(new ParseQueryAdapter.OnQueryLoadListener<Race>() {
-                @Override
-                public void onLoading() { }
-
-                @Override
-                public void onLoaded(List<Race> list, Exception e) {
-                    if (e == null) {
-                        if (restoreParcelable != null) {
-                            raceSpinner.onRestoreInstanceState(restoreParcelable);
-                        } else {
-                            Race race = character.getRace();
-
-                            for (int position = 0; position < raceQueryAdapter.getCount(); position++) {
-                                if (raceQueryAdapter.getItem(position) == race) {
-                                    raceSpinner.setSelection(position);
-                                    return;
+                                        throw ex;
+                                    }
                                 }
+                            }, R.layout.dropdown_item_1line_withlayout);
+
+            raceQueryAdapter.setTextKey(Race.KEY_NAME);
+            raceSpinner.setAdapter(raceQueryAdapter);
+
+            raceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    try {
+                        updateSaveButtonState();
+                    } catch (Exception ex) {
+                        getLogger().exception(LOG_TAG,
+                            "raceSpinner.onItemSelected: " + ex.getMessage(),
+                            ex);
+
+                        throw ex;
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    try {
+                        updateSaveButtonState();
+                    } catch (Exception ex) {
+                        getLogger().exception(LOG_TAG,
+                            "raceSpinner.onNothingSelected: " + ex.getMessage(),
+                            ex);
+
+                        throw ex;
+                    }
+                }
+            });
+
+            if (inEditMode || restoreParcelable != null) {
+                raceQueryAdapter.addOnQueryLoadListener(new ParseQueryAdapter.OnQueryLoadListener<Race>() {
+                    @Override
+                    public void onLoading() {
+                    }
+
+                    @Override
+                    public void onLoaded(List<Race> list, Exception e) {
+                        if (e == null) {
+                            try {
+                                if (restoreParcelable != null) {
+                                    raceSpinner.onRestoreInstanceState(restoreParcelable);
+                                } else {
+                                    Race race = character.getRace();
+
+                                    for (int position = 0; position < raceQueryAdapter.getCount(); position++) {
+                                        if (raceQueryAdapter.getItem(position) == race) {
+                                            raceSpinner.setSelection(position);
+                                            return;
+                                        }
+                                    }
+                                }
+                            } catch (Exception ex) {
+                                getLogger().exception(LOG_TAG,
+                                    "raceQueryAdapter.onLoaded: " + ex.getMessage(),
+                                    ex);
+
+                                throw ex;
                             }
+                        } else {
+                            getLogger().exception(LOG_TAG,
+                                    ".setupRaceSpinnerItems onLoaded:" +
+                                            e.getMessage(),
+                                    e);
+
+                            Toast.makeText(CharacterUpsertFragment.this.getActivity(),
+                                    R.string.load_races_failed_error_message,
+                                    Toast.LENGTH_LONG)
+                                    .show();
+                        }
+                    }
+                });
+            }
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".setupRaceSpinnerItems: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
+    }
+
+    private void setupForExistingCharacter(String characterId) {
+        try {
+            loadingIndicator.setVisibility(View.VISIBLE);
+
+            ParseQuery<PlayerCharacter> query = PlayerCharacter.getQuery();
+            query.getInBackground(characterId, new GetCallback<PlayerCharacter>() {
+                @Override
+                public void done(PlayerCharacter object, ParseException e) {
+                    try {
+                        loadingIndicator.setVisibility(View.GONE);
+                    } catch (Exception ex) {
+                        getLogger().exception(LOG_TAG,
+                            ".setupForExistingCharacter.getInBackground: " + ex.getMessage(),
+                            ex);
+
+                        throw ex;
+                    }
+
+                    if (e == null) {
+                        character = object;
+
+                        try {
+                            title.setText(String.format("%s %s",
+                                    CharacterUpsertFragment.this.getString(R.string.edit),
+                                    character.getName()));
+
+                            nameText.setText(character.getName());
+                            detailsText.setText(character.getDetails());
+
+                            setupRaceSpinnerItems(null);
+                            setupClassSpinnerItems(null);
+                        } catch (Exception ex) {
+                            getLogger().exception(LOG_TAG,
+                                ".setupForExistingCharacter.getInBackground: " + ex.getMessage(),
+                                ex);
+
+                            Toast.makeText(getActivity(),
+                                    R.string.edit_character_load_error_message,
+                                    Toast.LENGTH_LONG)
+                                    .show();
                         }
                     } else {
                         getLogger().exception(LOG_TAG,
-                                ".setupRaceSpinnerItems onLoaded:" +
+                                ".setupForExistingCharacter query: " +
                                         e.getMessage(),
                                 e);
 
-                        Toast.makeText(CharacterUpsertFragment.this.getActivity(),
-                                R.string.load_races_failed_error_message,
+                        Toast.makeText(getActivity(),
+                                R.string.edit_character_load_error_message,
                                 Toast.LENGTH_LONG)
                                 .show();
                     }
                 }
             });
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".setupForExistingCharacter: " + ex.getMessage(), ex);
+
+            throw ex;
         }
-    }
-
-    private void setupForExistingCharacter(String characterId) {
-        loadingIndicator.setVisibility(View.VISIBLE);
-
-        ParseQuery<PlayerCharacter> query = PlayerCharacter.getQuery();
-        query.getInBackground(characterId, new GetCallback<PlayerCharacter>() {
-            @Override
-            public void done(PlayerCharacter object, ParseException e) {
-                loadingIndicator.setVisibility(View.GONE);
-
-                if (e == null) {
-                    character = object;
-
-                    title.setText(String.format("%s %s",
-                            CharacterUpsertFragment.this.getString(R.string.edit),
-                            character.getName()));
-
-                    nameText.setText(character.getName());
-                    detailsText.setText(character.getDetails());
-
-                    setupRaceSpinnerItems(null);
-                    setupClassSpinnerItems(null);
-                } else {
-                    getLogger().exception(LOG_TAG,
-                            ".setupForExistingCharacter query: " +
-                                    e.getMessage(),
-                            e);
-
-                    Toast.makeText(getActivity(),
-                            R.string.edit_character_load_error_message,
-                            Toast.LENGTH_LONG)
-                        .show();
-                }
-            }
-        });
     }
 }

@@ -20,7 +20,7 @@ public abstract class BaseFragment extends Fragment {
      * Get the logger for the application
      * @return  The logger for the application
      */
-    protected LifestoryLogger getLogger() {
+    protected static LifestoryLogger getLogger() {
         return LoggerSingleton.getInstance();
     }
 }

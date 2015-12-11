@@ -18,6 +18,7 @@ import ca.secondlifestory.utilities.LoggerSingleton;
  * Base ListFragment class for LifeStory
  */
 public class BaseListFragment extends android.app.ListFragment {
+
     /**
      * A callback interface that all activities containing this fragment must
      * implement. This mechanism allows activities to be notified of item
@@ -30,6 +31,8 @@ public class BaseListFragment extends android.app.ListFragment {
         void onItemSelected(String id);
         void onListLoaded();
     }
+
+    private static final String LOG_TAG = BaseListFragment.class.getName();
 
     /**
      * The serialization (saved instance state) Bundle keys
@@ -64,18 +67,26 @@ public class BaseListFragment extends android.app.ListFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Restore the previously serialized activated item position.
-        if (savedInstanceState != null) {
-            View list = view.findViewById(android.R.id.list);
+        try {
+            // Restore the previously serialized activated item position.
+            if (savedInstanceState != null) {
+                View list = view.findViewById(android.R.id.list);
 
-            if (list != null) {
-                ((ListView)list).
-                        onRestoreInstanceState(savedInstanceState.getParcelable(LIST_STATE));
-            }
+                if (list != null) {
+                    ((ListView) list).
+                            onRestoreInstanceState(savedInstanceState.getParcelable(LIST_STATE));
+                }
 
-            if (savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
-                setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
+                if (savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
+                    setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
+                }
             }
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG,
+                    ".onViewCreated: " + ex.getMessage(),
+                    ex);
+
+            throw ex;
         }
     }
 
@@ -90,11 +101,19 @@ public class BaseListFragment extends android.app.ListFragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putParcelable(LIST_STATE, getListView().onSaveInstanceState());
+        try {
+            outState.putParcelable(LIST_STATE, getListView().onSaveInstanceState());
 
-        if (mActivatedPosition != ListView.INVALID_POSITION) {
-            // Serialize and persist the activated item position.
-            outState.putInt(STATE_ACTIVATED_POSITION, mActivatedPosition);
+            if (mActivatedPosition != ListView.INVALID_POSITION) {
+                // Serialize and persist the activated item position.
+                outState.putInt(STATE_ACTIVATED_POSITION, mActivatedPosition);
+            }
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG,
+                    ".onSaveInstanceState: " + ex.getMessage(),
+                    ex);
+
+            throw ex;
         }
     }
 
@@ -102,7 +121,15 @@ public class BaseListFragment extends android.app.ListFragment {
     public void setSelection(int position) {
         super.setSelection(position);
 
-        setActivatedPosition(position);
+        try {
+            setActivatedPosition(position);
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG,
+                    ".setSelection: " + ex.getMessage(),
+                    ex);
+
+            throw ex;
+        }
     }
 
     /**
@@ -112,9 +139,17 @@ public class BaseListFragment extends android.app.ListFragment {
     public void setActivateOnItemClick(boolean activateOnItemClick) {
         // When setting CHOICE_MODE_SINGLE, ListView will automatically
         // give items the 'activated' state when touched.
-        getListView().setChoiceMode(activateOnItemClick
-                ? ListView.CHOICE_MODE_SINGLE
-                : ListView.CHOICE_MODE_NONE);
+        try {
+            getListView().setChoiceMode(activateOnItemClick
+                    ? ListView.CHOICE_MODE_SINGLE
+                    : ListView.CHOICE_MODE_NONE);
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG,
+                    ".setActivateOnItemClick: " + ex.getMessage(),
+                    ex);
+
+            throw ex;
+        }
     }
 
     protected LifestoryLogger getLogger() {
@@ -122,12 +157,20 @@ public class BaseListFragment extends android.app.ListFragment {
     }
 
     protected void setActivatedPosition(int position) {
-        if (position == ListView.INVALID_POSITION) {
-            getListView().setItemChecked(mActivatedPosition, false);
-        } else {
-            getListView().setItemChecked(position, true);
-        }
+        try {
+            if (position == ListView.INVALID_POSITION) {
+                getListView().setItemChecked(mActivatedPosition, false);
+            } else {
+                getListView().setItemChecked(position, true);
+            }
 
-        mActivatedPosition = position;
+            mActivatedPosition = position;
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG,
+                    ".setActivatedPosition: " + ex.getMessage(),
+                    ex);
+
+            throw ex;
+        }
     }
 }

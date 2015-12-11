@@ -34,22 +34,37 @@ public class LoginActivity extends BaseActivity implements SimpleDialogFragment.
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
 
-        final String androidId =
-                Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+        try {
+            setContentView(R.layout.activity_login);
 
-        ParseUser.logInInBackground(androidId, androidId, new LogInCallback() {
-            public void done(ParseUser user, ParseException e) {
-                if (user != null) {
-                    startCharacterActivity();
-                } else if (e == null || e.getCode() == ParseException.OBJECT_NOT_FOUND) {
-                    createNewUser(androidId);
-                } else {
-                    LoginActivity.this.showLoginErrorAndFinish(e);
+            final String androidId =
+                    Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+
+            ParseUser.logInInBackground(androidId, androidId, new LogInCallback() {
+                public void done(ParseUser user, ParseException e) {
+                    try {
+                        if (user != null) {
+                            startCharacterActivity();
+                        } else if (e == null || e.getCode() == ParseException.OBJECT_NOT_FOUND) {
+                            createNewUser(androidId);
+                        } else {
+                            LoginActivity.this.showLoginErrorAndFinish(e);
+                        }
+                    } catch (Exception ex) {
+                        getLogger().exception(LOG_TAG,
+                                ".onCreate.logInInBackground: " + ex.getMessage(),
+                                ex);
+
+                        throw ex;
+                    }
                 }
-            }
-        });
+            });
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".onCreate: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     /**
@@ -58,38 +73,58 @@ public class LoginActivity extends BaseActivity implements SimpleDialogFragment.
      * @param androidId The username and password for the new user
      */
     private void createNewUser(String androidId) {
-        ParseUser newUser = new ParseUser();
-        newUser.setUsername(androidId);
-        newUser.setPassword(androidId);
+        try {
+            ParseUser newUser = new ParseUser();
+            newUser.setUsername(androidId);
+            newUser.setPassword(androidId);
 
-        newUser.signUpInBackground(new SignUpCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    Race.setupDefaultRaces(
-                            LoginActivity.this.getResources()
-                                    .getStringArray(R.array.defaultRaceNames));
+            newUser.signUpInBackground(new SignUpCallback() {
+                @Override
+                public void done(ParseException e) {
+                    try {
+                        if (e == null) {
+                            Race.setupDefaultRaces(
+                                    LoginActivity.this.getResources()
+                                            .getStringArray(R.array.defaultRaceNames));
 
-                    CharacterClass.setupDefaultClasses(
-                            LoginActivity.this.getResources()
-                                    .getStringArray(R.array.defaultCharacterClassNames));
+                            CharacterClass.setupDefaultClasses(
+                                    LoginActivity.this.getResources()
+                                            .getStringArray(R.array.defaultCharacterClassNames));
 
-                    startCharacterActivity();
-                } else {
-                    LoginActivity.this.showLoginErrorAndFinish(e);
+                            startCharacterActivity();
+                        } else {
+                            LoginActivity.this.showLoginErrorAndFinish(e);
+                        }
+                    } catch (Exception ex) {
+                        getLogger().exception(LOG_TAG,
+                            ".createNewUser.signUpInBackground: " + ex.getMessage(),
+                            ex);
+
+                        throw ex;
+                    }
                 }
-            }
-        });
+            });
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".createNewUser: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     /**
      * Starts CharacterActivity and finishes this activity
      */
     private void startCharacterActivity() {
-        Intent intent = new Intent(this, CharacterActivity.class);
+        try {
+            Intent intent = new Intent(this, CharacterActivity.class);
 
-        startActivity(intent);
-        finish();
+            startActivity(intent);
+            finish();
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".startCharacterActivity: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     /**
@@ -103,16 +138,22 @@ public class LoginActivity extends BaseActivity implements SimpleDialogFragment.
 
         SimpleDialogFragment dialog;
 
-        if (e.getCode() == ParseException.OBJECT_NOT_FOUND) {
-            dialog = SimpleDialogFragment.newInstance(R.string.ok,
-                    getString(R.string.login_activity_invalid_credentials));
-        } else {
-            dialog = SimpleDialogFragment.newInstance(R.string.ok,
-                    getString(R.string.login_activity_internet_connection_required));
-        }
+        try {
+            if (e.getCode() == ParseException.OBJECT_NOT_FOUND) {
+                dialog = SimpleDialogFragment.newInstance(R.string.ok,
+                        getString(R.string.login_activity_invalid_credentials));
+            } else {
+                dialog = SimpleDialogFragment.newInstance(R.string.ok,
+                        getString(R.string.login_activity_internet_connection_required));
+            }
 
-        dialog.onAttach(this); // Need to manually attach. Not sure why
-        dialog.show(getFragmentManager(), null);
+            dialog.onAttach(this); // Need to manually attach. Not sure why
+            dialog.show(getFragmentManager(), null);
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".showLoginErrorAndFinish: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     /**

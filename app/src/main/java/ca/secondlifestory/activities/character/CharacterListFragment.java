@@ -49,38 +49,61 @@ public class CharacterListFragment extends BaseListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        adapter = new PlayerCharacterQueryAdapter(getActivity());
+        try {
+            adapter = new PlayerCharacterQueryAdapter(getActivity());
 
-        setListAdapter(adapter);
+            setListAdapter(adapter);
 
-        adapter.addOnQueryLoadListener(new ParseQueryAdapter.OnQueryLoadListener<PlayerCharacter>() {
-            @Override
-            public void onLoading() {
+            adapter.addOnQueryLoadListener(new ParseQueryAdapter.OnQueryLoadListener<PlayerCharacter>() {
+                @Override
+                public void onLoading() {
 
-            }
+                }
 
-            @Override
-            public void onLoaded(List<PlayerCharacter> list, Exception e) {
-                if (e == null) {
-                    mListener.onListLoaded();
-                } else {
-                    getLogger().exception(LOG_TAG,
+                @Override
+                public void onLoaded(List<PlayerCharacter> list, Exception e) {
+                    if (e == null) {
+                        try {
+                            mListener.onListLoaded();
+                        } catch (Exception ex) {
+                            getLogger().exception(LOG_TAG,
+                                ".onCreate.onLoaded: " + ex.getMessage(),
+                                ex);
+
+                            Toast.makeText(CharacterListFragment.this.getActivity(),
+                                    R.string.load_characters_failed_error_message,
+                                    Toast.LENGTH_LONG)
+                                    .show();
+                        }
+                    } else {
+                        getLogger().exception(LOG_TAG,
                             ".onCreate onLoaded:" +
                                     e.getMessage(),
                             e);
 
-                    Toast.makeText(CharacterListFragment.this.getActivity(),
+                        Toast.makeText(CharacterListFragment.this.getActivity(),
                             R.string.load_characters_failed_error_message,
                             Toast.LENGTH_LONG)
                             .show();
+                    }
                 }
-            }
-        });
+            });
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".onCreate: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_character_list, container);
+        try {
+            return inflater.inflate(R.layout.fragment_character_list, container);
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".onCreateView: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     @Override
@@ -89,12 +112,24 @@ public class CharacterListFragment extends BaseListFragment {
 
         mActivatedPosition = position;
 
-        // Notify the active callbacks interface (the activity, if the
-        // fragment is attached to one) that an item has been selected.
-        mListener.onItemSelected(adapter.getItem(position).getObjectId());
+        try {
+            // Notify the active callbacks interface (the activity, if the
+            // fragment is attached to one) that an item has been selected.
+            mListener.onItemSelected(adapter.getItem(position).getObjectId());
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".onListItemClick: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     public void notifyListChanged() {
-        adapter.notifyListChanged();
+        try {
+            adapter.notifyListChanged();
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".notifyListChanged: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 }

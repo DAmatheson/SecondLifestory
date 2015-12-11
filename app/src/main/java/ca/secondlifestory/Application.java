@@ -11,11 +11,15 @@ import com.parse.Parse;
 import com.parse.ParseObject;
 
 import ca.secondlifestory.models.*;
+import ca.secondlifestory.utilities.LoggerSingleton;
 
 /**
  * Application object containing setup logic for the whole app
  */
 public class Application extends android.app.Application {
+
+    private static final String LOG_TAG = Application.class.getName();
+
     /**
      * SharedPreferences key for whether or not the show deceased characters checkbox is checked
      */
@@ -25,17 +29,26 @@ public class Application extends android.app.Application {
     public void onCreate() {
         super.onCreate();
 
-        Parse.enableLocalDatastore(this);
+        try {
+            Parse.enableLocalDatastore(this);
 
-        // Register the subclasses we have
-        ParseObject.registerSubclass(PlayerCharacter.class);
-        ParseObject.registerSubclass(CharacterClass.class);
-        ParseObject.registerSubclass(Event.class);
-        ParseObject.registerSubclass(Race.class);
+            // Register the subclasses we have
+            ParseObject.registerSubclass(PlayerCharacter.class);
+            ParseObject.registerSubclass(CharacterClass.class);
+            ParseObject.registerSubclass(Event.class);
+            ParseObject.registerSubclass(Race.class);
 
-        //noinspection SpellCheckingInspection
-        Parse.initialize(this,
-                "aPkrgZv2poKhbZFhz9kTN89nLgP2a6Id6D4MNJlt"/* Application Id */,
-                "cf5NMJUsEGQqNTH4o1wkZnBRY3VhEACmkdVSY6N0" /* Client Key */);
+            //noinspection SpellCheckingInspection
+            Parse.initialize(this,
+                    "aPkrgZv2poKhbZFhz9kTN89nLgP2a6Id6D4MNJlt"/* Application Id */,
+                    "cf5NMJUsEGQqNTH4o1wkZnBRY3VhEACmkdVSY6N0" /* Client Key */);
+
+        } catch (Exception ex) {
+            LoggerSingleton.getInstance().exception(LOG_TAG,
+                    ".onCreate: " + ex.getMessage(),
+                    ex);
+
+            throw ex;
+        }
     }
 }

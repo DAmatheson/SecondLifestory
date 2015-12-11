@@ -11,11 +11,15 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import ca.secondlifestory.utilities.LoggerSingleton;
+
 /**
  * Model class for character classes
  */
 @ParseClassName("CharacterClass")
 public class CharacterClass extends ParseObject {
+
+    private static final String LOG_TAG = CharacterClass.class.getName();
 
     private static final String KEY_USER = "user";
     public static final String KEY_NAME = "name";
@@ -40,7 +44,15 @@ public class CharacterClass extends ParseObject {
      * @param user the CharacterClass belongs to
      */
     public void setUser(ParseUser user) {
-        put(KEY_USER, user);
+        try {
+            put(KEY_USER, user);
+        } catch (Exception ex) {
+            LoggerSingleton.getInstance().exception(LOG_TAG,
+                    ".setUser: " + ex.getMessage(),
+                    ex);
+
+            throw ex;
+        }
     }
 
     /**
@@ -56,7 +68,15 @@ public class CharacterClass extends ParseObject {
      * @param name of the CharacterClass
      */
     public void setName(String name) {
-        put(KEY_NAME, name);
+        try {
+            put(KEY_NAME, name);
+        } catch (Exception ex) {
+            LoggerSingleton.getInstance().exception(LOG_TAG,
+                    ".setName: " + ex.getMessage(),
+                    ex);
+
+            throw ex;
+        }
     }
 
     /**
@@ -64,22 +84,38 @@ public class CharacterClass extends ParseObject {
      * @return The ParseQuery
      */
     public static ParseQuery<CharacterClass> getQuery() {
-        ParseQuery<CharacterClass> query = ParseQuery.getQuery(CharacterClass.class);
-        query.whereEqualTo(KEY_USER, ParseUser.getCurrentUser());
+        try {
+            ParseQuery<CharacterClass> query = ParseQuery.getQuery(CharacterClass.class);
+            query.whereEqualTo(KEY_USER, ParseUser.getCurrentUser());
 
-        query.fromLocalDatastore();
+            query.fromLocalDatastore();
 
-        return query;
+            return query;
+        } catch (Exception ex) {
+            LoggerSingleton.getInstance().exception(LOG_TAG,
+                    ".getQuery: " + ex.getMessage(),
+                    ex);
+
+            throw ex;
+        }
     }
 
     public static void setupDefaultClasses(String[] classNames) {
-        for (String className : classNames) {
-            CharacterClass newClass = new CharacterClass();
-            newClass.setName(className);
-            newClass.setUser(ParseUser.getCurrentUser());
+        try {
+            for (String className : classNames) {
+                CharacterClass newClass = new CharacterClass();
+                newClass.setName(className);
+                newClass.setUser(ParseUser.getCurrentUser());
 
-            newClass.pinInBackground();
-            newClass.saveEventually();
+                newClass.pinInBackground();
+                newClass.saveEventually();
+            }
+        } catch (Exception ex) {
+            LoggerSingleton.getInstance().exception(LOG_TAG,
+                    ".setupDefaultClasses: " + ex.getMessage(),
+                    ex);
+
+            throw ex;
         }
     }
 }

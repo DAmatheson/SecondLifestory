@@ -12,11 +12,16 @@ import com.parse.ParseQuery;
 
 import java.util.Date;
 
+import ca.secondlifestory.utilities.LoggerSingleton;
+
 /**
  * Model class for character events
  */
 @ParseClassName("Event")
 public class Event extends ParseObject {
+
+    private static final String LOG_TAG = Event.class.getName();
+
     private static final String KEY_CHARACTER_COUNT = "characterCount";
     private static final String KEY_EXPERIENCE = "experience";
     private static final String KEY_DESCRIPTION = "description";
@@ -38,15 +43,15 @@ public class Event extends ParseObject {
     }
 
     public void setCharacter(PlayerCharacter character) {
-        put(KEY_CHARACTER, character);
-    }
+        try {
+            put(KEY_CHARACTER, character);
+        } catch (Exception ex) {
+            LoggerSingleton.getInstance().exception(LOG_TAG,
+                    ".setCharacter: " + ex.getMessage(),
+                    ex);
 
-    /**
-     * Sets the ObjectId of the PlayerCharacter this  Event belongs to
-     * @param objectId of the PlayerCharacter this event belongs to
-     */
-    public void setCharacterObjectId(String objectId) {
-        put(KEY_CHARACTER, objectId);
+            throw ex;
+        }
     }
 
     /**
@@ -62,7 +67,15 @@ public class Event extends ParseObject {
      * @param type of the Event
      */
     public void setEventType(EventTypes type) {
-        put(KEY_EVENT_TYPE, type.toString());
+        try {
+            put(KEY_EVENT_TYPE, type.toString());
+        } catch (Exception ex) {
+            LoggerSingleton.getInstance().exception(LOG_TAG,
+                    ".setEventType: " + ex.getMessage(),
+                    ex);
+
+            throw ex;
+        }
     }
 
     /**
@@ -78,7 +91,15 @@ public class Event extends ParseObject {
      * @param characterCount The character count
      */
     public void setCharacterCount(int characterCount) {
-        put(KEY_CHARACTER_COUNT, characterCount);
+        try {
+            put(KEY_CHARACTER_COUNT, characterCount);
+        } catch (Exception ex) {
+            LoggerSingleton.getInstance().exception(LOG_TAG,
+                    ".setCharacterCount: " + ex.getMessage(),
+                    ex);
+
+            throw ex;
+        }
     }
 
     /**
@@ -94,7 +115,15 @@ public class Event extends ParseObject {
      * @param experience The amount of experience
      */
     public void setExperience(int experience) {
-        put(KEY_EXPERIENCE, experience);
+        try {
+            put(KEY_EXPERIENCE, experience);
+        } catch (Exception ex) {
+            LoggerSingleton.getInstance().exception(LOG_TAG,
+                    ".setExperience: " + ex.getMessage(),
+                    ex);
+
+            throw ex;
+        }
     }
 
     /**
@@ -110,7 +139,15 @@ public class Event extends ParseObject {
      * @param description The description
      */
     public void setDescription(String description) {
-        put(KEY_DESCRIPTION, description);
+        try {
+            put(KEY_DESCRIPTION, description);
+        } catch (Exception ex) {
+            LoggerSingleton.getInstance().exception(LOG_TAG,
+                    ".setDescription: " + ex.getMessage(),
+                    ex);
+
+            throw ex;
+        }
     }
 
     /**
@@ -126,7 +163,15 @@ public class Event extends ParseObject {
      * @param date The date
      */
     public void setDate(Date date) {
-        put(KEY_DATE, date);
+        try {
+            put(KEY_DATE, date);
+        } catch (Exception ex) {
+            LoggerSingleton.getInstance().exception(LOG_TAG,
+                    ".setDate: " + ex.getMessage(),
+                    ex);
+
+            throw ex;
+        }
     }
 
     /**
@@ -142,7 +187,15 @@ public class Event extends ParseObject {
      * @param title The title
      */
     public void setTitle(String title) {
-        put(KEY_TITLE, title);
+        try {
+            put(KEY_TITLE, title);
+        } catch (Exception ex) {
+            LoggerSingleton.getInstance().exception(LOG_TAG,
+                    ".setTitle: " + ex.getMessage(),
+                    ex);
+
+            throw ex;
+        }
     }
 
     /**
@@ -150,14 +203,30 @@ public class Event extends ParseObject {
      * @return The ParseQuery
      */
     public static ParseQuery<Event> getQuery() {
-        ParseQuery<Event> query = ParseQuery.getQuery(Event.class);
+        try {
+            ParseQuery<Event> query = ParseQuery.getQuery(Event.class);
 
-        query.fromLocalDatastore();
+            query.fromLocalDatastore();
 
-        return query;
+            return query;
+        } catch (Exception ex) {
+            LoggerSingleton.getInstance().exception(LOG_TAG,
+                    ".getQuery: " + ex.getMessage(),
+                    ex);
+
+            throw ex;
+        }
     }
 
     public static Event createWithoutData(String objectId) {
-        return ParseObject.createWithoutData(Event.class, objectId);
+        try {
+            return ParseObject.createWithoutData(Event.class, objectId);
+        } catch (Exception ex) {
+            LoggerSingleton.getInstance().exception(LOG_TAG,
+                    ".createWithoutData: " + ex.getMessage(),
+                    ex);
+
+            throw ex;
+        }
     }
 }

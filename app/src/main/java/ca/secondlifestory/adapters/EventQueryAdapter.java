@@ -22,11 +22,14 @@ import java.util.Locale;
 import ca.secondlifestory.R;
 import ca.secondlifestory.models.Event;
 import ca.secondlifestory.models.PlayerCharacter;
+import ca.secondlifestory.utilities.LoggerSingleton;
 
 /**
  * QueryAdapter for Event
  */
 public class EventQueryAdapter extends ParseQueryAdapter<Event> {
+
+    private final static String LOG_TAG = EventQueryAdapter.class.getName();
 
     private final DateFormat dateFormatter = SimpleDateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
 
@@ -39,37 +42,61 @@ public class EventQueryAdapter extends ParseQueryAdapter<Event> {
 
             @Override
             public ParseQuery<Event> create() {
-                ParseQuery<Event> query = Event.getQuery();
-                query.whereEqualTo(Event.KEY_CHARACTER,
-                        ParseObject.createWithoutData(PlayerCharacter.class, characterObjectId));
+                try {
+                    ParseQuery<Event> query = Event.getQuery();
+                    query.whereEqualTo(Event.KEY_CHARACTER,
+                            ParseObject.createWithoutData(PlayerCharacter.class, characterObjectId));
 
-                query.orderByDescending(Event.KEY_DATE);
+                    query.orderByDescending(Event.KEY_DATE);
 
-                return query;
+                    return query;
+                } catch (Exception ex) {
+                    LoggerSingleton.getInstance().exception(LOG_TAG,
+                            "QueryFactory.create: " + ex.getMessage(),
+                            ex);
+
+                    throw ex;
+                }
             }
         });
     }
 
     @Override
     public View getItemView(Event object, View v, ViewGroup parent) {
+        try {
+            if (v == null) {
+                v = View.inflate(getContext(), R.layout.event_list_item, null);
+            }
 
-        if (v == null) {
-            v = View.inflate(getContext(), R.layout.event_list_item, null);
+            super.getItemView(object, v, parent);
+
+            TextView eventName = (TextView) v.findViewById(R.id.event_listitem_name);
+            eventName.setText(object.getTitle());
+
+            TextView eventDate = (TextView) v.findViewById(R.id.event_listitem_date);
+            eventDate.setText(dateFormatter.format(object.getDate()));
+
+            return v;
+        } catch (Exception ex) {
+            LoggerSingleton.getInstance().exception(LOG_TAG,
+                    "getItemView: " + ex.getMessage(),
+                    ex);
+
+            throw ex;
         }
-
-        super.getItemView(object, v, parent);
-
-        TextView eventName = (TextView) v.findViewById(R.id.event_listitem_name);
-        eventName.setText(object.getTitle());
-
-        TextView eventDate = (TextView) v.findViewById(R.id.event_listitem_date);
-        eventDate.setText(dateFormatter.format(object.getDate()));
-
-        return v;
     }
 
     public void notifyListChanged() {
         // Unfortunately, there isn't a way to add new items with ParseQueryAdapter.
-        loadObjects();
+
+        try {
+            loadObjects();
+        } catch (Exception ex) {
+            LoggerSingleton.getInstance().exception(LOG_TAG,
+                    ".notifyListChanged: " + ex.getMessage(),
+                    ex);
+
+            throw ex;
+        }
     }
 }

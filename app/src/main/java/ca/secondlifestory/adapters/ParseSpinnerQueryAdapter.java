@@ -42,6 +42,7 @@ public class ParseSpinnerQueryAdapter<T extends ParseObject> extends ParseQueryA
 
     @Override
     public int getViewTypeCount() {
+        // Simple fix to make ParseQueryAdapter work for spinners
         return 1;
     }
 }

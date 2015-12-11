@@ -47,39 +47,62 @@ public class EventListFragment extends BaseListFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_event_list, container);
+        try {
+            return inflater.inflate(R.layout.fragment_event_list, container);
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".onCreateView: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     public void setCharacterObjectId(String characterObjectId) {
-        adapter = new EventQueryAdapter(getActivity(), characterObjectId);
+        try {
+            adapter = new EventQueryAdapter(getActivity(), characterObjectId);
 
-        setListAdapter(adapter);
+            setListAdapter(adapter);
 
-        adapter.addOnQueryLoadListener(new ParseQueryAdapter.OnQueryLoadListener<Event>() {
-            @Override
-            public void onLoading() {
+            adapter.addOnQueryLoadListener(new ParseQueryAdapter.OnQueryLoadListener<Event>() {
+                @Override
+                public void onLoading() {
 
-            }
-
-            @Override
-            public void onLoaded(List<Event> list, Exception e) {
-                if (e == null) {
-                    setSelection(mActivatedPosition);
-
-                    mListener.onListLoaded();
-                } else {
-                    getLogger().exception(LOG_TAG,
-                            ".setCharacterObjectId onLoaded:" +
-                                    e.getMessage(),
-                            e);
-
-                    Toast.makeText(EventListFragment.this.getActivity(),
-                            R.string.load_events_failed_error_message,
-                            Toast.LENGTH_LONG)
-                            .show();
                 }
-            }
-        });
+
+                @Override
+                public void onLoaded(List<Event> list, Exception e) {
+                    if (e == null) {
+                        try {
+                            setSelection(mActivatedPosition);
+
+                            mListener.onListLoaded();
+                        } catch (Exception ex) {
+                            getLogger().exception(LOG_TAG,
+                                ".setCharacterObjectId.onLoaded: " + ex.getMessage(),
+                                ex);
+
+                            Toast.makeText(EventListFragment.this.getActivity(),
+                                    R.string.load_events_failed_error_message,
+                                    Toast.LENGTH_LONG)
+                                    .show();
+                        }
+                    } else {
+                        getLogger().exception(LOG_TAG,
+                                ".setCharacterObjectId.onLoaded:" +
+                                        e.getMessage(),
+                                e);
+
+                        Toast.makeText(EventListFragment.this.getActivity(),
+                                R.string.load_events_failed_error_message,
+                                Toast.LENGTH_LONG)
+                                .show();
+                    }
+                }
+            });
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".setCharacterObjectId: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     @Override
@@ -88,12 +111,24 @@ public class EventListFragment extends BaseListFragment {
 
         mActivatedPosition = position;
 
-        // Notify the active callbacks interface (the activity, if the
-        // fragment is attached to one) that an item has been selected.
-        mListener.onItemSelected(adapter.getItem(position).getObjectId());
+        try {
+            // Notify the active callbacks interface (the activity, if the
+            // fragment is attached to one) that an item has been selected.
+            mListener.onItemSelected(adapter.getItem(position).getObjectId());
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".onListItemClick: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 
     public void notifyListChanged() {
-        adapter.notifyListChanged();
+        try {
+            adapter.notifyListChanged();
+        } catch (Exception ex) {
+            getLogger().exception(LOG_TAG, ".notifyListChanged: " + ex.getMessage(), ex);
+
+            throw ex;
+        }
     }
 }

@@ -11,11 +11,15 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import ca.secondlifestory.utilities.LoggerSingleton;
+
 /**
  * Model for a PlayerCharacter
  */
 @ParseClassName("Character")
 public class PlayerCharacter extends ParseObject {
+
+    private static final String LOG_TAG = PlayerCharacter.class.getName();
 
     private static final String KEY_USER = "user";
     public static final String KEY_RACE = "race";
@@ -45,7 +49,15 @@ public class PlayerCharacter extends ParseObject {
      * @param user the PlayerCharacter belongs to
      */
     public void setUser(ParseUser user) {
-        put(KEY_USER, user);
+        try {
+            put(KEY_USER, user);
+        } catch (Exception ex) {
+            LoggerSingleton.getInstance().exception(LOG_TAG,
+                    ".setUser: " + ex.getMessage(),
+                    ex);
+
+            throw ex;
+        }
     }
 
     /**
@@ -61,7 +73,15 @@ public class PlayerCharacter extends ParseObject {
      * @param race for the PlayerCharacter
      */
     public void setRace(Race race) {
-        put(KEY_RACE, race);
+        try {
+            put(KEY_RACE, race);
+        } catch (Exception ex) {
+            LoggerSingleton.getInstance().exception(LOG_TAG,
+                    ".setRace: " + ex.getMessage(),
+                    ex);
+
+            throw ex;
+        }
     }
 
     /**
@@ -77,7 +97,15 @@ public class PlayerCharacter extends ParseObject {
      * @param characterClass for the PlayerCharacter
      */
     public void setCharacterClass(CharacterClass characterClass) {
-        put(KEY_CLASS, characterClass);
+        try {
+            put(KEY_CLASS, characterClass);
+        } catch (Exception ex) {
+            LoggerSingleton.getInstance().exception(LOG_TAG,
+                    ".setCharacterClass: " + ex.getMessage(),
+                    ex);
+
+            throw ex;
+        }
     }
 
     /**
@@ -93,7 +121,15 @@ public class PlayerCharacter extends ParseObject {
      * @param name of the PlayerCharacter
      */
     public void setName(String name) {
-        put(KEY_NAME, name);
+        try {
+            put(KEY_NAME, name);
+        } catch (Exception ex) {
+            LoggerSingleton.getInstance().exception(LOG_TAG,
+                    ".setName: " + ex.getMessage(),
+                    ex);
+
+            throw ex;
+        }
     }
 
     /**
@@ -109,7 +145,15 @@ public class PlayerCharacter extends ParseObject {
      * @param living flag for if the character is alive
      */
     public void setLiving(boolean living) {
-        put(KEY_LIVING, living);
+        try {
+            put(KEY_LIVING, living);
+        } catch (Exception ex) {
+            LoggerSingleton.getInstance().exception(LOG_TAG,
+                    ".setLiving: " + ex.getMessage(),
+                    ex);
+
+            throw ex;
+        }
     }
 
     /**
@@ -125,7 +169,15 @@ public class PlayerCharacter extends ParseObject {
      * @param details string for the PlayerCharacter
      */
     public void setDetails(String details) {
-        put(KEY_DETAILS, details);
+        try {
+            put(KEY_DETAILS, details);
+        } catch (Exception ex) {
+            LoggerSingleton.getInstance().exception(LOG_TAG,
+                    ".setDetails: " + ex.getMessage(),
+                    ex);
+
+            throw ex;
+        }
     }
 
     /**
@@ -141,7 +193,15 @@ public class PlayerCharacter extends ParseObject {
      * @param experienceToAdd amount of experience to add
      */
     public void addExperience(int experienceToAdd) {
-        increment(KEY_EXPERIENCE, (long)experienceToAdd);
+        try {
+            increment(KEY_EXPERIENCE, (long) experienceToAdd);
+        } catch (Exception ex) {
+            LoggerSingleton.getInstance().exception(LOG_TAG,
+                    ".addExperience: " + ex.getMessage(),
+                    ex);
+
+            throw ex;
+        }
     }
 
     /**
@@ -149,7 +209,15 @@ public class PlayerCharacter extends ParseObject {
      * @param experienceToSubtract positive integer to be subtracted
      */
     public void subtractExperience(int experienceToSubtract) {
-        increment(KEY_EXPERIENCE, (long)-experienceToSubtract);
+        try {
+            increment(KEY_EXPERIENCE, (long) -experienceToSubtract);
+        } catch (Exception ex) {
+            LoggerSingleton.getInstance().exception(LOG_TAG,
+                    ".subtractExperience: " + ex.getMessage(),
+                    ex);
+
+            throw ex;
+        }
     }
 
     /**
@@ -157,16 +225,32 @@ public class PlayerCharacter extends ParseObject {
      * @return The ParseQuery
      */
     public static ParseQuery<PlayerCharacter> getQuery() {
-        ParseQuery<PlayerCharacter> query = ParseQuery.getQuery(PlayerCharacter.class);
-        query.whereEqualTo(KEY_USER, ParseUser.getCurrentUser());
-        query.include(KEY_RACE).include(KEY_CLASS);
+        try {
+            ParseQuery<PlayerCharacter> query = ParseQuery.getQuery(PlayerCharacter.class);
+            query.whereEqualTo(KEY_USER, ParseUser.getCurrentUser());
+            query.include(KEY_RACE).include(KEY_CLASS);
 
-        query.fromLocalDatastore();
+            query.fromLocalDatastore();
 
-        return query;
+            return query;
+        } catch (Exception ex) {
+            LoggerSingleton.getInstance().exception(LOG_TAG,
+                    ".getQuery: " + ex.getMessage(),
+                    ex);
+
+            throw ex;
+        }
     }
 
     public static PlayerCharacter createWithoutData(String objectId) {
-        return ParseObject.createWithoutData(PlayerCharacter.class, objectId);
+        try {
+            return ParseObject.createWithoutData(PlayerCharacter.class, objectId);
+        } catch (Exception ex) {
+            LoggerSingleton.getInstance().exception(LOG_TAG,
+                    ".createWithoutData: " + ex.getMessage(),
+                    ex);
+
+            throw ex;
+        }
     }
 }

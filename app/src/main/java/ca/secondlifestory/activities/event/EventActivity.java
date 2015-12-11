@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
-import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,15 +46,14 @@ import ca.secondlifestory.utilities.TextEntryDialogFragment;
  */
 public class EventActivity extends BaseActivity implements EventListFragment.Callbacks,
                                                            EventDetailFragment.Callbacks,
-                                                           EventUpsertFragment.Callbacks,
-                                                TextEntryDialogFragment.OnPositiveCloseListener {
+                                                           EventUpsertFragment.Callbacks {
 
     private static final String LOG_TAG = EventActivity.class.getName();
 
     /**
      * The intent Bundle keys
      */
-    public static final String ARG_CHARACTER_ID = "characterObjectId";
+    public static final String ARG_CHARACTER_ID = "EventActivity.characterObjectId";
 
     /**
      * The serialization (saved instance state) Bundle keys
@@ -279,26 +277,6 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
         }
     }
 
-    @Override
-    public void onPositiveClose(final String textInput) {
-        ParseQuery<PlayerCharacter> query = PlayerCharacter.getQuery();
-        query.getInBackground(characterId, new GetCallback<PlayerCharacter>() {
-            @Override
-            public void done(final PlayerCharacter character, ParseException e) {
-                if (e == null) {
-                    if (character.isLiving()) {
-                        characterDied(character, textInput);
-                    } else {
-                        characterResurrected(character, textInput);
-                    }
-                } else {
-                    // TODO: Parse error handling
-                    Toast.makeText(EventActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
-
     private void toggleLivingDialog() {
         int dialogText;
         if (characterIsAlive) {
@@ -310,19 +288,42 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
         TextEntryDialogFragment dialog = TextEntryDialogFragment.newInstance(R.string.ok,
                 dialogText, R.string.no);
 
-        dialog.show(getFragmentManager(), null);
-    }
-
-    private void characterDied(final PlayerCharacter character, String description) {
-        character.setLiving(false);
-        character.pinInBackground(new SaveCallback() {
+        dialog.show(getFragmentManager(), null, new TextEntryDialogFragment.OnPositiveCloseListener() {
             @Override
-            public void done(ParseException e) {
-                character.saveEventually();
+            public void onPositiveClose(final String textInput) {
+                ParseQuery<PlayerCharacter> query = PlayerCharacter.getQuery();
+                query.getInBackground(characterId, new GetCallback<PlayerCharacter>() {
+                    @Override
+                    public void done(final PlayerCharacter character, ParseException e) {
+                        if (e == null) {
+                            if (character.isLiving()) {
+                                characterDied(character, textInput);
+                            } else {
+                                characterResurrected(character, textInput);
+                            }
+                        } else {
+                            getLogger().exception(LOG_TAG,
+                                    ".toggleLivingDialog onPositiveClose query: " +
+                                            e.getMessage(),
+                                    e);
+
+                            Toast.makeText(EventActivity.this,
+                                    R.string.create_res_death_event_error_message,
+                                    Toast.LENGTH_SHORT)
+                                .show();
+                        }
+                    }
+                });
             }
         });
+    }
 
-        final Event event = new Event();
+    private void characterDied(PlayerCharacter character, String description) {
+        character.setLiving(false);
+        character.pinInBackground();
+        character.saveEventually();
+
+        Event event = new Event();
         event.setCharacter(character);
         event.setTitle(getString(R.string.died));
         event.setEventType(EventTypes.DEATH);
@@ -331,24 +332,17 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
         event.setDescription(description);
         event.setDate(new Date());
 
-        event.pinInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                event.saveEventually();
-                listFragment.notifyListChanged();
-                updateDeathButton(character);
-            }
-        });
+        event.pinInBackground();
+        event.saveEventually();
+
+        listFragment.notifyListChanged();
+        updateDeathButton(character);
     }
 
-    private void characterResurrected(final PlayerCharacter character, String description) {
+    private void characterResurrected(PlayerCharacter character, String description) {
         character.setLiving(true);
-        character.pinInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                character.saveEventually();
-            }
-        });
+        character.pinInBackground();
+        character.saveEventually();
 
         final Event event = new Event();
         event.setCharacter(character);
@@ -359,14 +353,11 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
         event.setDescription(description);
         event.setDate(new Date());
 
-        event.pinInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                event.saveEventually();
-                listFragment.notifyListChanged();
-                updateDeathButton(character);
-            }
-        });
+        event.pinInBackground();
+        event.saveEventually();
+
+        listFragment.notifyListChanged();
+        updateDeathButton(character);
     }
 
     private void updateDeathButton() {
@@ -377,8 +368,12 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
                 if (e == null) {
                     updateDeathButton(object);
                 } else {
-                    // TODO: Error handling
-                    Toast.makeText(EventActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    getLogger().exception(LOG_TAG,
+                            ".updateDeathButton query: " +
+                                    e.getMessage(),
+                            e);
+
+                    // Informing the user of this issue doesn't really help them
                 }
             }
         });
@@ -444,12 +439,15 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
                 public void done(final PlayerCharacter character, ParseException e) {
                     if (e == null) {
                         ParseQuery<Event> query = Event.getQuery();
+
                         query.whereContainedIn(Event.KEY_EVENT_TYPE,
                                 new ArrayList<String>() {{
                                     add(EventTypes.DEATH.toString());
                                     add(EventTypes.RESURRECT.toString());
                                 }});
+
                         query.orderByDescending(Event.KEY_DATE);
+
                         query.getFirstInBackground(new GetCallback<Event>() {
                             @Override
                             public void done(Event event, ParseException e) {
@@ -462,14 +460,24 @@ public class EventActivity extends BaseActivity implements EventListFragment.Cal
                                     updateDeathButton(character);
                                 }
                                 else {
+                                    // Assume no death/resurrect event exists and
+                                    // therefore they are alive
+
                                     character.setLiving(true);
                                     updateDeathButton(character);
                                 }
                             }
                         });
                     } else {
-                        // TODO: Error handling
-                        Toast.makeText(EventActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                        getLogger().exception(LOG_TAG,
+                                ".onEventDeleted deathOrResurrection query: " +
+                                        e.getMessage(),
+                                e);
+
+                        Toast.makeText(EventActivity.this,
+                                R.string.death_resurrect_deleted_error_message,
+                                Toast.LENGTH_LONG)
+                            .show();
                     }
                 }
             });

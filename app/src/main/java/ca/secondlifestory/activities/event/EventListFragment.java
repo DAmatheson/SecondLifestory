@@ -34,18 +34,15 @@ import ca.secondlifestory.models.Event;
  */
 public class EventListFragment extends BaseListFragment {
 
+    private static final String LOG_TAG = EventListFragment.class.getName();
+
     private EventQueryAdapter adapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (exception.g. upon screen orientation changes).
+     * fragment (e.g. upon screen orientation changes).
      */
     public EventListFragment() {
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -71,8 +68,15 @@ public class EventListFragment extends BaseListFragment {
 
                     mListener.onListLoaded();
                 } else {
-                    // TODO: Error handling
-                    Toast.makeText(EventListFragment.this.getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    getLogger().exception(LOG_TAG,
+                            ".setCharacterObjectId onLoaded:" +
+                                    e.getMessage(),
+                            e);
+
+                    Toast.makeText(EventListFragment.this.getActivity(),
+                            R.string.load_events_failed_error_message,
+                            Toast.LENGTH_LONG)
+                            .show();
                 }
             }
         });

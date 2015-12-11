@@ -18,13 +18,11 @@ import android.widget.Toast;
 import ca.secondlifestory.BaseActivity;
 
 import com.parse.CountCallback;
-import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseQueryAdapter;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.util.List;
 
@@ -39,6 +37,8 @@ import ca.secondlifestory.utilities.SimpleDialogFragment;
  * Activity which allows the user to customize the races and classes available
  */
 public class CustomizeActivity extends BaseActivity {
+
+    private static final String LOG_TAG = CustomizeActivity.class.getName();
 
     private static final String STATE_NEW_RACE_TEXT = "CustomizeActivity.newRaceText";
     private static final String STATE_NEW_CLASS_TEXT = "CustomizeActivity.newClassText";
@@ -80,14 +80,8 @@ public class CustomizeActivity extends BaseActivity {
         deleteClassLabel = (TextView) findViewById(R.id.delete_class_label);
 
         raceSpinner = (Spinner) findViewById(R.id.race_spinner);
-        TextView racePlaceholder = new TextView(this);
-        racePlaceholder.setText("Loading Races...");
-        raceSpinner.setEmptyView(racePlaceholder);
 
         classSpinner = (Spinner) findViewById(R.id.class_spinner);
-        TextView classPlaceholder = new TextView(this);
-        classPlaceholder.setText("Loading Classes...");
-        classSpinner.setEmptyView(classPlaceholder);
 
         deleteRaceButton = (Button) findViewById(R.id.delete_race_button);
         deleteClassButton = (Button) findViewById(R.id.delete_class_button);
@@ -141,6 +135,11 @@ public class CustomizeActivity extends BaseActivity {
                         raceSpinner.setVisibility(View.VISIBLE);
                         deleteRaceButton.setVisibility(View.VISIBLE);
                     }
+                } else {
+                    getLogger().exception(LOG_TAG,
+                        ".setDeleteRaceControlVisibility countInBackground: " +
+                                e.getMessage(),
+                        e);
                 }
             }
         });
@@ -177,6 +176,11 @@ public class CustomizeActivity extends BaseActivity {
                         classSpinner.setVisibility(View.VISIBLE);
                         deleteClassButton.setVisibility(View.VISIBLE);
                     }
+                } else {
+                    getLogger().exception(LOG_TAG,
+                        ".setDeleteClassControlVisibility countInBackground: " +
+                                e.getMessage(),
+                        e);
                 }
             }
         });
@@ -191,9 +195,9 @@ public class CustomizeActivity extends BaseActivity {
 
                 if (newRaceName.equals("")) {
                     Toast.makeText(CustomizeActivity.this,
-                            R.string.empty_race_name_error_message,
-                            Toast.LENGTH_LONG)
-                            .show();
+                        R.string.empty_race_name_error_message,
+                        Toast.LENGTH_LONG)
+                        .show();
                     return;
                 }
 
@@ -209,25 +213,31 @@ public class CustomizeActivity extends BaseActivity {
                         if (e == null){
                             if (!objects.isEmpty()) {
                                 Toast.makeText(CustomizeActivity.this,
-                                        R.string.new_race_already_exists,
-                                        Toast.LENGTH_LONG)
-                                        .show();
+                                    R.string.new_race_already_exists,
+                                    Toast.LENGTH_LONG)
+                                    .show();
                             } else {
-                                newRace.pinInBackground(new SaveCallback() {
-                                    @Override
-                                    public void done(ParseException e) {
-                                        newRace.saveEventually();
-                                        raceQueryAdapter.loadObjects();
-                                        setDeleteRaceControlVisibility();
+                                newRace.pinInBackground();
+                                newRace.saveEventually();
 
-                                        Toast.makeText(CustomizeActivity.this,
-                                                R.string.new_race_created_message,
-                                                Toast.LENGTH_SHORT)
-                                                .show();
-                                    }
-                                });
+                                raceQueryAdapter.loadObjects();
+                                setDeleteRaceControlVisibility();
 
+                                Toast.makeText(CustomizeActivity.this,
+                                    R.string.new_race_created_message,
+                                    Toast.LENGTH_SHORT)
+                                    .show();
                             }
+                        } else {
+                            getLogger().exception(LOG_TAG,
+                                ".saveRaceButton findInBackground: " +
+                                        e.getMessage(),
+                                e);
+
+                            Toast.makeText(CustomizeActivity.this,
+                                R.string.new_race_error_message,
+                                Toast.LENGTH_SHORT)
+                                .show();
                         }
                     }
                 });
@@ -242,9 +252,9 @@ public class CustomizeActivity extends BaseActivity {
 
                 if (newClassName.equals("")) {
                     Toast.makeText(CustomizeActivity.this,
-                            R.string.empty_class_name_error_message,
-                            Toast.LENGTH_LONG)
-                            .show();
+                        R.string.empty_class_name_error_message,
+                        Toast.LENGTH_LONG)
+                        .show();
                     return;
                 }
 
@@ -260,24 +270,31 @@ public class CustomizeActivity extends BaseActivity {
                         if (e == null){
                             if (!objects.isEmpty()) {
                                 Toast.makeText(CustomizeActivity.this,
-                                        R.string.new_class_already_exists,
-                                        Toast.LENGTH_LONG)
-                                        .show();
+                                    R.string.new_class_already_exists,
+                                    Toast.LENGTH_LONG)
+                                    .show();
                             } else {
-                                newClass.pinInBackground(new SaveCallback() {
-                                    @Override
-                                    public void done(ParseException e) {
-                                        newClass.saveEventually();
-                                        classQueryAdapter.loadObjects();
-                                        setDeleteClassControlVisibility();
+                                newClass.pinInBackground();
+                                newClass.saveEventually();
 
-                                        Toast.makeText(CustomizeActivity.this,
-                                                R.string.new_class_created_message,
-                                                Toast.LENGTH_SHORT)
-                                                .show();
-                                    }
-                                });
+                                classQueryAdapter.loadObjects();
+                                setDeleteClassControlVisibility();
+
+                                Toast.makeText(CustomizeActivity.this,
+                                    R.string.new_class_created_message,
+                                    Toast.LENGTH_SHORT)
+                                    .show();
                             }
+                        } else {
+                            getLogger().exception(LOG_TAG,
+                                ".saveClassButton findInBackground: " +
+                                        e.getMessage(),
+                                e);
+
+                            Toast.makeText(CustomizeActivity.this,
+                                R.string.new_class_error_message,
+                                Toast.LENGTH_SHORT)
+                                .show();
                         }
                     }
                 });
@@ -301,44 +318,22 @@ public class CustomizeActivity extends BaseActivity {
                         if (e == null) {
                             if (!objects.isEmpty()) {
                                 Toast.makeText(CustomizeActivity.this,
-                                        R.string.cannot_delete_race,
-                                        Toast.LENGTH_LONG)
-                                        .show();
+                                    R.string.cannot_delete_race,
+                                    Toast.LENGTH_LONG)
+                                    .show();
                             } else {
-                                SimpleDialogFragment deleteDialog = SimpleDialogFragment.newInstance(R.string.ok,
-                                        R.string.delete_race_confirm,
-                                        R.string.no);
-
-                                deleteDialog.show(getFragmentManager(), null, new SimpleDialogFragment.OnPositiveCloseListener() {
-                                    @Override
-                                    public void onPositiveClose() {
-                                        ParseQuery<Race> races = Race.getQuery();
-                                        races.whereEqualTo(Race.KEY_NAME, race);
-                                        races.findInBackground(new FindCallback<Race>() {
-                                            @Override
-                                            public void done(List<Race> objects, ParseException e) {
-                                                if (e == null) {
-                                                    Race.deleteAllInBackground(objects);
-                                                }
-                                            }
-                                        });
-
-                                        race.unpinInBackground(new DeleteCallback() {
-                                            @Override
-                                            public void done(ParseException e) {
-                                                race.deleteEventually();
-                                                raceQueryAdapter.loadObjects();
-                                                setDeleteRaceControlVisibility();
-
-                                                Toast.makeText(CustomizeActivity.this,
-                                                        R.string.race_deleted_message,
-                                                        Toast.LENGTH_SHORT)
-                                                        .show();
-                                            }
-                                        });
-                                    }
-                                });
+                                showDeleteRaceConfirmationDialog(race);
                             }
+                        } else {
+                            getLogger().exception(LOG_TAG,
+                                ".deleteRaceButton findInBackground: " +
+                                        e.getMessage(),
+                                e);
+
+                            Toast.makeText(CustomizeActivity.this,
+                                R.string.delete_race_error_message,
+                                Toast.LENGTH_SHORT)
+                                .show();
                         }
                     }
                 });
@@ -362,47 +357,111 @@ public class CustomizeActivity extends BaseActivity {
                         if (e == null) {
                             if (!objects.isEmpty()) {
                                 Toast.makeText(CustomizeActivity.this,
-                                        R.string.cannot_delete_class,
-                                        Toast.LENGTH_LONG)
-                                        .show();
+                                    R.string.cannot_delete_class,
+                                    Toast.LENGTH_LONG)
+                                    .show();
                             } else {
-                                SimpleDialogFragment deleteDialog = SimpleDialogFragment.newInstance(R.string.ok,
-                                        R.string.delete_class_confirm,
-                                        R.string.no);
-
-                                deleteDialog.show(getFragmentManager(), null, new SimpleDialogFragment.OnPositiveCloseListener() {
-                                    @Override
-                                    public void onPositiveClose() {
-                                        ParseQuery<CharacterClass> classes = CharacterClass.getQuery();
-                                        classes.whereEqualTo(CharacterClass.KEY_NAME, characterClass);
-                                        classes.findInBackground(new FindCallback<CharacterClass>() {
-                                            @Override
-                                            public void done(List<CharacterClass> objects, ParseException e) {
-                                                if (e == null) {
-                                                    CharacterClass.deleteAllInBackground(objects);
-                                                }
-                                            }
-                                        });
-
-                                        characterClass.unpinInBackground(new DeleteCallback() {
-                                            @Override
-                                            public void done(ParseException e) {
-                                                characterClass.deleteEventually();
-                                                classQueryAdapter.loadObjects();
-                                                setDeleteClassControlVisibility();
-
-                                                Toast.makeText(CustomizeActivity.this,
-                                                        R.string.class_deleted_message,
-                                                        Toast.LENGTH_SHORT)
-                                                        .show();
-                                            }
-                                        });
-                                    }
-                                });
+                                showDeleteClassConfirmationDialog(characterClass);
                             }
+                        } else {
+                            getLogger().exception(LOG_TAG,
+                                ".deleteClassButton findInBackground: " +
+                                        e.getMessage(),
+                                e);
+
+                            Toast.makeText(CustomizeActivity.this,
+                                R.string.delete_class_error_message,
+                                Toast.LENGTH_SHORT)
+                                .show();
                         }
                     }
                 });
+            }
+        });
+    }
+
+    private void showDeleteRaceConfirmationDialog(final Race race) {
+        SimpleDialogFragment deleteDialog = SimpleDialogFragment.newInstance(R.string.ok,
+                R.string.delete_race_confirm,
+                R.string.no);
+
+        deleteDialog.show(getFragmentManager(), null, new SimpleDialogFragment.OnPositiveCloseListener() {
+            @Override
+            public void onPositiveClose() {
+                ParseQuery<Race> races = Race.getQuery();
+                races.whereEqualTo(Race.KEY_NAME, race);
+                races.findInBackground(new FindCallback<Race>() {
+                    @Override
+                    public void done(List<Race> objects, ParseException e) {
+                        if (e == null) {
+                            Race.deleteAllInBackground(objects);
+                        } else {
+                            getLogger().exception(LOG_TAG,
+                                "showDeleteRaceConfirmationDialog.onPositiveClose.findInBackground: " +
+                                        e.getMessage(),
+                                e);
+
+                            Toast.makeText(CustomizeActivity.this,
+                                R.string.delete_race_error_message,
+                                Toast.LENGTH_SHORT)
+                                .show();
+                        }
+                    }
+                });
+
+                race.unpinInBackground();
+                race.deleteEventually();
+
+                raceQueryAdapter.loadObjects();
+                setDeleteRaceControlVisibility();
+
+                Toast.makeText(CustomizeActivity.this,
+                        R.string.race_deleted_message,
+                        Toast.LENGTH_SHORT)
+                        .show();
+            }
+        });
+    }
+
+    private void showDeleteClassConfirmationDialog(final CharacterClass characterClass) {
+        SimpleDialogFragment deleteDialog = SimpleDialogFragment.newInstance(R.string.ok,
+                R.string.delete_class_confirm,
+                R.string.no);
+
+        deleteDialog.show(getFragmentManager(), null, new SimpleDialogFragment.OnPositiveCloseListener() {
+            @Override
+            public void onPositiveClose() {
+                ParseQuery<CharacterClass> classes = CharacterClass.getQuery();
+                classes.whereEqualTo(CharacterClass.KEY_NAME, characterClass);
+                classes.findInBackground(new FindCallback<CharacterClass>() {
+                    @Override
+                    public void done(List<CharacterClass> objects, ParseException e) {
+                        if (e == null) {
+                            CharacterClass.deleteAllInBackground(objects);
+                        } else {
+                            getLogger().exception(LOG_TAG,
+                                "showDeleteClassConfirmationDialog.onPositiveClose.findInBackground: " +
+                                        e.getMessage(),
+                                e);
+
+                            Toast.makeText(CustomizeActivity.this,
+                                R.string.delete_class_error_message,
+                                Toast.LENGTH_SHORT)
+                                .show();
+                        }
+                    }
+                });
+
+                characterClass.unpinInBackground();
+                characterClass.deleteEventually();
+
+                classQueryAdapter.loadObjects();
+                setDeleteClassControlVisibility();
+
+                Toast.makeText(CustomizeActivity.this,
+                        R.string.class_deleted_message,
+                        Toast.LENGTH_SHORT)
+                        .show();
             }
         });
     }

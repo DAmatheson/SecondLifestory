@@ -45,6 +45,8 @@ public class EventDetailFragment extends BaseFragment {
         void onEventDeleted(String eventId, boolean deathOrResurrection);
     }
 
+    private static final String LOG_TAG = EventDetailFragment.class.getName();
+
     /**
      * The fragment argument representing the item ID that this fragment
      * represents.
@@ -85,7 +87,7 @@ public class EventDetailFragment extends BaseFragment {
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (exception.g. upon screen orientation changes).
+     * fragment (e.g. upon screen orientation changes).
      */
     public EventDetailFragment() {
     }
@@ -100,11 +102,6 @@ public class EventDetailFragment extends BaseFragment {
         }
 
         mListener = (Callbacks) activity;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -194,10 +191,6 @@ public class EventDetailFragment extends BaseFragment {
         outState.putString(ARG_EVENT_ID, eventId);
     }
 
-    public void notifyEventChanged() {
-        loadEvent(eventId);
-    }
-
     public void setEventId(String eventId) {
         this.eventId = eventId;
 
@@ -247,8 +240,15 @@ public class EventDetailFragment extends BaseFragment {
                     }
                     description.setText(mItem.getDescription());
                 } else {
-                    // TODO: Error handling
-                    Toast.makeText(EventDetailFragment.this.getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    getLogger().exception(LOG_TAG,
+                            ".loadEvent query: " +
+                                    e.getMessage(),
+                            e);
+
+                    Toast.makeText(EventDetailFragment.this.getActivity(),
+                            R.string.load_event_failed_error_message,
+                            Toast.LENGTH_LONG)
+                            .show();
                 }
             }
         });

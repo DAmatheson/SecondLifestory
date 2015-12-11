@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.parse.ParseQueryAdapter;
 
@@ -32,6 +33,8 @@ import ca.secondlifestory.models.PlayerCharacter;
  * interface.
  */
 public class CharacterListFragment extends BaseListFragment {
+
+    private static final String LOG_TAG = CharacterListFragment.class.getName();
 
     private PlayerCharacterQueryAdapter adapter;
 
@@ -60,6 +63,16 @@ public class CharacterListFragment extends BaseListFragment {
             public void onLoaded(List<PlayerCharacter> list, Exception e) {
                 if (e == null) {
                     mListener.onListLoaded();
+                } else {
+                    getLogger().exception(LOG_TAG,
+                            ".onCreate onLoaded:" +
+                                    e.getMessage(),
+                            e);
+
+                    Toast.makeText(CharacterListFragment.this.getActivity(),
+                            R.string.load_characters_failed_error_message,
+                            Toast.LENGTH_LONG)
+                            .show();
                 }
             }
         });

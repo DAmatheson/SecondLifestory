@@ -21,6 +21,8 @@
     <string name="no">@android:string/no</string>
     <string name="alive">Alive</string>
     <string name="dead">Dead</string>
+    <string name="required">Required</string>
+    <string name="must_be_greater_than_zero">Must be greater than zero.</string>
 
     <!-- Empty list item text -->
     <string name="eventsEmptyEntry">No Events</string>
@@ -32,6 +34,7 @@
 
     <!-- Character List -->
     <string name="show_deceased">Show Deceased</string>
+    <string name="load_characters_failed_error_message">An error occurred while loading the Characters.</string>
 
     <!-- Character Details -->
     <string name="character_name">Character Name</string>
@@ -40,6 +43,8 @@
     <string name="total_xp">Total XP</string>
     <string name="status">Status</string>
     <string name="delete_character_message">Delete This Character?</string>
+    <string name="load_character_failed_error_message">An error occurred while loading the Character\'s details.</string>
+    <string name="delete_character_error_message">An error occurred while deleting the Character.</string>
 
     <!-- Create/Edit Character -->
     <string name="create_character">Create Character</string>
@@ -49,10 +54,15 @@
     <string name="class_label">Class</string>
     <string name="empty_character_class_spinner">Create a Class first.</string>
     <string name="empty_race_spinner">Create a Race first.</string>
+    <string name="edit_character_load_error_message">An error occurred while loading the character.</string>
 
     <!-- Event Activity -->
     <string name="events_title_prefix">"Events for "</string>
     <string name="view_events">View Events List</string>
+
+    <!-- Event List -->
+    <string name="load_events_failed_error_message">An error occurred while loading the Events.</string>
+    <string name="create_res_death_event_error_message">An error occurred while creating the event.</string>
 
     <!-- Event Details -->
     <string name="event_title">Event Title</string>
@@ -66,6 +76,8 @@
     <string name="resurrect">Resurrect</string>
     <string name="resurrected">Resurrected</string>
     <string name="delete_event_message">Delete This Event?</string>
+    <string name="death_resurrect_deleted_error_message">An error occurred while updating your character\'s living status.</string>
+    <string name="load_event_failed_error_message">An error occurred while loading the Event\'s details.</string>
 
     <!-- Create/Edit Event -->
     <string name="add_event">Add Event</string>
@@ -78,6 +90,12 @@
     <string name="event_title_hint">Event Title</string>
     <string name="what_killed_you">What killed you?</string>
     <string name="what_resurrected_you">What brought you back?</string>
+    <string name="event_title_required_error_message">Title is required.</string>
+    <string name="event_xp_gained_required_error_message">XP Gained is required.</string>
+    <string name="event_shared_by_required_error_message"># Characters Present is required.</string>
+    <string name="event_shared_by_greater_than_zero_error_message"># Characters present must be greater than zero.</string>
+    <string name="save_event_error_message">An error occurred while saving the Event.</string>
+    <string name="edit_event_load_error_message">An error occurred while loading the Event.</string>
 
     <!-- Customize Activity -->
     <string name="custom_races_and_classes">Custom Races &amp; Classes</string>
@@ -99,6 +117,15 @@
     <string name="cannot_delete_class">This class is in use by a character and cannot be deleted.</string>
     <string name="delete_class_confirm">Delete This Class?</string>
     <string name="class_deleted_message">Class Deleted.</string>
+    <string name="empty_delete_race_spinner">No Races to Delete</string>
+    <string name="empty_delete_character_class_spinner">No Classes to Delete</string>
+    <string name="new_race_error_message">An error occurred while creating the Race.</string>
+    <string name="new_class_error_message">An error occurred while creating the Class.</string>
+    <string name="delete_race_error_message">An error occurred while deleting the Race.</string>
+    <string name="delete_class_error_message">An error occurred while deleting the Class.</string>
+    <string name="delete_all_races_error_message">An error occurred while deleting the Races.</string>
+    <string name="delete_all_classes_error_message">An error occurred while deleting the Classes.</string>
+    <string name="delete_all_characters_error_message">An error occurred while deleting the Characters.</string>
 
     <!-- Settings Activity -->
     <string name="tutorials">Tutorials and FAQs</string>
@@ -119,5 +146,4 @@
     <string name="event_type_event">Event</string>
     <string name="event_type_death">Death</string>
     <string name="event_type_resurrection">Resurrection</string>
-    <!-- Unsorted -->
 </resources>

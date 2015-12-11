@@ -9,6 +9,7 @@ package ca.secondlifestory.activities.event;
 import android.app.Activity;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +55,8 @@ public class EventUpsertFragment extends BaseFragment {
         void onEventModified(Event event);
         void onUpsertCancelPressed();
     }
+
+    private static final String LOG_TAG = EventUpsertFragment.class.getName();
 
     /**
      * The arguments Bundle keys
@@ -240,7 +243,19 @@ public class EventUpsertFragment extends BaseFragment {
             }
         }
 
-        saveButton.setOnClickListener(new View.OnClickListener() {
+        saveButton.setOnClickListener(setupSaveButtonOnClickListener());
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onUpsertCancelPressed();
+            }
+        });
+    }
+
+    @NonNull
+    private View.OnClickListener setupSaveButtonOnClickListener() {
+        return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EventTypes value = typeItems.get(eventTypeSpinner.getSelectedItem().toString());
@@ -252,25 +267,29 @@ public class EventUpsertFragment extends BaseFragment {
                 String firstErrorMessage = null;
 
                 if (title.equals("")) {
-                    firstErrorMessage = "Title is required.";
+                    firstErrorMessage = EventUpsertFragment.this.getString(
+                            R.string.event_title_required_error_message);
 
-                    titleText.setError("Required");
+                    titleText.setError(EventUpsertFragment.this.getString(R.string.required));
                 }
 
                 if (!editingDeathOrResurrection) {
                     if (xpAmountString.equals("") ||
                             xpAmountString.equals("-") ||
                             xpAmountString.equals("+")) {
-                        if (firstErrorMessage == null) firstErrorMessage = "XP Gained is required.";
+                        if (firstErrorMessage == null) firstErrorMessage =
+                                EventUpsertFragment.this.getString(R.string.event_xp_gained_required_error_message);
 
-                        xpAmountText.setError("Required.");
+                        xpAmountText.setError(EventUpsertFragment.this.getString(R.string.required));
                     }
 
                     if (characterCountString.equals("")) {
                         if (firstErrorMessage == null)
-                            firstErrorMessage = "# Characters Present is required.";
+                            firstErrorMessage = EventUpsertFragment.this.getString(
+                                    R.string.event_shared_by_required_error_message);
 
-                        characterCountText.setError("Required.");
+                        characterCountText.setError(
+                                EventUpsertFragment.this.getString(R.string.required));
                     }
                 }
 
@@ -287,11 +306,12 @@ public class EventUpsertFragment extends BaseFragment {
 
                 if (characterCount < 1) {
                     Toast.makeText(EventUpsertFragment.this.getActivity(),
-                            "# Characters present must be greater than zero.",
+                            R.string.event_shared_by_greater_than_zero_error_message,
                             Toast.LENGTH_SHORT).
                             show();
 
-                    characterCountText.setError("Must be greater than zero.");
+                    characterCountText.setError(
+                            EventUpsertFragment.this.getString(R.string.must_be_greater_than_zero));
 
                     return;
                 }
@@ -334,23 +354,20 @@ public class EventUpsertFragment extends BaseFragment {
                             }
 
                         } else {
-                            // TODO: Error handling
+                            getLogger().exception(LOG_TAG,
+                                "saveButton.onClick.getInBackground: " +
+                                        e.getMessage(),
+                                e);
+
                             Toast.makeText(EventUpsertFragment.this.getActivity(),
-                                    e.getMessage(),
-                                    Toast.LENGTH_LONG)
-                                    .show();
+                                R.string.save_event_error_message,
+                                Toast.LENGTH_LONG)
+                                .show();
                         }
                     }
                 });
             }
-        });
-
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onUpsertCancelPressed();
-            }
-        });
+        };
     }
 
     @Override
@@ -382,7 +399,11 @@ public class EventUpsertFragment extends BaseFragment {
     private void setupForExistingEvent(String eventId) {
         loadingIndicator.setVisibility(View.VISIBLE);
 
-        ((TextView)getView().findViewById(R.id.upsert_title)).setText(R.string.edit_event);
+        View rootView = getView();
+
+        if (rootView != null) {
+            ((TextView) rootView.findViewById(R.id.upsert_title)).setText(R.string.edit_event);
+        }
 
         ParseQuery<Event> query = Event.getQuery();
         query.getInBackground(eventId, new GetCallback<Event>() {
@@ -419,8 +440,15 @@ public class EventUpsertFragment extends BaseFragment {
                         }
                     }
                 } else {
-                    // TODO: Handle error
-                    Toast.makeText(EventUpsertFragment.this.getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    getLogger().exception(LOG_TAG,
+                            ".setupForExistingEvent query: " +
+                                    e.getMessage(),
+                            e);
+
+                    Toast.makeText(EventUpsertFragment.this.getActivity(),
+                            R.string.edit_event_load_error_message,
+                            Toast.LENGTH_LONG)
+                            .show();
                 }
             }
         });

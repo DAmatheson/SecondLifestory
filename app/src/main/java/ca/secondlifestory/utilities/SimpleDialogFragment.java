@@ -155,7 +155,7 @@ public class SimpleDialogFragment extends DialogFragment {
 
         if (getArguments() == null) {
             throw new IllegalStateException(LOG_TAG +
-                    " must be create via one of the newInstance factory methods.");
+                    " must be created via one of the newInstance factory methods.");
         }
 
         // Setup from arguments

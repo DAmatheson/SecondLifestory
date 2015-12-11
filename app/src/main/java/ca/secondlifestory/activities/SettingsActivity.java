@@ -29,7 +29,9 @@ import ca.secondlifestory.utilities.SimpleDialogFragment;
 
 public class SettingsActivity extends BaseActivity {
 
-    private final String TUTORIALS_URL = "http://www.isaac-west.ca/SecondLifestory/FAQ";
+    private static final String LOG_TAG = SettingsActivity.class.getName();
+
+    private static final String TUTORIALS_URL = "http://www.isaac-west.ca/SecondLifestory/FAQ";
 
     private Button tutorialsLinkButton;
     private Button deleteCharactersButton;
@@ -76,17 +78,17 @@ public class SettingsActivity extends BaseActivity {
                         R.string.delete_all_characters_dialog_message);
 
                 deleteConfirmationDialog.show(getFragmentManager(), null,
-                    new SimpleDialogFragment.OnPositiveCloseListener() {
-                        @Override
-                        public void onPositiveClose() {
-                            deleteCharacters();
+                        new SimpleDialogFragment.OnPositiveCloseListener() {
+                            @Override
+                            public void onPositiveClose() {
+                                deleteCharacters();
 
-                            Toast.makeText(SettingsActivity.this,
-                                    R.string.delete_all_characters_success,
-                                    Toast.LENGTH_SHORT)
-                                .show();
+                                Toast.makeText(SettingsActivity.this,
+                                        R.string.delete_all_characters_success,
+                                        Toast.LENGTH_SHORT)
+                                        .show();
+                            }
                         }
-                    }
                 );
             }
         });
@@ -106,17 +108,17 @@ public class SettingsActivity extends BaseActivity {
                         R.string.delete_all_data_dialog_message);
 
                 deleteConfirmationDialog.show(getFragmentManager(), null,
-                    new SimpleDialogFragment.OnPositiveCloseListener() {
-                        @Override
-                        public void onPositiveClose() {
-                            deleteAllData();
+                        new SimpleDialogFragment.OnPositiveCloseListener() {
+                            @Override
+                            public void onPositiveClose() {
+                                deleteAllData();
 
-                            Toast.makeText(SettingsActivity.this,
-                                    R.string.delete_all_data_success,
-                                    Toast.LENGTH_SHORT)
-                                .show();
+                                Toast.makeText(SettingsActivity.this,
+                                        R.string.delete_all_data_success,
+                                        Toast.LENGTH_SHORT)
+                                        .show();
+                            }
                         }
-                    }
                 );
             }
         });
@@ -132,11 +134,24 @@ public class SettingsActivity extends BaseActivity {
         raceQuery.findInBackground(new FindCallback<Race>() {
             @Override
             public void done(List<Race> objects, ParseException e) {
-                Race.deleteAllInBackground(objects);
+                if (e == null) {
 
-                Race.setupDefaultRaces(
-                        SettingsActivity.this.getResources()
-                                .getStringArray(R.array.defaultRaceNames));
+                    Race.deleteAllInBackground(objects);
+
+                    Race.setupDefaultRaces(
+                            SettingsActivity.this.getResources()
+                                    .getStringArray(R.array.defaultRaceNames));
+                } else {
+                    getLogger().exception(LOG_TAG,
+                            ".deleteAllData Race query: " +
+                                    e.getMessage(),
+                            e);
+
+                    Toast.makeText(SettingsActivity.this,
+                            R.string.delete_all_races_error_message,
+                            Toast.LENGTH_LONG)
+                        .show();
+                }
             }
         });
 
@@ -144,11 +159,23 @@ public class SettingsActivity extends BaseActivity {
         classQuery.findInBackground(new FindCallback<CharacterClass>() {
             @Override
             public void done(List<CharacterClass> objects, ParseException e) {
-                CharacterClass.deleteAllInBackground(objects);
+                if (e == null) {
+                    CharacterClass.deleteAllInBackground(objects);
 
-                CharacterClass.setupDefaultClasses(
-                        SettingsActivity.this.getResources()
-                                .getStringArray(R.array.defaultCharacterClassNames));
+                    CharacterClass.setupDefaultClasses(
+                            SettingsActivity.this.getResources()
+                                    .getStringArray(R.array.defaultCharacterClassNames));
+                } else {
+                    getLogger().exception(LOG_TAG,
+                            ".deleteAllData CharacterClass query: " +
+                                    e.getMessage(),
+                            e);
+
+                    Toast.makeText(SettingsActivity.this,
+                            R.string.delete_all_classes_error_message,
+                            Toast.LENGTH_LONG)
+                            .show();
+                }
             }
         });
     }
@@ -162,21 +189,40 @@ public class SettingsActivity extends BaseActivity {
         query.findInBackground(new FindCallback<PlayerCharacter>() {
             @Override
             public void done(List<PlayerCharacter> objects, ParseException e) {
-                for (PlayerCharacter character : objects) {
-                    ParseQuery<Event> eventsQuery = Event.getQuery();
-                    eventsQuery.whereEqualTo(Event.KEY_CHARACTER, character);
+                if (e == null) {
+                    for (PlayerCharacter character : objects) {
+                        ParseQuery<Event> eventsQuery = Event.getQuery();
+                        eventsQuery.whereEqualTo(Event.KEY_CHARACTER, character);
 
-                    eventsQuery.findInBackground(new FindCallback<Event>() {
-                        @Override
-                        public void done(List<Event> objects, ParseException e) {
-                            Event.unpinAllInBackground(objects);
-                            Event.deleteAllInBackground(objects);
-                        }
-                    });
+                        eventsQuery.findInBackground(new FindCallback<Event>() {
+                            @Override
+                            public void done(List<Event> objects, ParseException e) {
+                                if (e == null) {
+                                    Event.unpinAllInBackground(objects);
+                                    Event.deleteAllInBackground(objects);
+                                } else {
+                                    getLogger().exception(LOG_TAG,
+                                            ".deleteCharacters event deletion loop: " +
+                                                e.getMessage(),
+                                            e);
+                                }
+                            }
+                        });
+                    }
+
+                    PlayerCharacter.unpinAllInBackground(objects);
+                    PlayerCharacter.deleteAllInBackground(objects);
+                } else {
+                    getLogger().exception(LOG_TAG,
+                            ".deleteCharacters query: " +
+                                e.getMessage(),
+                            e);
+
+                    Toast.makeText(SettingsActivity.this,
+                            R.string.delete_all_characters_error_message,
+                            Toast.LENGTH_LONG)
+                            .show();
                 }
-
-                PlayerCharacter.unpinAllInBackground(objects);
-                PlayerCharacter.deleteAllInBackground(objects);
             }
         });
     }

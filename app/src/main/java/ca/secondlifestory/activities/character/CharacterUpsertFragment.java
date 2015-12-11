@@ -46,8 +46,6 @@ import ca.secondlifestory.models.Race;
  * create an instance of this fragment.
  */
 public class CharacterUpsertFragment extends BaseFragment {
-    private static final String LOG_TAG = CharacterUpsertFragment.class.getName();
-
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -59,6 +57,8 @@ public class CharacterUpsertFragment extends BaseFragment {
         void onCharacterModified(PlayerCharacter character);
         void onUpsertCancelPressed();
     }
+
+    private static final String LOG_TAG = CharacterUpsertFragment.class.getName();
 
     /**
      * The arguments Bundle keys
@@ -73,7 +73,7 @@ public class CharacterUpsertFragment extends BaseFragment {
     private static final String STATE_RACE_SPINNER = "CharacterUpsertFragment.raceSpinnerState";
     private static final String STATE_NAME = "CharacterUpsertFragment.name";
     private static final String STATE_DETAILS = "CharacterUpsertFragment.details";
-    private static final String RESUMING_TAG = "restoringActivity";
+    private static final String RESUMING_TAG = "CharacterUpsertFragment.restoring";
 
     private Callbacks mListener;
 
@@ -368,6 +368,11 @@ public class CharacterUpsertFragment extends BaseFragment {
                             }
                         }
                     } else {
+                        getLogger().exception(LOG_TAG,
+                                ".setupClassSpinnerItems onLoaded:" +
+                                        e.getMessage(),
+                                e);
+
                         Toast.makeText(CharacterUpsertFragment.this.getActivity(),
                                 R.string.load_classes_failed_error_message,
                                 Toast.LENGTH_LONG)
@@ -424,6 +429,11 @@ public class CharacterUpsertFragment extends BaseFragment {
                             }
                         }
                     } else {
+                        getLogger().exception(LOG_TAG,
+                                ".setupRaceSpinnerItems onLoaded:" +
+                                        e.getMessage(),
+                                e);
+
                         Toast.makeText(CharacterUpsertFragment.this.getActivity(),
                                 R.string.load_races_failed_error_message,
                                 Toast.LENGTH_LONG)
@@ -456,8 +466,15 @@ public class CharacterUpsertFragment extends BaseFragment {
                     setupRaceSpinnerItems(null);
                     setupClassSpinnerItems(null);
                 } else {
-                    // TODO: Handle error
-                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    getLogger().exception(LOG_TAG,
+                            ".setupForExistingCharacter query: " +
+                                    e.getMessage(),
+                            e);
+
+                    Toast.makeText(getActivity(),
+                            R.string.edit_character_load_error_message,
+                            Toast.LENGTH_LONG)
+                        .show();
                 }
             }
         });

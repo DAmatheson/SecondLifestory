@@ -46,10 +46,20 @@
             android:id="@+id/delete_race_label"
             style="@style/detailTextViewLabel"
             android:text="@string/delete_race" />
-        <Spinner
-            android:id="@+id/race_spinner"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Spinner
+                android:id="@+id/race_spinner"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                style="@style/emptyListViewItem"
+                android:id="@+id/empty_race_item"
+                android:paddingTop="@dimen/spinner_single_line_height"
+                android:text="@string/empty_delete_race_spinner" />
+        </LinearLayout>
         <Button
             android:id="@+id/delete_race_button"
             android:layout_width="match_parent"
@@ -92,10 +102,20 @@
             android:id="@+id/delete_class_label"
             style="@style/detailTextViewLabel"
             android:text="@string/delete_class" />
-        <Spinner
-            android:id="@+id/class_spinner"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content">
+            <Spinner
+                android:id="@+id/class_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                style="@style/emptyListViewItem"
+                android:id="@+id/empty_class_item"
+                android:paddingTop="@dimen/spinner_single_line_height"
+                android:text="@string/empty_delete_character_class_spinner" />
+        </LinearLayout>
         <Button
             android:id="@+id/delete_class_button"
             android:layout_width="match_parent"

@@ -50,6 +50,8 @@ public class CharacterDetailFragment extends BaseFragment {
         void onCharacterDeleted(String characterObjectId);
     }
 
+    private static final String LOG_TAG = CharacterDetailFragment.class.getName();
+
     /**
      * The fragment argument representing the item ID that this fragment
      * represents.
@@ -109,11 +111,6 @@ public class CharacterDetailFragment extends BaseFragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_character_detail, container, false);
@@ -156,6 +153,16 @@ public class CharacterDetailFragment extends BaseFragment {
                                 if (e == null) {
                                     Event.unpinAllInBackground(objects);
                                     Event.deleteAllInBackground(objects);
+                                } else {
+                                    getLogger().exception(LOG_TAG,
+                                            ".deleteDialog.onPositiveClose query: " +
+                                                    e.getMessage(),
+                                            e);
+
+                                    Toast.makeText(CharacterDetailFragment.this.getActivity(),
+                                            R.string.delete_character_error_message,
+                                            Toast.LENGTH_LONG)
+                                            .show();
                                 }
                             }
                         });
@@ -241,7 +248,15 @@ public class CharacterDetailFragment extends BaseFragment {
 
                     description.setText(mItem.getDetails());
                 } else {
-                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    getLogger().exception(LOG_TAG,
+                            ".loadCharacter query: " +
+                                    e.getMessage(),
+                            e);
+
+                    Toast.makeText(CharacterDetailFragment.this.getActivity(),
+                            R.string.load_character_failed_error_message,
+                            Toast.LENGTH_LONG)
+                            .show();
                 }
             }
         });

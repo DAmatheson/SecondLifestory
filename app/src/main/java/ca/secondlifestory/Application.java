@@ -8,6 +8,7 @@ package ca.secondlifestory;
 
 
 import com.parse.Parse;
+import com.parse.ParseACL;
 import com.parse.ParseObject;
 
 import ca.secondlifestory.models.*;
@@ -37,6 +38,9 @@ public class Application extends android.app.Application {
             ParseObject.registerSubclass(CharacterClass.class);
             ParseObject.registerSubclass(Event.class);
             ParseObject.registerSubclass(Race.class);
+
+            // Default to only the user being allowed to see/modify created objects
+            ParseACL.setDefaultACL(new ParseACL(), true);
 
             //noinspection SpellCheckingInspection
             Parse.initialize(this,

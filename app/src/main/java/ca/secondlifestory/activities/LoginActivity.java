@@ -13,6 +13,7 @@ import android.provider.Settings;
 import android.os.Bundle;
 
 import com.parse.LogInCallback;
+import com.parse.ParseAnalytics;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
@@ -37,6 +38,12 @@ public class LoginActivity extends BaseActivity implements SimpleDialogFragment.
 
         try {
             setContentView(R.layout.activity_login);
+
+            try {
+                ParseAnalytics.trackAppOpenedInBackground(getIntent());
+            } catch (Exception ex) {
+                getLogger().exception(LOG_TAG, "Failed to track app open", ex);
+            }
 
             final String androidId =
                     Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);

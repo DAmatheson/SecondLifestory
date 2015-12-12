@@ -155,7 +155,7 @@ public class EventDetailFragment extends BaseFragment {
                             public void onPositiveClose() {
                                 try {
                                     // Remove the experience from the event
-                                    mItem.getCharacter().subtractExperience(mItem.getExperience());
+                                    mItem.getCharacter().subtractExperience(mItem.getExperience() / mItem.getCharacterCount());
                                     mItem.getCharacter().saveEventually();
 
                                     mItem.unpinInBackground();
